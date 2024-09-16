@@ -11,7 +11,7 @@
 <nav class="navbar navbar-expand-lg navbar-dark custom-navbar w-100">
     <div class="container-fluid">
         <a class="navbar-brand" href="">
-            <img src="/Maws hoteller photos/Sunset Resort.png" alt="Logo" class="navbar-logo"/>
+            <img src="/Maws-hoteller-photos/Sunset Resort.png" alt="Logo" class="navbar-logo"/>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -56,13 +56,11 @@
                 
                 <li class="nav-item">
                     <NavLink class="nav-link" @onclick="ModalChange">
-                        <span class="bi bi-list-nested" aria-hidden="true"></span> Contact Support
+                        <span class="navbar-text" aria-hidden="true"></span> Contact Support
                     </NavLink>
                 </li>
             </ul>
 
-
-                @if (AppState.LoggedIn && AppState.IsAdmin)
             <!-- For at holde Login og Create Profile i højre side -->
             <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 @if (!AppState.LoggedIn)
