@@ -1,4 +1,6 @@
 # H2-Projekt {Indsæt gruppenavn}
+# NeonTech: Brugernavn - h2gruppe5online@gmail.com , Password - 2^iiy6E57Jn9JcVeVbHYd^#
+
 
 Her skal alt omkring jeres projekt være. Alle jeres OOP klasser, Diagrammer (UML, Database, mm.), Blazor-kode og API-kode. 
 Projektet han findes her - [H2 Projekt forløb på Notion](https://mercantec.notion.site/Projekt-H2-Booking-side-33e086a54fd84630b2c63bd67a5066d2?pvs=4)
