@@ -1,22 +1,17 @@
 .custom-navbar {
-    /*background: radial-gradient(circle, rgba(255,130,0,1) 0%, rgba(255,203,0,1) 37%, rgba(255,237,0,1) 51%, rgba(255,203,0,1) 66%, rgba(255,130,0,1) 100%); */
     background: #343a40;
     border-bottom: 2px solid #343a40;
 }
 
 .navbar-logo {
-    max-height: 3rem;
+    max-height: 4rem;
     border-radius: 50px;
 }
 
 .navbar-brand {
     font-size: 1.5rem;
     font-weight: bold;
-    color: rgb(255,130,0);
-}
-
-.container-fluid {
-    color: red;
+    color: rgb(255, 130, 0);
 }
 
 .navbar-toggler {
@@ -46,11 +41,11 @@
 }
 
     .navbar-nav .nav-link:hover {
-        background-color: rgba(255, 255, 255, 0.2); /* Slightly brighter on hover */
+        background-color: rgba(255, 255, 255, 0.2);
     }
 
     .navbar-nav .nav-link.active {
-        background-color: rgba(255, 255, 255, 0.4); /* Active link with a soft glow */
+        background-color: rgba(255, 255, 255, 0.4);
     }
 
 .nav-item {
@@ -60,6 +55,10 @@
 .bi {
     margin-right: 0.5rem;
     font-size: 1.25rem;
+}
+
+.navbar-nav.ms-auto .nav-link {
+    margin-right: 1rem;
 }
 
 @media (max-width: 767px) {
@@ -74,11 +73,6 @@
     .navbar-nav .nav-item {
         margin-right: 0;
     }
-}
-
-/* For the toggler */
-.navbar-toggler:checked {
-    background-color: rgba(255, 255, 255, 0.5);
 }
 
 @media (min-width: 641px) {

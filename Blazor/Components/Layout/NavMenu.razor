@@ -2,9 +2,12 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
+
 <nav class="navbar navbar-expand-lg navbar-dark custom-navbar w-100">
     <div class="container-fluid">
-        <a class="navbar-brand" href=""><img src="/Maws hoteller photos/Sunset Resort.png" alt="" class="navbar-logo"/></a>
+        <a class="navbar-brand" href="">
+            <img src="/Maws hoteller photos/Sunset Resort.png" alt="Logo" class="navbar-logo"/>
+        </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -15,7 +18,40 @@
                         <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
                     </NavLink>
                 </li>
+                @if (!AppState.IsAdmin)
+                    {
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="contact-support">
+                                <span class="bi bi-list-nested" aria-hidden="true"></span> Support
+                            </NavLink>
+                        </li>
+                    }
 
+                @if (AppState.LoggedIn)
+                {
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="ProfileDashboard">
+                            <span class="bi bi-list-nested" aria-hidden="true"></span> Profile
+                        </NavLink>
+                    </li>
+                    @if (AppState.IsAdmin)
+                    {
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="booking_dashboard">
+                                <span class="bi bi-calendar" aria-hidden="true"></span> ManageBooking
+                            </NavLink>
+                        </li>
+                        <li class="nav-item">
+                            <NavLink class="nav-link" href="admin-profile-list">
+                                <span class="bi bi-list-ul" aria-hidden="true"></span> Manage Profiles
+                            </NavLink>
+                        </li>
+                    }
+                }
+            </ul>
+
+            <!-- For at holde Login og Create Profile i højre side -->
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
                 @if (!AppState.LoggedIn)
                 {
                     <li class="nav-item">
@@ -23,6 +59,13 @@
                             <span class="bi bi-box-arrow-in-right" aria-hidden="true"></span> Login
                         </NavLink>
                     </li>
+                    
+                    <li class="nav-item">
+                        <NavLink class="nav-link" href="create-profile">
+                            <span class="bi bi-list-nested" aria-hidden="true"></span> Signup
+                        </NavLink>
+                    </li>
+                    
                 }
                 else
                 {
@@ -30,41 +73,6 @@
                         <button class="nav-link btn btn-link" @onclick="Logout">
                             <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Logout
                         </button>
-                    </li>
-                }
-
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="create-profile">
-                        <span class="bi bi-list-nested" aria-hidden="true"></span> Create Profile
-                    </NavLink>
-                </li>
-
-                @if (AppState.LoggedIn)
-                {
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="ProfileDashboard">
-                            <span class="bi bi-list-nested" aria-hidden="true"></span> Profile Dashboard
-                        </NavLink>
-                    </li>
-                }
-
-                <li class="nav-item">
-                    <NavLink class="nav-link" href="contact-support">
-                        <span class="bi bi-list-nested" aria-hidden="true"></span> Contact Support
-                    </NavLink>
-                </li>
-
-                @if (AppState.LoggedIn && AppState.IsAdmin)
-                {
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="booking_dashboard">
-                            <span class="bi bi-calendar" aria-hidden="true"></span> Booking Dashboard
-                        </NavLink>
-                    </li>
-                    <li class="nav-item">
-                        <NavLink class="nav-link" href="admin-profile-list">
-                            <span class="bi bi-list-ul" aria-hidden="true"></span> Manage Profiles
-                        </NavLink>
                     </li>
                 }
             </ul>
