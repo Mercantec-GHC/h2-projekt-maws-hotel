@@ -15,7 +15,7 @@
 
 <PageTitle>Welcome to Sunset Resort</PageTitle>
 <div class="home-background">
-    <img src="/Maws hoteller photos/background-pic.png" alt="Alternate Text" />
+    <img src="/Maws-hoteller-photos/background-pic.png" alt="Alternate Text" />
         <h1 class="home-title">Sunset Resort</h1>
         <p class="home-subtitle">Welcome to the Sunset Resort!</p>
             <p class="home-text-center">Experience luxury and comfort at our beachfront hotel. Relax by the pool, enjoy fine dining, and explore the beautiful surroundings.</p>
@@ -104,7 +104,8 @@
                                 @(room.CurrentlyBooked ? "Booked" : "Available")
                             </td>
                             <td>
-                                <img src="Maws hoteller photos/@room.Photos" alt="Photo" />@* @room.Photos *@</td>
+                                <img src="/Maws-hoteller-photos/@room.Photos" alt="Photo" />
+                            </td>
                             <td>
                                 <button class="btn btn-secondary" @onclick="@(() => gotoBooking(room.Id))">
                                     Goto booking
