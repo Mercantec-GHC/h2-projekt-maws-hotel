@@ -1,5 +1,6 @@
 .custom-navbar {
-    background: #343a40;
+    color: #FF8200 !important; /* Denne linje påvirker kun teksten i navbaren og ikke selve nav-links */
+    background: #282c30;
     border-bottom: 2px solid #343a40;
 }
 
@@ -28,24 +29,27 @@
     filter: brightness(0.8);
 }
 
+
 .navbar-toggler:hover {
     background-color: rgba(255, 255, 255, 0.7);
 }
 
+/* Ændrer farven på nav-link elementerne i navigationen */
 .navbar-nav .nav-link {
-    font-size: 1rem;
-    color: #fff;
+    color: rgba(255, 130, 0, 0) !important;
     padding: 0.75rem 1.25rem;
     transition: background-color 0.3s ease, color 0.3s ease;
     border-radius: 30px;
 }
 
+    /* Ændrer farven på nav-link elementerne ved hover */
     .navbar-nav .nav-link:hover {
-        background-color: rgba(255, 255, 255, 0.2);
+        color: rgba(255, 130, 0, 0.2) !important;
     }
 
+    /* Ændrer farven på det aktive nav-link element */
     .navbar-nav .nav-link.active {
-        background-color: rgba(255, 255, 255, 0.4);
+        color: rgba(255, 130, 0, 0.2) !important;
     }
 
 .nav-item {

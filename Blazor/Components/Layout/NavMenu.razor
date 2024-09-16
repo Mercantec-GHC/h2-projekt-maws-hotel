@@ -2,6 +2,10 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
+<link href="css/bootstrap.min.css" rel="stylesheet" />
+<link href="css/custom-styles.css" rel="stylesheet" />
+
+
 
 <nav class="navbar navbar-expand-lg navbar-dark custom-navbar w-100">
     <div class="container-fluid">
@@ -15,14 +19,14 @@
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <NavLink class="nav-link" href="" Match="NavLinkMatch.All">
-                        <span class="bi bi-house-door-fill" aria-hidden="true"></span> Home
+                        <span class="navbar-text" aria-hidden="true"></span> Home
                     </NavLink>
                 </li>
                 @if (!AppState.IsAdmin)
                     {
                         <li class="nav-item">
                             <NavLink class="nav-link" href="contact-support">
-                                <span class="bi bi-list-nested" aria-hidden="true"></span> Support
+                            <span class="navbar-text" aria-hidden="true"></span> Support
                             </NavLink>
                         </li>
                     }
@@ -31,19 +35,19 @@
                 {
                     <li class="nav-item">
                         <NavLink class="nav-link" href="ProfileDashboard">
-                            <span class="bi bi-list-nested" aria-hidden="true"></span> Profile
+                            <span class="navbar-text" aria-hidden="true"></span> Profile
                         </NavLink>
                     </li>
                     @if (AppState.IsAdmin)
                     {
                         <li class="nav-item">
                             <NavLink class="nav-link" href="booking_dashboard">
-                                <span class="bi bi-calendar" aria-hidden="true"></span> ManageBooking
+                                <span class="navbar-text" aria-hidden="true"></span> Manageooking
                             </NavLink>
                         </li>
                         <li class="nav-item">
                             <NavLink class="nav-link" href="admin-profile-list">
-                                <span class="bi bi-list-ul" aria-hidden="true"></span> Manage Profiles
+                                <span class="navbar-text" aria-hidden="true"></span> Manage Profiles
                             </NavLink>
                         </li>
                     }
@@ -56,13 +60,13 @@
                 {
                     <li class="nav-item">
                         <NavLink class="nav-link" href="login">
-                            <span class="bi bi-box-arrow-in-right" aria-hidden="true"></span> Login
+                            <span class="navbar-text" aria-hidden="true"></span> Login
                         </NavLink>
                     </li>
                     
                     <li class="nav-item">
                         <NavLink class="nav-link" href="create-profile">
-                            <span class="bi bi-list-nested" aria-hidden="true"></span> Signup
+                            <span class="navbar-text" aria-hidden="true"></span> Signup
                         </NavLink>
                     </li>
                     
@@ -71,7 +75,7 @@
                 {
                     <li class="nav-item">
                         <button class="nav-link btn btn-link" @onclick="Logout">
-                            <span class="bi bi-box-arrow-right" aria-hidden="true"></span> Logout
+                            <span class="navbar-text" aria-hidden="true"></span> Logout
                         </button>
                     </li>
                 }
