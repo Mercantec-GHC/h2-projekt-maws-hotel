@@ -7,85 +7,116 @@
 @inject IJSRuntime JSRuntime
 @inject Blazor.Services.DatabaseService db
 
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 
-<h3>Profile Dashboard</h3>
+<div class="container">
+    <div class="page-content">
+        <div class="padding">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-10">
+                    <div class="card user-card-full shadow-lg rounded">
+                        <div class="row m-l-0 m-r-0">
+                            <div class="col-sm-4 bg-c-lite-green user-profile position-relative">
+                                <button class="edit-profile-btn position-absolute" @onclick="EditProfile"><i class="bi bi-pencil-square"></i></button>
+                                <div class="card-block text-center text-white">
+                                    <div class="m-b-25">
+                                        <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image">
+                                    </div>
+                                    @if (profile != null)
+                                    {
+                                        <h6 class="f-w-600">@profile.Name</h6>
+                                        <p>@profile.Address</p>
+                                        <i class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+                                    }
+                                    else
+                                    {
+                                        <h6 class="f-w-600">Loading...</h6>
+                                    }
+                                </div>
+                            </div>
 
-@if (profile != null)
-{
-    <p>Id: @profile.Id</p>
-    <p>Name: @profile.Name</p>
-    <p>Email: @profile.Email</p>
-    <p>Birthday: @profile.Birthday?.ToShortDateString()</p>
-    <p>Address: @profile.Address</p>
-    <p>Phone Number: @profile.PhoneNumber</p>
+                            <div class="col-sm-8">
+                                <div class="card-block">
+                                    @if (profile != null)
+                                    {
+                                        <h6 class="m-b-20 p-b-5 b-b-default f-w-800 title">Information</h6>
+                                        
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <p class="m-b-10 f-w-600">Email</p>
+                                                <h6 class="text-muted f-w-400">@profile.Email</h6>
+                                            </div>
+                                            <div class="col-sm-6">
+                                                <p class="m-b-10 f-w-600">Phone</p>
+                                                <h6 class="text-muted f-w-400">@profile.PhoneNumber</h6>
+                                            </div>
+                                        </div>
+                                        <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Actions</h6>
+                                        <div class="row">
+                                            <div class="col-sm-6">
+                                                <button class="btn btn-danger delete-profile-btn" @onclick="DeleteProfile">Delete  profil</button>
+                                            </div>
 
-    <button class="btn btn-danger" @onclick="DeleteProfile">Slet profil</button>
+                                        </div>
 
-    <button class="btn btn-danger" @onclick="EditProfile">Ændre profil</button>
+                                        @if (AppState.LoggedIn)
+                                        {
+                                            <button class="card-btn" @onclick="NavigateToBooking">
+                                                <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
+                                            </button>
+                                        }
 
+                                        @if (AppState.IsAdmin)
+                                        {
+                                            <div class="row m-t-10">
+                                                <a href="@($"/admin-edit-profile/{profile.Id}")" class="btn btn-primary">Admin: Edit Profile</a>
+                                            </div>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <p>Loading...</p>
+                                    }
 
-    @if (AppState.LoggedIn)
-    {
-        <button class="btn btn-primary" @onclick="NavigateToBooking">Book et værelse</button>
-
-    }
-
-    @if (AppState.IsAdmin)
-    {
-        <th>Admin Actions</th>
-    }
-
-    // ... in the table row for each profile ...
-
-    @if (AppState.IsAdmin)
-    {
-        <td>
-            <a href="@($"/admin-edit-profile/{profile.Id}")" class="btn btn-primary">Edit</a>
-        </td>
-    }
-
-
-}
-
-else
-{
-    <p>Loading...</p>
-}
-<h4>Upcoming Bookings</h4>
-
-@if (upcomingBookings != null && upcomingBookings.Any())
-{
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Booking ID</th>
-                <th>Room</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var booking in upcomingBookings)
-            {
-                <tr>
-                    <td>@booking.Id</td>
-                    <td>@booking.RoomId</td>
-                    <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
-                    <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
-                    
-                </tr>
-            }
-        </tbody>
-    </table>
-}
-else
-{
-    <p>No upcoming bookings found.</p>
-}
-
-
-
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Upcoming Bookings</h6>
+                                    @if (upcomingBookings != null && upcomingBookings.Any())
+                                    {
+                                        <table class="table">
+                                            <thead>
+                                                <tr>
+                                                    <th>Booking ID</th>
+                                                    <th>Room</th>
+                                                    <th>Start Date</th>
+                                                    <th>End Date</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @foreach (var booking in upcomingBookings)
+                                                {
+                                                    <tr>
+                                                        <td>@booking.Id</td>
+                                                        <td>@booking.RoomId</td>
+                                                        <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
+                                                        <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
+                                                    </tr>
+                                                }
+                                            </tbody>
+                                        </table>
+                                    }
+                                    else
+                                    {
+                                        <p>No upcoming bookings found.</p>
+                                    }
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     private Profile? profile;
@@ -129,5 +160,4 @@ else
     {
         NavigationManager.NavigateTo("/");
     }
-
 }

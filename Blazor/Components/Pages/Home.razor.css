@@ -1,4 +1,6 @@
-﻿.home-background {
+﻿
+
+.home-background {
     position: relative;
     text-align: center;
 }
@@ -145,6 +147,11 @@
     padding: 0.75rem;
 }
 
+
+.card-section-title {
+    font-family: 'Georgia', serif;
+}
+
 .card {
     border-radius: 20px;
     border: 1px solid lightgray;
@@ -155,16 +162,16 @@
 .card-deck {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap; /* Gør det muligt for kortene at bryde linjen */
-    gap: 2rem; /* Øger afstanden mellem kortene */
-    margin-top: 2rem; /* Tilføj ekstra margin oven over sektionen, hvis nødvendigt */
+    flex-wrap: wrap;
+    gap: 2rem;
+    margin-top: 2rem;
 }
 
 .justify-content-around {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap; /* Gør det muligt for kortene at bryde linjen */
-    gap: 1rem; /* Øger afstanden mellem kortene */
+    flex-wrap: wrap;
+    gap: 1rem;
 }
 
 
@@ -187,17 +194,41 @@
 }
 
 .card-btn {
-    background: rgb(255,130,0);
-    border: none;
-    border-radius: 6px;
-    color: black;
+    display: flex;
     padding: 0.5rem;
+    gap: 15px;
+    background-color: #181717;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: 400ms;
 }
 
     .card-btn:hover {
-        background: rgb(255,130,0);
-        color:white;
+        background-color: transparent;
     }
+
+.card-btn:hover .text {
+    color: #181717;
+}
+
+.card-btn .text {
+    color: white;
+    font-weight: 700;
+    font-size: 1em;
+    transition: 400ms;
+    margin: 0;
+}
+.card-btn:hover {
+    background: rgb(255,130,0);
+    color:white;
+}
+
+.card-btn i {
+    color: white;
+    padding: 0;
+}
+
 
 .card img {
     max-width: 20rem;

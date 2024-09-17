@@ -45,7 +45,8 @@
 
 
     <div class="container">
-        <h1 class="text-center mt-4">Available Rooms</h1>
+        <h1 class="text-center mt-4 card-section-title">Available Rooms</h1>
+        <hr class="hr"/>
         <div class="d-flex justify-content-around">
             <div class="card">
                 <img class="card-img-top" src="./Maws-hoteller-photos/Standard01.jpg" alt="Standard Room" />
@@ -55,7 +56,9 @@
                     <!-- Vis prisen for standardværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 1)?.Price.ToString("C")</p>
-                        <button class="card-btn">Book now</button>
+                        <button class="card-btn">
+                            <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -67,7 +70,9 @@
                     <!-- Vis prisen for komfortværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 2)?.Price.ToString("C")</p>
-                        <button class="card-btn">Book now</button>
+                        <button class="card-btn">
+                            <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
+                        </button>
                     </div>
                 </div>
             </div>
@@ -79,7 +84,9 @@
                     <!-- Vis prisen for suiteværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 3)?.Price.ToString("C")</p>
-                        <button class="card-btn">Book now</button>
+                        <button class="card-btn">
+                            <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
+                        </button>
                     </div>
                 </div>
             </div>
