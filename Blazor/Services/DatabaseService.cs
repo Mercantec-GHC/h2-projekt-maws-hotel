@@ -11,6 +11,7 @@ using static Blazor.Services.DatabaseService;
 using Microsoft.AspNetCore.Http.HttpResults;
 
 
+
 namespace Blazor.Services
 {
     public class DatabaseService
@@ -25,95 +26,27 @@ namespace Blazor.Services
             _httpClient = httpClient;
         }
 
-        public async Task<List<Room>> GetRoomsFromSql()
+        public async Task<List<Room>> GetRooms()
         {
             return await _httpClient.GetFromJsonAsync<List<Room>>(_baseURL + "Room");
-            // return await _httpClient.GetFromJsonAsync<List<Room>>();
-            //List<Room> allRooms = new List<Room>();
-            //using (var connection = new NpgsqlConnection(connectionString))
-            //{
-            //    connection.Open();
-            //    using (var command = new NpgsqlCommand(sql, connection))
-            //    {
-            //        using (var reader = command.ExecuteReader())
-            //        {
-            //            while (reader.Read())
-            //            {
-            //                allRooms.Add(new Room
-            //                {
-            //                    Id = Convert.ToInt32(reader["id"]),
-            //                    Price = Convert.ToSingle(reader["price"]),
-            //                    DigitalKey = Convert.ToInt32(reader["digital_key"]),
-            //                    Type = Convert.ToInt32(reader["type"]),
-            //                    Photos = reader["photos"].ToString(),
-            //                });
-            //            }
-            //        }
-            //    }
-            //}
-            //    //return allRooms;
         }
 
-    public List<Booking> GetBookingsFromSql(string sql)
+        public async Task<List<Booking>> GetBookings()
         {
-            List<Booking> allBookings = new List<Booking>();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            allBookings.Add(new Booking
-                            {
-                                Id = Convert.ToInt32(reader["id"]),
-                                DateStart = Convert.ToDateTime(reader["date_start"]),
-                                DateEnd = Convert.ToDateTime(reader["date_end"]),
-                                ProfileId = Convert.ToInt32(reader["profile_id"]),
-                                RoomId = Convert.ToInt32(reader["room_id"])
-                            });
-                        }
-                    }
-                }
-            }
-
-            return allBookings;
-
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + "Booking");
         }
 
-        public List<Profile> GetProfilesFromSql(string sql)
+        public async Task<List<Booking>> GetBookingsForToday()
         {
-            var allProfiles = new List<Profile>();
-
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            allProfiles.Add(new Profile
-                            {
-                                Id = Convert.ToInt32(reader["id"]),
-                                Name = reader["name"].ToString(),
-                                Email = reader["email"].ToString(),
-                                Password = reader["password"].ToString(),
-                                Birthday = reader["birthday"] != DBNull.Value ? Convert.ToDateTime(reader["birthday"]) : (DateTime?)null,
-                                Address = reader["address"].ToString(),
-                                PhoneNumber = reader["phone_number"].ToString(),
-                                Administrator = Convert.ToBoolean(reader["administrator"])
-                            });
-                        }
-                    }
-                }
-            }
-
-            return allProfiles;
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + "Booking/BookingsToday");
         }
+
+        public async Task<List<Booking>> GetBookingsFromUserID(int UserID)
+        {
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + $"Booking/Bookings/{UserID}");
+        }
+
+
 
         public bool UpdateProfile(Profile profile)
         {

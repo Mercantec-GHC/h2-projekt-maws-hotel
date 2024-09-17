@@ -140,10 +140,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allRooms = await db.GetRoomsFromSql();
-        var today = DateTime.Today.ToString("yyyy-MM-dd");
-        var query = $"SELECT * FROM booking WHERE date_start <= '{today}' AND date_end >= '{today}'";
-        allBookings = db.GetBookingsFromSql(query);
+        allRooms = await db.GetRooms();
+        allBookings = await db.GetBookingsForToday();
         total_rooms = allRooms.Count;
 
 

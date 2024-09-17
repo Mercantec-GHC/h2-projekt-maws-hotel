@@ -97,10 +97,8 @@
             NavigationManager.NavigateTo("/");
         }
 
-        allBookings = db.GetBookingsFromSql("SELECT * FROM booking");
+        allBookings = await db.GetBookings();
         total_bookings = allBookings.Count;
-        
-
     }
 
     public void delete_booking_from_id(int id){
