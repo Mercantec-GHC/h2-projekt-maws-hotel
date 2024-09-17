@@ -55,18 +55,18 @@ else
     private DateTime date_start;
     private DateTime date_end;
 
-    protected override async Task OnInitializedAsync()
-    {
-        room = db.GetRoomsFromSql($"SELECT * FROM room WHERE id = {RoomId}").SingleOrDefault();
-        if (room == null)
-        {
-            await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
-            navManager.NavigateTo("/error");
+    // protected override async Task OnInitializedAsync()
+    // {
+    //     room = db.GetRoomsFromSql($"SELECT * FROM room WHERE id = {RoomId}").SingleOrDefault();
+    //     if (room == null)
+    //     {
+    //         await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
+    //         navManager.NavigateTo("/error");
 
-        }
-        date_start = DateTime.Now;
-        date_end = DateTime.Now.AddDays(1);
-    }
+    //     }
+    //     date_start = DateTime.Now;
+    //     date_end = DateTime.Now.AddDays(1);
+    // }
 
     private async Task BookRoom()
     {

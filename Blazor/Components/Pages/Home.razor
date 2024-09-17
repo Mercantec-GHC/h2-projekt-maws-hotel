@@ -115,7 +115,7 @@
     public string current;
     public bool ascending = true;
 
-    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
+    public List<Room> allRooms = new List<Room>();
     public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
 
     public int booked_count = 0;
@@ -123,7 +123,7 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allRooms = db.GetRoomsFromSql("SELECT * FROM room");
+        allRooms = await db.GetRoomsFromSql();
         var today = DateTime.Today.ToString("yyyy-MM-dd");
         var query = $"SELECT * FROM booking WHERE date_start <= '{today}' AND date_end >= '{today}'";
         allBookings = db.GetBookingsFromSql(query);

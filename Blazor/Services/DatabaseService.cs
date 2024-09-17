@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using static Blazor.Services.DatabaseService;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 namespace Blazor.Services
@@ -15,40 +16,45 @@ namespace Blazor.Services
     public class DatabaseService
     {
         private readonly string connectionString;
+        private readonly HttpClient _httpClient;
+        private readonly string _baseURL = "https://localhost:7207/api/";
 
-        public DatabaseService(string connectionString)
+        public DatabaseService(string connectionString, HttpClient httpClient)
         {
             this.connectionString = connectionString;
+            _httpClient = httpClient;
         }
 
-        public List<Room> GetRoomsFromSql(string sql)
+        public async Task<List<Room>> GetRoomsFromSql()
         {
-            List<Room> allRooms = new List<Room>();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            allRooms.Add(new Room
-                            {
-                                Id = Convert.ToInt32(reader["id"]),
-                                Price = Convert.ToSingle(reader["price"]),
-                                DigitalKey = Convert.ToInt32(reader["digital_key"]),
-                                Type = Convert.ToInt32(reader["type"]),
-                                Photos = reader["photos"].ToString(),
-                            });
-                        }
-                    }
-                }
-            }
-            return allRooms;
+            return await _httpClient.GetFromJsonAsync<List<Room>>(_baseURL + "Room");
+            // return await _httpClient.GetFromJsonAsync<List<Room>>();
+            //List<Room> allRooms = new List<Room>();
+            //using (var connection = new NpgsqlConnection(connectionString))
+            //{
+            //    connection.Open();
+            //    using (var command = new NpgsqlCommand(sql, connection))
+            //    {
+            //        using (var reader = command.ExecuteReader())
+            //        {
+            //            while (reader.Read())
+            //            {
+            //                allRooms.Add(new Room
+            //                {
+            //                    Id = Convert.ToInt32(reader["id"]),
+            //                    Price = Convert.ToSingle(reader["price"]),
+            //                    DigitalKey = Convert.ToInt32(reader["digital_key"]),
+            //                    Type = Convert.ToInt32(reader["type"]),
+            //                    Photos = reader["photos"].ToString(),
+            //                });
+            //            }
+            //        }
+            //    }
+            //}
+            //    //return allRooms;
         }
 
-        public List<Booking> GetBookingsFromSql(string sql)
+    public List<Booking> GetBookingsFromSql(string sql)
         {
             List<Booking> allBookings = new List<Booking>();
             using (var connection = new NpgsqlConnection(connectionString))
