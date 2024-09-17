@@ -95,12 +95,13 @@
 {
     <div class="modal" tabindex="-1" style="display:block;">
         <div class="modal-dialog">
-            <div class="modal-content">
+            <div class="modal-content" id="blur">
                 <div class="modal-header">
+                    <i class="bi bi-telephone-fill"></i>
                     <h5 class="modal-title">Contact support</h5>
                 </div>
                 <div class="modal-body">
-                    <EditForm Model="@supportRequest" OnValidSubmit="@HandleValidSubmit">
+                    <EditForm Model="@supportRequest">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
 
@@ -174,13 +175,6 @@
 
     private void ModalChange()
     {
-        if (modal == true)
-        {
-            modal = false;
-        }
-        else
-        {
-            modal = true;
-        }
+        modal = !modal;
     }
 }

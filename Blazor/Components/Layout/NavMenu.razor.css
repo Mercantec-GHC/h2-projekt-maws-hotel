@@ -84,3 +84,17 @@
         display: none;
     }
 }
+
+
+
+
+
+.modal {
+    backdrop-filter: blur(2.5px);
+}
+
+.modal-content {
+    
+    background-color: #282c30;
+    color: white;
+}
