@@ -91,6 +91,3 @@ public class AppState
         return (userId, isAdmin);
     }
 }
-
-
-

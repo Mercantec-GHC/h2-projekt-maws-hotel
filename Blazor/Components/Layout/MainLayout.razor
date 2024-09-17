@@ -4,18 +4,13 @@
 @inherits LayoutComponentBase
 
 <div class="page">
-    <div class="sidebar">
-        <NavMenu />
-    </div>
+
 
     <main>
-        <div class="top-row px-4">
-            <a href="https://learn.microsoft.com/aspnet/core/" target="_blank">About</a>
-        </div>
-
-        <article class="content px-4">
+        <NavMenu />
+        <div class="content">
             @Body
-        </article>
+        </div>
     </main>
 </div>
 
@@ -41,7 +36,7 @@
 
     private async void HandleLocationChanged(object? sender, LocationChangedEventArgs e)
     {
-        await AppState.InitializeStateAsync(JSRuntime); 
+        await AppState.InitializeStateAsync(JSRuntime);
     }
 
     public void Dispose()
