@@ -5,7 +5,7 @@
 @inject AppState AppState
 @inject ILogger<AdminProfileList> Logger
 
-<h3>Admin Profile List.</h3>
+<center><h3 class="title">Admin Profile List</h3></center>
 
 @if (!AppState.LoggedIn || !AppState.IsAdmin)
 {
@@ -13,6 +13,7 @@
 }
 else if (profiles == null)
 {
+    // tilføj loading animation
     <p>Loading...</p>
 }
 else
@@ -38,7 +39,7 @@ else
                     <td>@profile.Name</td>
                     <td>@profile.Email</td>
                     <td>
-                        <a href="@($"/admin-edit-profile/{profile.Id}")" class="btn btn-primary">Edit</a>
+                        <a href="@($"/admin-edit-profile/{profile.Id}")" class="edit-profile-btn">Edit</a>
                     </td>
                 </tr>
             }
