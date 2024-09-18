@@ -13,7 +13,8 @@ namespace DomainModels
 
         public DbSet<Room> Rooms { get; set; }
 
-        // ... other DbSet properties ...
+        public DbSet<Booking> Bookings { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

@@ -2,7 +2,9 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Npgsql;
-using System.Net.NetworkInformation;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace API.Controllers
 {
@@ -10,47 +12,116 @@ namespace API.Controllers
     [ApiController]
     public class BookingController : ControllerBase
     {
-        private IConfiguration _configuration;
         private readonly string _connectionString;
+        
+
         public BookingController(IConfiguration configuration)
         {
-            _configuration = configuration;
-            _connectionString = _configuration.GetConnectionString("DefaultConnection");
+            _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
+        // Method to delete booking from ID
+        [HttpDelete("DeleteBooking/{id}")]
+        public IActionResult DeleteBooking(int id)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    using (var command = new NpgsqlCommand("DELETE FROM booking WHERE id = @id", connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return Ok(new { message = "Booking deleted successfully." });
+                        }
+                        else
+                        {
+                            return NotFound(new { message = "Booking not found." });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error deleting booking.", error = ex.Message });
+            }
+        }
+
+        // Method to add a new booking
+        [HttpPost]
+        public IActionResult AddBooking(Booking bookingRequest)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    var sql = "INSERT INTO booking (date_start, date_end, profile_id, room_id) " +
+                              "VALUES (@DateStart, @DateEnd, @ProfileId, @RoomId)";
+                    using (var command = new NpgsqlCommand(sql, connection))
+                    {
+                        command.Parameters.AddWithValue("@DateStart", bookingRequest.DateStart);
+                        command.Parameters.AddWithValue("@DateEnd", bookingRequest.DateEnd);
+                        command.Parameters.AddWithValue("@ProfileId", bookingRequest.ProfileId);
+                        command.Parameters.AddWithValue("@RoomId", bookingRequest.RoomId);
+
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return Ok(new { message = "Booking added successfully." });
+                        }
+                        else
+                        {
+                            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Failed to add booking." });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error adding booking.", error = ex.Message });
+            }
+        }
+
+        // Get all bookings 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()
         {
-            List<Booking> allBookings = new List<Booking>();
+            var allBookings = new List<Booking>();
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
-                using (var command = new NpgsqlCommand("Select * FROM booking", connection))
+                using (var command = new NpgsqlCommand("SELECT * FROM booking", connection))
                 {
                     using (var reader = command.ExecuteReader())
                     {
                         while (reader.Read())
                         {
-                            allBookings.Add(new Booking
-                            {
-                                Id = Convert.ToInt32(reader["id"]),
-                                DateStart = Convert.ToDateTime(reader["date_start"]),
-                                DateEnd = Convert.ToDateTime(reader["date_end"]),
-                                ProfileId = Convert.ToInt32(reader["profile_id"]),
-                                RoomId = Convert.ToInt32(reader["room_id"])
-                            });
+                           allBookings.Add(new Booking
+                           {
+                               Id = Convert.ToInt32(reader["id"]),
+                               DateStart = Convert.ToDateTime(reader["date_start"]),
+                               DateEnd = Convert.ToDateTime(reader["date_end"]),
+                               ProfileId = Convert.ToInt32(reader["profile_id"]),
+                               RoomId = Convert.ToInt32(reader["room_id"])
+                           });
                         }
                     }
                 }
             }
-
             return allBookings;
         }
 
+        // Get all bookings for today 
         [HttpGet("BookingsToday")]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsForToday()
         {
-            List<Booking> allBookings = new List<Booking>();
+            var allBookings = new List<Booking>();
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 var today = DateTime.Today.ToString("yyyy-MM-dd");
@@ -74,14 +145,14 @@ namespace API.Controllers
                     }
                 }
             }
-
             return allBookings;
         }
 
+        // Get bookings from UserID
         [HttpGet("Bookings/{UserID}")]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsFromUserID(int UserID)
         {
-            List<Booking> allBookings = new List<Booking>();
+            var allBookings = new List<Booking>();
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 var today = DateTime.Today.ToString("yyyy-MM-dd");
@@ -105,10 +176,7 @@ namespace API.Controllers
                     }
                 }
             }
-
             return allBookings;
         }
-
     }
-
-}
+    }

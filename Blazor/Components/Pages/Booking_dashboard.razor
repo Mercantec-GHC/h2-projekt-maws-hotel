@@ -1,15 +1,11 @@
 ﻿@page "/booking_dashboard"
-@inject Blazor.Services.DatabaseService db
-@using Microsoft.JSInterop
-@inject IJSRuntime jsRuntime
-
-@using DomainModels
-@inject AppState AppState
 @inject HttpClient HttpClient
-@inject HttpClient Http
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
+@inject AppState AppState
 
+@using DomainModels
+@using System.Linq
 
 <style>
     .active-booking {
@@ -23,15 +19,16 @@
     .future-booking {
         background-color: lightyellow;
     }
+
     .past-booking {
         background-color: lightcoral;
     }
 </style>
 
-
 <PageTitle>booking_dashboard</PageTitle>
 
-@if (allBookings != null && allBookings.Count > 0){
+@if (allBookings != null && allBookings.Count > 0)
+{
     <table class="table table-striped">
         <thead>
             <tr>
@@ -56,7 +53,7 @@
                     <td>@booking.ProfileId</td>
                     <td>@booking.RoomId</td>
                     <td>
-                        <button class="btn btn-link" @onclick="() => delete_booking_from_id(booking.Id)">
+                        <button class="btn btn-link" @onclick="() => DeleteBookingFromId(booking.Id)">
                             Delete booking
                         </button>
 
@@ -67,28 +64,20 @@
                         </button>
                     </td>
                 </tr>
-            
             }
-
         </tbody>
     </table>
-
-
-}else{
-
+}
+else
+{
     <p>No bookings found</p>
-
 }
 
 @code {
     public bool ascending = true;
-
     public string current;
     public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
-
     public int total_bookings = 0;
-    private Profile? profile;
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -97,21 +86,37 @@
             NavigationManager.NavigateTo("/");
         }
 
-        allBookings = await db.GetBookings();
+        allBookings = await HttpClient.GetFromJsonAsync<List<DomainModels.Booking>>("https://localhost:7207/api/Booking");
         total_bookings = allBookings.Count;
     }
 
-    public void delete_booking_from_id(int id){
-        db.ExecuteSql($"DELETE FROM booking WHERE id = {id};");
-
-        var bookingToDelete = allBookings.FirstOrDefault(b => b.Id == id);
-        if (bookingToDelete != null)
+    public async Task DeleteBookingFromId(int id)
+    {
+        try
         {
-            allBookings.Remove(bookingToDelete);
-        }
+            // Send DELETE request to API
+            var response = await HttpClient.DeleteAsync($"https://localhost:7207/api/Booking/DeleteBooking/{id}");
 
-        // Force UI update
-        StateHasChanged();
+            if (response.IsSuccessStatusCode)
+            {
+                // If successful, remove booking from allBookings
+                var bookingToDelete = allBookings.FirstOrDefault(b => b.Id == id);
+                if (bookingToDelete != null)
+                {
+                    allBookings.Remove(bookingToDelete);
+                }
+                // Force UI update
+                StateHasChanged();
+            }
+            else
+            {
+                Console.WriteLine($"Error deleting booking: {response.StatusCode}");
+            }
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Exception occurred: {ex.Message}");
+        }
     }
 
     private string GetRowClass(DomainModels.Booking booking)
@@ -129,28 +134,27 @@
         {
             return "active-booking";
         }
-        
-
         return "future-booking";
     }
-    private void SetSortColumn(string colunm)
+
+    private void SetSortColumn(string column)
     {
-        if (current == colunm)
+        if (current == column)
         {
             ascending = !ascending;
         }
         else
         {
-            current = colunm;
+            current = column;
             ascending = true;
         }
 
-        SortRooms(current);
+        SortBookings(current);
     }
 
-    private void SortRooms(string colunm)
+    private void SortBookings(string column)
     {
-        switch (colunm)
+        switch (column)
         {
             case "DateStart":
                 allBookings = ascending ? allBookings.OrderBy(r => r.DateStart).ToList() : allBookings.OrderByDescending(r => r.DateStart).ToList();
@@ -160,8 +164,4 @@
                 break;
         }
     }
-
-
 }
-
-

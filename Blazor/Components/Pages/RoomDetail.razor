@@ -1,12 +1,8 @@
-﻿@page "/room-details/{roomId:int}"
+﻿@page "/room-details/{RoomId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
-@using static Blazor.Services.DatabaseService
-@inject Blazor.Services.DatabaseService db
-@inject NavigationManager navManager
-@using Microsoft.JSInterop
-@inject IJSRuntime jsRuntime
-
+@inject HttpClient HttpClient
+@inject IJSRuntime JSRuntime
 @using DomainModels
 @inject AppState AppState
 
@@ -51,52 +47,70 @@ else
 @code {
     [Parameter]
     public int RoomId { get; set; }
-    private Room? room;
-    private DateTime date_start;
-    private DateTime date_end;
 
-    // protected override async Task OnInitializedAsync()
-    // {
-    //     room = db.GetRoomsFromSql($"SELECT * FROM room WHERE id = {RoomId}").SingleOrDefault();
-    //     if (room == null)
-    //     {
-    //         await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
-    //         navManager.NavigateTo("/error");
+    private List<Room> rooms = new List<Room>();
+    private Room room;
+    private DateTime date_start = DateTime.Now.Date;
+    private DateTime date_end = DateTime.Now.Date.AddDays(1);
 
-    //     }
-    //     date_start = DateTime.Now;
-    //     date_end = DateTime.Now.AddDays(1);
-    // }
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            rooms = await dbService.GetRooms();
+            room = rooms.FirstOrDefault(r => r.Id == RoomId);
+
+            if (rooms == null)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Værelset blev ikke fundet. Prøv igen.");
+                navManager.NavigateTo("/error");
+            }
+        }
+        catch (Exception ex)
+        {
+            await JSRuntime.InvokeVoidAsync("alert", $"Noget gik galt: {ex.Message}");
+            navManager.NavigateTo("/error");
+        }
+    }
 
     private async Task BookRoom()
     {
         if (date_start == default || date_end == default)
         {
-            await jsRuntime.InvokeVoidAsync("alert", "Vælg venligst gyldige datoer for start og slut.");
+            await JSRuntime.InvokeVoidAsync("alert", "Vælg venligst gyldige datoer for start og slut.");
             return;
         }
 
         if (date_start >= date_end)
         {
-            await jsRuntime.InvokeVoidAsync("alert", "Startdatoen skal være før slutdatoen.");
+            await JSRuntime.InvokeVoidAsync("alert", "Startdatoen skal være før slutdatoen.");
             return;
         }
+
         if (date_start < DateTime.Now.Date)
         {
-            await jsRuntime.InvokeVoidAsync("alert", "Du kan ikke booke et værelse i fortiden.");
+            await JSRuntime.InvokeVoidAsync("alert", "Du kan ikke booke et værelse i fortiden.");
             return;
         }
-   
-        var bookingSuccess = db.ExecuteSql($"INSERT INTO booking (date_start, date_end, profile_id, room_id) VALUES ('{date_start:yyyy-MM-dd}', '{date_end:yyyy-MM-dd}', {AppState.UserId}, {RoomId})");
 
-        if (bookingSuccess!=0)
+        try
         {
-            await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
-            navManager.NavigateTo("/bookings");
+            var bookingRequest = new Booking
+            {
+                DateStart = date_start,
+                DateEnd = date_end,
+                ProfileId = AppState.UserId,
+                RoomId = RoomId
+            };
+
+            await dbService.PostBooking(bookingRequest);
+            await JSRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
+            navManager.NavigateTo("/ProfileDashboard");
+           
         }
-        else
+        catch (Exception ex)
         {
-            await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under booking. Prøv igen.");
+            await JSRuntime.InvokeVoidAsync("alert", $"Noget gik galt: {ex.Message}");
         }
     }
 }

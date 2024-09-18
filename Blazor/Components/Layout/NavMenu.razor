@@ -161,7 +161,7 @@
     {
         try
         {
-            dbService.AddSupportRequest(supportRequest);
+            dbService.PostSupportRequest(supportRequest);
             // Eventuelt feedback til brugeren om, at deres anmodning blev sendt.
             supportRequest = new SupportRequest(); // Reset formularen
             modal = false;

@@ -26,7 +26,7 @@ namespace API.Controllers
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 connection.Open();
-                using (var command = new NpgsqlCommand("select * from room", connection))
+                using (var command = new NpgsqlCommand("SELECT * FROM room", connection))
                 {
                     using (var reader = command.ExecuteReader())
                     {
@@ -45,11 +45,7 @@ namespace API.Controllers
                 }
             }
             return allRooms;
-        
-
-
         }
-
     }
 }
 
