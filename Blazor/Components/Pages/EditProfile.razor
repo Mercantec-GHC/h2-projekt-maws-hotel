@@ -1,8 +1,10 @@
 ﻿@page "/EditProfile/{id:int}"
 @using DomainModels
-@inject HttpClient HttpClient
+@inject HttpClient Http
 @inject AppState AppState
 @inject NavigationManager NavigationManager
+@inject IJSRuntime JSRuntime
+
 
 <h3>Edit Profile</h3>
 
@@ -36,9 +38,19 @@
             <label for="phone">Phone Number:</label>
             <InputText id="phone" @bind-Value="profile.PhoneNumber" class="form-control" />
         </div>
+        @if (AppState.IsAdmin)
+        {
+            <div>
+                <label for="administrator">Administrator:</label>
+                <InputCheckbox id="administrator" @bind-Value="profile.Administrator" />
+            </div>   
+        }
 
         <button type="submit" class="btn btn-primary">Save</button>
         <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+        <button class="btn btn-danger delete-profile-btn" @onclick="DeleteProfile">
+            <i class="bi bi-trash"></i> Delete  profil
+        </button>
     </EditForm>
 }
 else
@@ -54,7 +66,7 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        profile = await HttpClient.GetFromJsonAsync<Profile>($"api/profile/{id}");
+        profile = await Http.GetFromJsonAsync<Profile>($"api/profile/{id}");
         if (profile == null || AppState.UserId != id)
         {
             NavigationManager.NavigateTo("/");
@@ -69,7 +81,7 @@ else
             profile.Birthday = profile.Birthday.Value.ToUniversalTime();
         }
 
-        var response = await HttpClient.PutAsJsonAsync($"api/profile/{id}", profile);
+        var response = await Http.PutAsJsonAsync($"api/profile/{id}", profile);
 
         if (response.IsSuccessStatusCode)
         {
@@ -79,6 +91,24 @@ else
         {
             // Handle error
             Console.WriteLine("Error updating profile");
+        }
+    }
+
+    private async Task DeleteProfile()
+    {
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Er du sikker på, at du vil slette din profil?"))
+        {
+            var response = await Http.DeleteAsync($"api/profile/deactivate/{AppState.UserId}");
+
+            if (response.IsSuccessStatusCode)
+            {
+                AppState.Logout();
+                NavigationManager.NavigateTo("/");
+            }
+            else
+            {
+                Console.WriteLine("Fejl ved sletning af profil");
+            }
         }
     }
 

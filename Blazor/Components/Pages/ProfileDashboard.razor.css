@@ -140,7 +140,7 @@ h6 {
 .btn {
     font-size: 14px;
     padding: 10px 20px;
-    border-radius: 10px;
+    border-radius: 20px 0 20px 0;
     transition: background-color 0.3s ease;
 }
 
@@ -191,7 +191,7 @@ h6 {
     padding: 0.5rem;
     gap: 15px;
     background-color: #181717;
-    border-radius: 10px;
+    border-radius: 20px 0 20px 0;
     border: none;
     cursor: pointer;
     transition: 400ms;
@@ -226,6 +226,18 @@ h6 {
 }
 
 /* ---- END DELETE BUTTON ---- */
+
+
+.btn-goto-booking {
+    border: 2px solid #007bff;
+    border-radius: 20px 0 20px 0;
+    padding: 0.2rem 0.5rem;
+}
+    .btn-goto-booking:hover {
+        background: #282c30;
+        color:white;
+        padding: 0.2rem 0.5rem;
+    }
 
 
 /* Responsiv tilpasning */

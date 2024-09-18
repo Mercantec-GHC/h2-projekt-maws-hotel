@@ -27,7 +27,9 @@
                                     {
                                         <h6 class="f-w-600">@profile.Name</h6>
                                         <p>@profile.Address</p>
+                                        
                                         <i class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
+                                        
                                     }
                                     else
                                     {
@@ -52,29 +54,9 @@
                                                 <h6 class="text-muted f-w-400">@profile.PhoneNumber</h6>
                                             </div>
                                         </div>
-                                        <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Actions</h6>
-                                        <div class="row">
-                                            <div class="col-sm-6">
-                                                <button class="btn btn-danger delete-profile-btn" @onclick="DeleteProfile">
-                                                    <i class="bi bi-trash"></i> Delete  profil
-                                                </button>
-                                            </div>
+                                        
 
-                                        </div>
-
-                                        @if (AppState.LoggedIn)
-                                        {
-                                            <button class="card-btn" @onclick="NavigateToBooking">
-                                                <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
-                                            </button>
-                                        }
-
-                                        @if (AppState.IsAdmin)
-                                        {
-                                            <div class="row m-t-10">
-                                                <a href="@($"/admin-edit-profile/{profile.Id}")" class="btn btn-primary">Admin: Edit Profile</a>
-                                            </div>
-                                        }
+                                        
                                     }
                                     else
                                     {
@@ -91,6 +73,8 @@
                                                     <th>Room</th>
                                                     <th>Start Date</th>
                                                     <th>End Date</th>
+                                                    <th>Booking ID</th>
+                                                    <td>Action</td>
                                                 </tr>
                                             </thead>
                                             <tbody>
@@ -101,6 +85,12 @@
                                                         <td>@booking.RoomId</td>
                                                         <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
                                                         <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
+                                                        <td>@booking.Id </td>
+                                                        <td><button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking.RoomId))">
+                                                            Goto booking
+                                                            </button>
+                                                        </td>
+
                                                     </tr>
                                                 }
                                             </tbody>
@@ -135,31 +125,16 @@
         }
     }
 
-    private async Task DeleteProfile()
-    {
-        if (await JSRuntime.InvokeAsync<bool>("confirm", "Er du sikker på, at du vil slette din profil?"))
-        {
-            var response = await Http.DeleteAsync($"api/profile/deactivate/{AppState.UserId}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                AppState.Logout();
-                NavigationManager.NavigateTo("/");
-            }
-            else
-            {
-                Console.WriteLine("Fejl ved sletning af profil");
-            }
-        }
-    }
+    
 
     private void EditProfile()
     {
         NavigationManager.NavigateTo($"/EditProfile/{profile?.Id}");
     }
 
-    private void NavigateToBooking()
+    private void GotoBooking(int bookingId)
     {
-        NavigationManager.NavigateTo("/");
+        NavigationManager.NavigateTo($"/room-details/{bookingId}");
     }
+
 }
