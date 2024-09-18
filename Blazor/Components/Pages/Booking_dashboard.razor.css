@@ -1,0 +1,67 @@
+﻿.active-booking {
+    color: rgba(0,200,0,0.7);
+}
+
+.lastday-booking {
+    color: lightblue;
+}
+
+.future-booking {
+    color: lightyellow;
+}
+
+.past-booking {
+    color: rgba(240,0,0,0.7);
+}
+
+td {
+    color: black;
+}
+
+
+/* DELETE BUTTON */
+.card-btn {
+    display: flex;
+    padding: 0.5rem;
+    gap: 15px;
+    background-color: #181717;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: 400ms;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+}
+
+    .card-btn:hover {
+        background-color: transparent;
+    }
+
+        .card-btn:hover .text {
+            color: #181717;
+        }
+
+    .card-btn .text {
+        color: white;
+        font-weight: 700;
+        font-size: 1em;
+        transition: 400ms;
+        margin: 0;
+    }
+
+    .card-btn:hover {
+        background: rgb(255,130,0);
+        color: white;
+    }
+
+    .card-btn i {
+        color: white;
+        padding: 0;
+    }
+
+/* ---- END DELETE BUTTON ---- */
+
+
+.btn-goto-profile {
+    border: none;
+}

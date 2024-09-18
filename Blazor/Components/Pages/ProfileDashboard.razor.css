@@ -1,0 +1,246 @@
+﻿/* Generel styling */
+body {
+    background-color: #f9f9fa;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+.padding {
+    padding: 3rem !important;
+}
+
+.page-content {
+    margin: 0 auto;
+}
+
+/* Kort styling */
+.user-card-full {
+    overflow: hidden;
+    border-radius: 10px;
+    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.1);
+    border: none;
+    width: 100%;
+    margin-bottom: 30px;
+    background-color: #ffffff;
+}
+
+.m-r-0 {
+    margin-right: 0;
+}
+
+.m-l-0 {
+    margin-left: 0;
+}
+
+.user-card-full .user-profile {
+    border-radius: 10px 0 0 5px;
+}
+
+.title{
+    margin: 1rem 0;
+    font-size: 1.5rem;
+}
+
+.bg-c-lite-green {
+    background: linear-gradient(to right, rgb(255, 130, 0), #f8e36d);
+}
+
+.user-profile {
+    width: 30%;
+    padding: 0;
+    text-align: center;
+    color: white;
+    position: relative;
+}
+
+.card-block {
+    padding: 0;
+    width: 100%;
+}
+
+.m-b-25 {
+    margin-bottom: 25px;
+}
+
+.img-radius {
+    border-radius: 50%;
+    width: 100px;
+    height: 100px;
+    margin: 2rem;
+    box-shadow: 2px 7px 18px 1px rgba(0,0,0,0.75);
+    -webkit-box-shadow: 2px 7px 18px 1px rgba(0,0,0,0.75);
+    -moz-box-shadow: 2px 7px 18px 1px rgba(0,0,0,0.75);
+}
+
+h6 {
+    font-size: 16px;
+    font-weight: 600;
+}
+
+.text-muted {
+    color: #919aa3 !important;
+}
+
+.b-b-default {
+    border-bottom: 1px solid #e0e0e0;
+}
+
+.m-b-20 {
+    margin-bottom: 20px;
+}
+
+.p-b-5 {
+    padding-bottom: 5px !important;
+}
+
+.m-b-10 {
+    margin-bottom: 10px;
+}
+
+.m-t-40 {
+    margin-top: 20px;
+}
+
+.m-t-10 {
+    margin-top: 10px;
+}
+
+.icon-edit {
+    font-size: 24px;
+    color: #007bff;
+}
+
+/* Table Styling */
+.table {
+    width: 100%;
+    margin-bottom: 1rem;
+    color: #212529;
+    border-collapse: collapse;
+}
+
+    .table th,
+    .table td {
+        padding: 0.75rem;
+        vertical-align: top;
+    }
+
+    .table thead th {
+        vertical-align: bottom;
+        border-bottom: 2px solid gray;
+        
+    }
+
+    .table tbody + tbody {
+        border-top: 2px solid gray;
+    }
+
+/* Button Styling */
+.btn {
+    font-size: 14px;
+    padding: 10px 20px;
+    border-radius: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-danger {
+    background-color: #dc3545;
+    color: white;
+    border: none;
+}
+
+    .btn-danger:hover {
+        background-color: #c82333;
+    }
+
+.btn-primary {
+    background-color: #007bff;
+    color: white;
+    border: none;
+}
+
+    .btn-primary:hover {
+        background-color: #0056b3;
+    }
+
+.d-flex {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.edit-profile-btn {
+    margin: 1rem;
+    color: black;
+    background-color: transparent;
+    top: 0;
+    left: 0;
+    fill: black;
+    font-size: 1.5rem;
+    border: none;
+}
+
+.edit-profile-btn:hover {
+    color:white;
+}
+
+/* DELETE BUTTON */
+.card-btn {
+    display: flex;
+    padding: 0.5rem;
+    gap: 15px;
+    background-color: #181717;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    transition: 400ms;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0;
+}
+
+.card-btn:hover {
+    background-color: transparent;
+}
+
+    .card-btn:hover .text {
+        color: #181717;
+    }
+
+.card-btn .text {
+    color: white;
+    font-weight: 700;
+    font-size: 1em;
+    transition: 400ms;
+    margin: 0;
+}
+
+.card-btn:hover {
+    background: rgb(255,130,0);
+    color: white;
+}
+
+.card-btn i {
+    color: white;
+    padding: 0;
+}
+
+/* ---- END DELETE BUTTON ---- */
+
+
+/* Responsiv tilpasning */
+@media only screen and (min-width: 1400px) {
+    .card .card-block p {
+        font-size: 14px;
+    }
+}
+
+@media only screen and (max-width: 767px) {
+    .user-card-full .user-profile {
+        border-radius: 5px 5px 0 0;
+        width: 100%; /* Ensure full width on small screens */
+    }
+}
+
+
+
