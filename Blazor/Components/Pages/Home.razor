@@ -56,7 +56,7 @@
                     <!-- Vis prisen for standardværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 1)?.Price.ToString("C")</p>
-                        <button class="card-btn">
+                        <button class="card-btn" @onclick="() => FindAndNavigateToRoom(1)">
                             <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
                         </button>
                     </div>
@@ -70,7 +70,7 @@
                     <!-- Vis prisen for komfortværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 2)?.Price.ToString("C")</p>
-                        <button class="card-btn">
+                        <button class="card-btn" @onclick="() => FindAndNavigateToRoom(2)">
                             <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
                         </button>
                     </div>
@@ -84,7 +84,7 @@
                     <!-- Vis prisen for suiteværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 3)?.Price.ToString("C")</p>
-                        <button class="card-btn">
+                        <button class="card-btn" @onclick="() => FindAndNavigateToRoom(3)">
                             <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
                         </button>
                     </div>
@@ -118,26 +118,30 @@
         total_rooms = allRooms.Count;
 
 
-        for (int i = 0; i < allRooms.Count; i++)
-        {
-            if (allRooms[i].CurrentlyBooked == true) continue; /*already checked so just skip*/
-            for (int j = 0; j < allBookings.Count; j++)
-            {
-                if (allRooms[i].Id == allBookings[j].RoomId)
-                {
-                    allRooms[i].CurrentlyBooked = true;
-                    booked_count++;
-                    allBookings.RemoveAt(j);
-                    break;
 
-                }
-            }
-        }
-        allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
 
     }
+
+    public async Task FindAndNavigateToRoom(int roomType)
+    {
+        // Find a free room of the given type
+        var freeRoom = allRooms.FirstOrDefault(r => r.Type == roomType && !r.CurrentlyBooked);
+
+        if (freeRoom != null)
+        {
+            // Navigate to room details if a free room is found
+            NavigationManager.NavigateTo($"/room-details/{freeRoom.Id}");
+        }
+        else
+        {
+            // Optionally, show a message or alert if no rooms are available
+            await JSRuntime.InvokeVoidAsync("alert", "No available rooms of this type at the moment.");
+        }
+    }
+
     public void gotoBooking(int id)
     {
+        
         if (!AppState.LoggedIn)
         {
             NavigationManager.NavigateTo("/login");
