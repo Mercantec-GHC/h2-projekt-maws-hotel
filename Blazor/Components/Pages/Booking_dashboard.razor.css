@@ -64,10 +64,14 @@ td {
 
 /* ---- END DELETE BUTTON ---- */
 
-
 .btn-goto-profile {
-    border: 1px solid #006bff;
+    background: rgba(0,200,0,0.7);
     border-radius: 20px 0 20px 0;
-    color: #006bff;
-    padding: 0.4rem 1rem;
+    padding: 0.2rem 0.5rem;
+    color: black;
 }
+
+    .btn-goto-profile:hover {
+        padding: 0.2rem 0.5rem;
+        transform: scale(1.05);
+    }

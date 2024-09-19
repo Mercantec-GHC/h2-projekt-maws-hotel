@@ -15,7 +15,8 @@
     position: absolute;
     top: 20%;
     left: 50%;
-    background: linear-gradient(90deg, rgba(255,124,0,1) 0%, rgba(255,146,0,1) 34%, rgba(255,244,0,1) 55%, rgba(255,247,63,1) 73%);
+    background: rgb(190,47,48);
+    background: linear-gradient(90deg, rgba(190,47,48,1) 20%, rgba(255,161,30,1) 80%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     transform: translate(-50%, -50%);
@@ -47,7 +48,7 @@
 
 
 .category {
-    border: 2px solid rgb(255,130,0);
+    border: 2px solid #ffa11e;
     border-radius: 20px;
     margin: 2rem;
     padding: 1rem;
@@ -55,8 +56,13 @@
 
     .category i {
         font-size: 3rem;
-        color: rgba(255,130,0,1);
+        background: rgb(190,47,48);
+        background: linear-gradient(90deg, rgba(190,47,48,1) 20%, rgba(255,161,30,1) 80%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
+
+
 
 
 

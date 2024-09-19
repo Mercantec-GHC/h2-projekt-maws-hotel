@@ -1,0 +1,260 @@
+﻿:root {
+    --red: rgba(190,47,48,1);
+    --orange: rgba(255,161,30,1);
+    --lastday-color: blue;
+    --future-color: yellow;
+}
+
+ul {
+    list-style: none;
+    padding: 0;
+}
+
+.card {
+    width: 50rem;
+    height: 30rem;
+    background: #1b1b1b;
+    position: relative;
+    border-radius: 12px;
+    box-shadow: 0px 10px 10px 0 #1b1b1b;
+    top: 10%;
+}
+
+    .card .card-image {
+        position: relative;
+        height: 54%;
+        width: 45%;
+        display: block;
+        margin: auto;
+        color: #c8c8c8;
+        filter: drop-shadow(0 0 5px #111111);
+    }
+
+    .card .card-info {
+        height: 100%;
+        border-radius: 12px 12px 0 0;
+        width: 100%;
+        color: #fff;
+        display: flex;
+        background: linear-gradient(#4f4f4f64, transparent);
+    }
+
+    .card .card-info {
+        font-size: 0.8rem;
+        height: 40%;
+        width: 90%;
+        margin: 0 auto auto auto;
+    }
+
+        .card .card-info .left-info,
+        .card .card-info .right-info {
+            flex: 1;
+            flex-direction: column;
+            padding: 16px;
+            height: 100%;
+        }
+
+            .card .card-info .left-info .product-title {
+                font-size: 14px;
+                line-height: 1.1;
+                letter-spacing: 0.4px;
+                font-weight: bold;
+                margin-bottom: 18px;
+                display: block;
+            }
+
+        .card .card-info p {
+            font-size: 10px;
+            margin-top: 12px;
+            line-height: 1.2;
+            letter-spacing: 0.3px;
+            font-weight: normal;
+        }
+
+        .card .card-info .left-info .star-rating {
+            display: flex;
+            margin-top: 20px;
+        }
+
+            .card .card-info .left-info .star-rating span {
+                display: block;
+                width: 16px;
+                color: rgba(190,47,48,1);
+            }
+
+        .card .card-info .right-info {
+            display: flex; /* Brug Flexbox for right-info */
+            flex-direction: column; /* Retning til kolonne for bedre organisering */
+            margin: 0;
+            position: relative;
+        }
+
+            .card .card-info .right-info::before {
+                position: absolute;
+                content: "";
+                width: 2px;
+                max-height: 80%;
+                height: calc(100% - 20px);
+                background: linear-gradient(rgba(190,47,48,1), rgba(255,161,30,1));
+                left: -5px;
+            }
+
+            .card .card-info .right-info ul {
+                display: flex; /* Brug Flexbox for ul */
+                flex-direction: row; /* Vis li'erne i en række */
+                align-items: flex-start; /* Align items til toppen */
+                padding: 0;
+                list-style: none;
+            }
+
+                .card .card-info .right-info ul li {
+                    display: flex; /* Brug Flexbox for li */
+                    flex-direction: column; /* Retning til kolonne for tekst og input */
+                    align-items: flex-start; /* Align items til toppen */
+                    margin: 0 auto; /* Margin til højre og venstre */
+                    font-size: 10px;
+                }
+
+                    .card .card-info .right-info ul li p.feature-sub-title {
+                        font-size: 0.8rem;
+                        margin: 0 auto 0.4rem auto; /* Margin mellem tekst og input */
+                        letter-spacing: 0.3px;
+                        line-height: 0.9;
+                        color: rgba(255,161,30,1);
+                        font-weight: bold;
+                        text-transform: uppercase;
+                    }
+
+                    .card .card-info .right-info ul li .feature-desc {
+                        display: flex; /* Brug Flexbox for .feature-desc */
+                        align-items: center; /* Center indhold vertikalt */
+                    }
+
+.add-to-cart-btn {
+    display: flex;
+    position: absolute;
+    bottom: 10px;
+    margin: auto;
+    width: 100%;
+    flex: 1;
+    flex-basis: 200px;
+    justify-content: center;
+
+}
+
+    .add-to-cart-btn button {
+        border: none;
+        font-size: 0.8rem;
+        background: linear-gradient( 45deg, transparent, rgba(190,47,48,1) 30%, rgba(255,161,30,1), rgba(255,161,30,1) 60%, transparent );
+        padding: 3px 10px;
+        color: #fff;
+        font-weight: bold;
+        background-size: 200%;
+        background-position: 0% 0%;
+        text-transform: uppercase;
+        border-radius: 30px;
+        transition: 0.4s ease-in-out;
+    }
+
+.card .card-price-tag {
+    position: absolute;
+    right: 12px;
+    top: 0;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    padding: auto 1rem;
+    border-radius: 0 0 5px 5px;
+    background: linear-gradient(rgba(190,47,48,1), rgba(255,161,30,1));
+    width: 5rem;
+    height: 1.5rem;
+}
+
+.card svg {
+    position: absolute;
+}
+
+i {
+    margin: 4rem;
+    color: white;
+    padding: 1rem;
+    z-index: 1000;
+}
+
+.card::before {
+    position: absolute;
+    content: "";
+    height: 90px;
+    width: 90px;
+    border-radius: 50%;
+    top: 30%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(255,161,30,1);
+    filter: blur(1.2rem);
+    box-shadow: 0 0 20rem 1rem rgba(190,47,48,1);
+}
+
+.card svg.ring-1 {
+    top: 10%;
+    left: 10%;
+    rotate: 210deg;
+    filter: blur(1px) brightness(0.7);
+    transition: 1s ease-in-out;
+}
+
+.card svg.ring-2 {
+    top: 40%;
+    right: 10%;
+    rotate: 150deg;
+    filter: brightness(0.5);
+    transition: 0.8s ease-in-out;
+}
+
+.card svg.ring-3 {
+    top: 40%;
+    left: 20%;
+    rotate: 270deg;
+    filter: brightness(0.7);
+    transition: 0.9s ease-in-out;
+}
+
+.card:hover svg.ring-1 {
+    top: 6px;
+    left: 30%;
+    rotate: 230deg;
+    scale: 1.25;
+}
+
+.card:hover svg.ring-2 {
+    top: 45%;
+    right: 15px;
+    rotate: 210deg;
+    filter: brightness(0.9);
+    scale: 1.3;
+}
+
+.card:hover svg.ring-3 {
+    top: 32%;
+    left: 5%;
+    rotate: 210deg;
+    filter: brightness(1);
+    scale: 1.3;
+}
+
+.card .add-to-cart-btn button:hover {
+    background-position: 100% 100%;
+}
+
+.date-input {
+    padding: 0.2rem;
+    border-radius: 10px;
+    background: #1b1b1b;
+    border: 2px solid rgba(255,161,30,1);
+    color: white;
+    width: 100px; /* Justér bredde hvis nødvendigt */
+}
+
+    .date-input::-webkit-calendar-picker-indicator {
+        filter: invert(1); /* Inverterer farverne på ikonet (kan variere) */
+    }

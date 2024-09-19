@@ -1,0 +1,23 @@
+﻿.title {
+    margin: 1rem 0 1rem 0; 
+}
+
+.form-group {
+    width: 30%;
+    margin: 0 1rem;
+}
+
+.edit-profile-btn {
+    border: 2px solid rgba(255,130,0,0.7);
+    background-color: rgba(255,130,0,0.7);
+    border-radius: 20px 0 20px 0;
+    text-decoration: none;
+    color: white;
+    padding: 0.2rem 1rem;
+}
+
+    .edit-profile-btn:hover {
+        background-color: #282c30;
+        border: 2px solid rgba(255,130,0,1);
+        color: rgba(255,130,0,1);
+    }
