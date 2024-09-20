@@ -14,5 +14,6 @@ namespace DomainModels
         public int DigitalKey { get; set; }
         public int Type { get; set; }
         public string Photos { get; set; }
+        public string Description { get; set; }
     }
 }
