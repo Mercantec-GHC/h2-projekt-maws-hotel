@@ -1,116 +1,362 @@
-﻿@page "/room-details/{RoomId:int}"
+﻿@page "/room-details/{roomId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
-@inject HttpClient HttpClient
-@inject IJSRuntime JSRuntime
+@using static Blazor.Services.DatabaseService
+@inject Blazor.Services.DatabaseService db
+@inject NavigationManager navManager
+@using Microsoft.JSInterop
+@inject IJSRuntime jsRuntime
 @using DomainModels
 @inject AppState AppState
 
-<h3>Værelsesdetaljer</h3>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
 
-@if (room != null)
-{
-    <img src="@room.Photos" alt="Room photo" class="room-photo" />
-    <p><strong>Pris:</strong> @room.Price DKK</p>
-    <p>
-        <strong>Beskrivelse:</strong>
-        @if (room.Type == 1)
-        {
-            <span>Nyd et afslappende ophold i vores standardværelse. Værelset byder på en behagelig seng, et skrivebord, et fladskærms-tv og gratis Wi-Fi. Det private badeværelse er udstyret med et brusebad, håndklæder og toiletartikler.</span>
-        }
-        else if (room.Type == 2)
-        {
-            <span>Forkæl dig selv med et ophold i vores eksklusive deluxe-værelse. Værelset byder på en king-size seng, et stort badeværelse med spa-faciliteter, en minibar og en privat balkon med udsigt.</span>
-        }
-        else if (room.Type == 3)
-        {
-            <span>Forkæl dig selv med et ophold i vores eksklusive suite. Værelset byder på et separat soveværelse, en rummelig stue, et fuldt udstyret køkken eller køkkenniche, og et luksuriøst badeværelse med spa-faciliteter.</span>
-        }
-    </p>
+<div class="container d-flex justify-content-center vh-100">
+    <div class="text-center">
+        <h3>Værelsesdetaljer</h3>
 
-    <div>
-        <label for="date_start">Startdato: </label>
-        <input type="date" @bind="date_start" />
-    </div>
-    <div>
-        <label for="date_end">Slutdato: </label>
-        <input type="date" @bind="date_end" />
-    </div>
+        @if (room != null)
+        {
+            <div class="card">
+                <i class="bi bi-house-door" style="font-size: 70px;"></i>
 
-    <button @onclick="BookRoom">Book nu</button>
+                <div class="card-price-tag">
+                    <span class="price-value">100,-</span>
+                </div>
+                <svg text-rendering="geometricPrecision"
+                     shape-rendering="geometricPrecision"
+                     height="50"
+                     width="50"
+                     viewBox="0 0 200 350"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     xmlns="http://www.w3.org/2000/svg"
+                     class="ring-1">
+                    <defs>
+                        <radialGradient gradientTransform="matrix(1 0 0 0.860612 0.5 0.618787)"
+                                        gradientUnits="objectBoundingBox"
+                                        spreadMethod="pad"
+                                        r="0.5"
+                                        cy="0"
+                                        cx="0"
+                                        id="ebT4AgJ0WZ62-fill">
+                            <stop stop-color="#313131"
+                                  offset="48.4041%"
+                                  id="ebT4AgJ0WZ62-fill-0"></stop>
+                            <stop stop-color="#a5a5a5"
+                                  offset="68.1857%"
+                                  id="ebT4AgJ0WZ62-fill-1"></stop>
+                            <stop stop-color="#282828"
+                                  offset="84.0109%"
+                                  id="ebT4AgJ0WZ62-fill-2"></stop>
+                        </radialGradient>
+                        <radialGradient gradientTransform="matrix(0.999964 0.008506 -0.012489 1.468176 0.496001 0)"
+                                        gradientUnits="objectBoundingBox"
+                                        spreadMethod="pad"
+                                        r="0.803687"
+                                        cy="0"
+                                        cx="0"
+                                        id="ebT4AgJ0WZ63-fill">
+                            <stop stop-color="#313131"
+                                  offset="66.5167%"
+                                  id="ebT4AgJ0WZ63-fill-0"></stop>
+                            <stop stop-color="#929292"
+                                  offset="79.3157%"
+                                  id="ebT4AgJ0WZ63-fill-1"></stop>
+                            <stop stop-color="#282828"
+                                  offset="100%"
+                                  id="ebT4AgJ0WZ63-fill-2"></stop>
+                        </radialGradient>
+                    </defs>
+                    <path fill="url(#ebT4AgJ0WZ62-fill)"
+                          transform="translate(.79738 0.07381)"
+                          d="M52.80126,148.52946c0-54.09424,43.1045-97.44452,97.19874-97.44452c54.02838,0,97.83949,43.74533,97.9461,97.74875c0,4.48899-15.841036,8.59818-21.21294,3.870883-.611021-2.50634-.402559-3.828048,0-4.910803c7.308634-19.657872-34.28954-75.61349-76.73315-75.61349s-76.85095,34.40734-76.85095,76.85095s27.897301,76.44983,70.340911,76.44983c1.832594,0,10.881874-3.528414,14.410289,0c4.397368,5.041913,5.519605,8.849302,4.757083,12.041874-.919128,3.848258-1.140559,6.87447-4.632193,9.130546-2.6467.21463-5.32315.32404-8.02514.32404-54.09424,0-97.19874-44.35382-97.19874-98.44806h-.00001Z"></path>
+                    <path fill="url(#ebT4AgJ0WZ63-fill)"
+                          transform="matrix(1 0 0-1-20.148641 311.37469)"
+                          d="M268.094741,163.50711c0,54.09424-43.068431,97.94629-97.162671,97.94629s-97.94629-43.85205-97.94629-97.94629m9.892327,0c0,42.44361,45.610353,76.85095,88.053963,76.85095s97.162671-34.40734,97.162671-76.85095"></path>
+                </svg>
+                <svg text-rendering="geometricPrecision"
+                     shape-rendering="geometricPrecision"
+                     height="45"
+                     width="45"
+                     viewBox="0 0 200 350"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     xmlns="http://www.w3.org/2000/svg"
+                     class="ring-2">
+                    <defs>
+                        <radialGradient gradientTransform="matrix(1 0 0 0.860612 0.5 0.618787)"
+                                        gradientUnits="objectBoundingBox"
+                                        spreadMethod="pad"
+                                        r="0.5"
+                                        cy="0"
+                                        cx="0"
+                                        id="ebT4AgJ0WZ62-fill">
+                            <stop stop-color="#313131"
+                                  offset="48.4041%"
+                                  id="ebT4AgJ0WZ62-fill-0"></stop>
+                            <stop stop-color="#a5a5a5"
+                                  offset="68.1857%"
+                                  id="ebT4AgJ0WZ62-fill-1"></stop>
+                            <stop stop-color="#282828"
+                                  offset="84.0109%"
+                                  id="ebT4AgJ0WZ62-fill-2"></stop>
+                        </radialGradient>
+                        <radialGradient gradientTransform="matrix(0.999964 0.008506 -0.012489 1.468176 0.496001 0)"
+                                        gradientUnits="objectBoundingBox"
+                                        spreadMethod="pad"
+                                        r="0.803687"
+                                        cy="0"
+                                        cx="0"
+                                        id="ebT4AgJ0WZ63-fill">
+                            <stop stop-color="#313131"
+                                  offset="66.5167%"
+                                  id="ebT4AgJ0WZ63-fill-0"></stop>
+                            <stop stop-color="#929292"
+                                  offset="79.3157%"
+                                  id="ebT4AgJ0WZ63-fill-1"></stop>
+                            <stop stop-color="#282828"
+                                  offset="100%"
+                                  id="ebT4AgJ0WZ63-fill-2"></stop>
+                        </radialGradient>
+                    </defs>
+                    <path fill="url(#ebT4AgJ0WZ62-fill)"
+                          transform="translate(.79738 0.07381)"
+                          d="M52.80126,148.52946c0-54.09424,43.1045-97.44452,97.19874-97.44452c54.02838,0,97.83949,43.74533,97.9461,97.74875c0,4.48899-15.841036,8.59818-21.21294,3.870883-.611021-2.50634-.402559-3.828048,0-4.910803c7.308634-19.657872-34.28954-75.61349-76.73315-75.61349s-76.85095,34.40734-76.85095,76.85095s27.897301,76.44983,70.340911,76.44983c1.832594,0,10.881874-3.528414,14.410289,0c4.397368,5.041913,5.519605,8.849302,4.757083,12.041874-.919128,3.848258-1.140559,6.87447-4.632193,9.130546-2.6467.21463-5.32315.32404-8.02514.32404-54.09424,0-97.19874-44.35382-97.19874-98.44806h-.00001Z"></path>
+                    <path fill="url(#ebT4AgJ0WZ63-fill)"
+                          transform="matrix(1 0 0-1-20.148641 311.37469)"
+                          d="M268.094741,163.50711c0,54.09424-43.068431,97.94629-97.162671,97.94629s-97.94629-43.85205-97.94629-97.94629m9.892327,0c0,42.44361,45.610353,76.85095,88.053963,76.85095s97.162671-34.40734,97.162671-76.85095"></path>
+                </svg>
+                <svg text-rendering="geometricPrecision"
+                     shape-rendering="geometricPrecision"
+                     height="50"
+                     width="50"
+                     viewBox="0 0 200 300"
+                     xmlns:xlink="http://www.w3.org/1999/xlink"
+                     xmlns="http://www.w3.org/2000/svg"
+                     class="ring-3">
+                    <defs>
+                        <radialGradient gradientTransform="matrix(1 0 0 0.860612 0.5 0.618787)"
+                                        gradientUnits="objectBoundingBox"
+                                        spreadMethod="pad"
+                                        r="0.5"
+                                        cy="0"
+                                        cx="0"
+                                        id="ebT4AgJ0WZ62-fill">
+                            <stop stop-color="#313131"
+                                  offset="48.4041%"
+                                  id="ebT4AgJ0WZ62-fill-0"></stop>
+                            <stop stop-color="#a5a5a5"
+                                  offset="68.1857%"
+                                  id="ebT4AgJ0WZ62-fill-1"></stop>
+                            <stop stop-color="#282828"
+                                  offset="84.0109%"
+                                  id="ebT4AgJ0WZ62-fill-2"></stop>
+                        </radialGradient>
+                        <radialGradient gradientTransform="matrix(0.999964 0.008506 -0.012489 1.468176 0.496001 0)"
+                                        gradientUnits="objectBoundingBox"
+                                        spreadMethod="pad"
+                                        r="0.803687"
+                                        cy="0"
+                                        cx="0"
+                                        id="ebT4AgJ0WZ63-fill">
+                            <stop stop-color="#313131"
+                                  offset="66.5167%"
+                                  id="ebT4AgJ0WZ63-fill-0"></stop>
+                            <stop stop-color="#929292"
+                                  offset="79.3157%"
+                                  id="ebT4AgJ0WZ63-fill-1"></stop>
+                            <stop stop-color="#282828"
+                                  offset="100%"
+                                  id="ebT4AgJ0WZ63-fill-2"></stop>
+                        </radialGradient>
+                    </defs>
+                    <path fill="url(#ebT4AgJ0WZ62-fill)"
+                          transform="translate(.79738 0.07381)"
+                          d="M52.80126,148.52946c0-54.09424,43.1045-97.44452,97.19874-97.44452c54.02838,0,97.83949,43.74533,97.9461,97.74875c0,4.48899-15.841036,8.59818-21.21294,3.870883-.611021-2.50634-.402559-3.828048,0-4.910803c7.308634-19.657872-34.28954-75.61349-76.73315-75.61349s-76.85095,34.40734-76.85095,76.85095s27.897301,76.44983,70.340911,76.44983c1.832594,0,10.881874-3.528414,14.410289,0c4.397368,5.041913,5.519605,8.849302,4.757083,12.041874-.919128,3.848258-1.140559,6.87447-4.632193,9.130546-2.6467.21463-5.32315.32404-8.02514.32404-54.09424,0-97.19874-44.35382-97.19874-98.44806h-.00001Z"></path>
+                    <path fill="url(#ebT4AgJ0WZ63-fill)"
+                          transform="matrix(1 0 0-1-20.148641 311.37469)"
+                          d="M268.094741,163.50711c0,54.09424-43.068431,97.94629-97.162671,97.94629s-97.94629-43.85205-97.94629-97.94629m9.892327,0c0,42.44361,45.610353,76.85095,88.053963,76.85095s97.162671-34.40734,97.162671-76.85095"></path>
+                </svg>
+                <div class="card-info">
+                    <div class="left-info">
+                        <span class="product-title">
+                            @if(room.Type == 1){
+                                <h3>Standard room</h3>
+                            } else if (room.Type == 2)
+                            {
+                                <h3>Komfort room</h3>
+                            }
+                            else if (room.Type == 3) {
+                                <h3>Suite room</h3>
+
+                            }
+
+                            <div class="star-rating">
+                                <span class="star">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="10"
+                                         height="10"
+                                         fill="currentColor"
+                                         class="bi bi-star-fill"
+                                         viewBox="0 0 16 16">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                    </svg>
+                                </span>
+                                <span class="star">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="10"
+                                         height="10"
+                                         fill="currentColor"
+                                         class="bi bi-star-fill"
+                                         viewBox="0 0 16 16">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                    </svg>
+                                </span>
+                                <span class="star">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="10"
+                                         height="10"
+                                         fill="currentColor"
+                                         class="bi bi-star-fill"
+                                         viewBox="0 0 16 16">
+                                        <path d="M3.612 15.443c-.386.198-.824-.149-.746-.592l.83-4.73L.173 6.765c-.329-.314-.158-.888.283-.95l4.898-.696L7.538.792c.197-.39.73-.39.927 0l2.184 4.327 4.898.696c.441.062.612.636.282.95l-3.522 3.356.83 4.73c.078.443-.36.79-.746.592L8 13.187l-4.389 2.256z"></path>
+                                    </svg>
+                                </span>
+                                <span class="star">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="10"
+                                         height="10"
+                                         fill="currentColor"
+                                         class="bi bi-star"
+                                         viewBox="0 0 16 16">
+                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"></path>
+                                    </svg>
+                                </span>
+                                <span class="star">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="10"
+                                         height="10"
+                                         fill="currentColor"
+                                         class="bi bi-star"
+                                         viewBox="0 0 16 16">
+                                        <path d="M2.866 14.85c-.078.444.36.791.746.593l4.39-2.256 4.389 2.256c.386.198.824-.149.746-.592l-.83-4.73 3.522-3.356c.33-.314.16-.888-.282-.95l-4.898-.696L8.465.792a.513.513 0 0 0-.927 0L5.354 5.12l-4.898.696c-.441.062-.612.636-.283.95l3.523 3.356-.83 4.73zm4.905-2.767-3.686 1.894.694-3.957a.56.56 0 0 0-.163-.505L1.71 6.745l4.052-.576a.53.53 0 0 0 .393-.288L8 2.223l1.847 3.658a.53.53 0 0 0 .393.288l4.052.575-2.906 2.77a.56.56 0 0 0-.163.506l.694 3.957-3.686-1.894a.5.5 0 0 0-.461 0z"></path>
+                                    </svg>
+                                </span>
+                            </div>
+                        </span>
+                        
+                        Skriv description her, så det bliver vist rigtig rigtig flot.
+                    </div>
+                    <div class="right-info">
+                        <ul class="features-list">
+                            <li class="list-item">
+                                <p class="feature-sub-title">Start date</p>
+                                <span class="feature-desc"><input type="date" class="date-input" @bind="date_start" /></span>
+                            </li>
+                            <li class="list-item">
+                                <p class="feature-sub-title">End date</p>
+                                <span class="feature-desc"><input type="date" class="date-input" @bind="date_end"/></span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="add-to-cart-btn">
+                    <button @onclick="BookRoom">Add to cart</button>
+                </div>
+            </div>
 }
 else
 {
     <p>Indlæser værelsesoplysninger...</p>
 }
+    </div>
+</div>
+
+
+
 
 @code {
     [Parameter]
     public int RoomId { get; set; }
-
-    private List<Room> rooms = new List<Room>();
-    private Room room;
-    private DateTime date_start = DateTime.Now.Date;
-    private DateTime date_end = DateTime.Now.Date.AddDays(1);
+    private Room? room;
+    private DateTime date_start;
+    private DateTime date_end;
+    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
+    public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
 
     protected override async Task OnInitializedAsync()
     {
-        try
+        room = db.GetRoomsFromSql($"SELECT * FROM room WHERE id = {RoomId}").SingleOrDefault();
+        if (room == null)
         {
-            rooms = await dbService.GetRooms();
-            room = rooms.FirstOrDefault(r => r.Id == RoomId);
+            await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
+            navManager.NavigateTo("/error");
 
-            if (rooms == null)
+        }
+        date_start = DateTime.Now;
+        date_end = DateTime.Now.AddDays(1);
+
+        for (int i = 0; i < allRooms.Count; i++)
+        {
+            if (allRooms[i].CurrentlyBooked == true) continue; /*already checked so just skip*/
+            for (int j = 0; j < allBookings.Count; j++)
             {
-                await JSRuntime.InvokeVoidAsync("alert", "Værelset blev ikke fundet. Prøv igen.");
-                navManager.NavigateTo("/error");
+                if (allRooms[i].Id == allBookings[j].RoomId)
+                {
+                    allRooms[i].CurrentlyBooked = true;
+                    allBookings.RemoveAt(j);
+                    break;
+
+                }
             }
         }
-        catch (Exception ex)
-        {
-            await JSRuntime.InvokeVoidAsync("alert", $"Noget gik galt: {ex.Message}");
-            navManager.NavigateTo("/error");
-        }
+        allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
+
     }
 
     private async Task BookRoom()
     {
         if (date_start == default || date_end == default)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Vælg venligst gyldige datoer for start og slut.");
+            await jsRuntime.InvokeVoidAsync("alert", "Vælg venligst gyldige datoer for start og slut.");
             return;
         }
 
         if (date_start >= date_end)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Startdatoen skal være før slutdatoen.");
+            await jsRuntime.InvokeVoidAsync("alert", "Startdatoen skal være før slutdatoen.");
             return;
         }
 
         if (date_start < DateTime.Now.Date)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Du kan ikke booke et værelse i fortiden.");
+            await jsRuntime.InvokeVoidAsync("alert", "Du kan ikke booke et værelse i fortiden.");
             return;
         }
 
-        try
-        {
-            var bookingRequest = new Booking
-            {
-                DateStart = date_start,
-                DateEnd = date_end,
-                ProfileId = AppState.UserId,
-                RoomId = RoomId
-            };
+        // Hent eksisterende bookinger for værelset i den angivne periode
+        var existingBookings = db.GetBookingsFromSql($"SELECT * FROM booking WHERE room_id = {RoomId} AND " +
+                                                     $"('{date_start:yyyy-MM-dd}' < date_end AND '{date_end:yyyy-MM-dd}' > date_start)");
 
-            await dbService.PostBooking(bookingRequest);
-            await JSRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
-            navManager.NavigateTo("/ProfileDashboard");
-           
-        }
-        catch (Exception ex)
+        if (existingBookings.Any())
         {
-            await JSRuntime.InvokeVoidAsync("alert", $"Noget gik galt: {ex.Message}");
+            await jsRuntime.InvokeVoidAsync("alert", "Værelset er allerede booket i denne periode.");
+            return;
+        }
+
+        // Indsæt ny booking
+        var bookingSuccess = db.ExecuteSql($"INSERT INTO booking (date_start, date_end, profile_id, room_id) " +
+                                           $"VALUES ('{date_start:yyyy-MM-dd}', '{date_end:yyyy-MM-dd}', {AppState.UserId}, {RoomId})");
+
+        if (bookingSuccess != 0)
+        {
+            await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
+            navManager.NavigateTo("/bookings");
+        }
+        else
+        {
+            await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under booking. Prøv igen.");
         }
     }
+
 }

@@ -5,13 +5,14 @@
 
 <link href="css/bootstrap.min.css" rel="stylesheet" />
 <link href="css/custom-styles.css" rel="stylesheet" />
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
 
 
 <nav class="navbar navbar-expand-lg navbar-dark custom-navbar w-100">
     <div class="container-fluid">
         <a class="navbar-brand" href="">
-            <img src="/Maws-hoteller-photos/resortlogo2.png" alt="Logo" class="navbar-logo"/>
+            <img src="/Maws-hoteller-photos/Sunset-Resort.png" alt="Logo" class="navbar-logo"/>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -23,14 +24,6 @@
                         <span class="navbar-text" aria-hidden="true"></span>Home
                     </NavLink>
                 </li>
-                @if (!AppState.IsAdmin)
-                    {
-                        <li class="nav-item">
-                            <NavLink class="nav-link" href="contact-support">
-                            <span class="navbar-text" aria-hidden="true"></span> Support
-                            </NavLink>
-                        </li>
-                    }
 
                 @if (AppState.LoggedIn)
                 {
@@ -53,12 +46,6 @@
                         </li>
                     }
                 }
-                
-                <li class="nav-item">
-                    <NavLink class="nav-link" @onclick="ModalChange">
-                        <span class="navbar-text" aria-hidden="true"></span> Contact Support
-                    </NavLink>
-                </li>
             </ul>
 
             <!-- For at holde Login og Create Profile i højre side -->
@@ -80,10 +67,18 @@
                 }
                 else
                 {
+                    @if (!AppState.IsAdmin)
+                    {
+                        <li class="nav-item">
+                        <NavLink class="nav-link" @onclick="ModalChange">
+                                <i class="bi bi-headset"></i>
+                            </NavLink>
+                        </li>
+                    }
                     <li class="nav-item">
-                        <button class="nav-link btn btn-link" @onclick="Logout">
-                            <span class="navbar-text" aria-hidden="true"></span> Logout
-                        </button>
+                        <NavLink class="nav-link" @onclick="Logout">
+                            <i class="bi bi-box-arrow-right"></i>
+                        </NavLink>
                     </li>
                 }
             </ul>
@@ -97,10 +92,12 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
+                    <i class="bi bi-headset"></i>
                     <h5 class="modal-title">Contact support</h5>
+                    <i class="bi bi-x-lg" @onclick="ModalChange"></i>
                 </div>
                 <div class="modal-body">
-                    <EditForm Model="@supportRequest" OnValidSubmit="@HandleValidSubmit">
+                    <EditForm Model="@supportRequest">
                         <DataAnnotationsValidator />
                         <ValidationSummary />
 
@@ -126,8 +123,7 @@
                     </EditForm>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" @onclick="ModalChange">Close</button>
-                    <button type="button" class="btn btn-success" @onclick="HandleValidSubmit">Submit</button>
+                    <button type="button" class="btn btn-outline-primary" @onclick="HandleValidSubmit">Submit</button>
                 </div>
             </div>
         </div>
@@ -161,7 +157,7 @@
     {
         try
         {
-            dbService.PostSupportRequest(supportRequest);
+            dbService.AddSupportRequest(supportRequest);
             // Eventuelt feedback til brugeren om, at deres anmodning blev sendt.
             supportRequest = new SupportRequest(); // Reset formularen
             modal = false;
@@ -174,13 +170,6 @@
 
     private void ModalChange()
     {
-        if (modal == true)
-        {
-            modal = false;
-        }
-        else
-        {
-            modal = true;
-        }
+        modal = !modal;
     }
 }
