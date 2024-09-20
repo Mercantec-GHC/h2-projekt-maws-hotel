@@ -52,6 +52,7 @@
     border-radius: 20px;
     margin: 2rem;
     padding: 1rem;
+    box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.6);
 }
 
     .category i {
