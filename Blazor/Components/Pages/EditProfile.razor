@@ -1,9 +1,6 @@
 ﻿@page "/EditProfile/{id:int}"
 @using DomainModels
-@inject HttpClient Http
-@inject AppState AppState
-@inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
+
 
 
 <h3>Edit Profile</h3>
@@ -69,7 +66,7 @@ else
         profile = await Http.GetFromJsonAsync<Profile>($"api/profile/{id}");
         if (profile == null || AppState.UserId != id)
         {
-            NavigationManager.NavigateTo("/");
+            navManager.NavigateTo("/");
 
         }
     }
@@ -85,7 +82,7 @@ else
 
         if (response.IsSuccessStatusCode)
         {
-            NavigationManager.NavigateTo("/ProfileDashboard");
+            navManager.NavigateTo("/ProfileDashboard");
         }
         else
         {
@@ -103,7 +100,7 @@ else
             if (response.IsSuccessStatusCode)
             {
                 AppState.Logout();
-                NavigationManager.NavigateTo("/");
+                navManager.NavigateTo("/");
             }
             else
             {
@@ -114,6 +111,6 @@ else
 
     private void Cancel()
     {
-        NavigationManager.NavigateTo("/ProfileDashboard");
+        navManager.NavigateTo("/ProfileDashboard");
     }
 }

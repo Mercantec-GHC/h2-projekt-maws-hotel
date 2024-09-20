@@ -52,7 +52,7 @@
                 <img class="card-img-top" src="./Maws-hoteller-photos/Standard01.jpg" alt="Standard Room" />
                 <div class="card-body">
                     <h5 class="card-title">Standard Room</h5>
-                    <p class="card-text">This is a long description</p>
+                    <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 1)?.Description.ToString()</p>
                     <!-- Vis prisen for standardværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 1)?.Price.ToString("C")</p>
@@ -66,7 +66,7 @@
                 <img class="card-img-top" src="./Maws-hoteller-photos/Komfort01.jpg" alt="Komfort Room" />
                 <div class="card-body">
                     <h5 class="card-title">Comfort Room</h5>
-                    <p class="card-text">This is a long description</p>
+                    <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 2)?.Description.ToString()</p>
                     <!-- Vis prisen for komfortværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 2)?.Price.ToString("C")</p>
@@ -80,7 +80,7 @@
                 <img class="card-img-top" src="./Maws-hoteller-photos/Suite01.jpg" alt="Suite Room" />
                 <div class="card-body">
                     <h5 class="card-title">Suite Room</h5>
-                    <p class="card-text">This is a long description</p>
+                    <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 3)?.Description.ToString()</p>
                     <!-- Vis prisen for suiteværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 3)?.Price.ToString("C")</p>

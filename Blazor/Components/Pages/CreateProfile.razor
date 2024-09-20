@@ -1,7 +1,5 @@
 @page "/create-profile"
 @using DomainModels
-@inject IHttpClientFactory HttpClientFactory
-@inject NavigationManager NavigationManager
 
 <h3>Create Profile</h3>
 
@@ -74,7 +72,7 @@
 
             if (response.IsSuccessStatusCode)
             {
-                NavigationManager.NavigateTo("/login");
+                navManager.NavigateTo("/login");
             }
             else
             {

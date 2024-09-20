@@ -297,7 +297,7 @@ else
 
         for (int i = 0; i < allRooms.Count; i++)
         {
-            if (allRooms[i].CurrentlyBooked == true) continue; /*already checked so just skip*/
+            if (allRooms[i].CurrentlyBooked == true) continue; 
             for (int j = 0; j < allBookings.Count; j++)
             {
                 if (allRooms[i].Id == allBookings[j].RoomId)

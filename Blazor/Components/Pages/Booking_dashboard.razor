@@ -1,14 +1,9 @@
 ﻿@page "/booking_dashboard"
 @inject Blazor.Services.DatabaseService db
 @using Microsoft.JSInterop
-@inject IJSRuntime jsRuntime
-
 @using DomainModels
-@inject AppState AppState
-@inject HttpClient HttpClient
-@inject HttpClient Http
-@inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
+
+
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -45,7 +40,7 @@
                                 <i class="bi bi-trash delete-profile-btn" style="color:white;"></i> Delete  profil
                             </button>
 
-                            <button class="btn-goto-profile" @onclick="@(() => NavigationManager.NavigateTo($"/admin-edit-profile/{booking.ProfileId}"))">
+                            <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/admin-edit-profile/{booking.ProfileId}"))">
                                 Goto profile
                             </button>
                         </td>
@@ -90,7 +85,7 @@
     {
         if (!AppState.LoggedIn || !AppState.IsAdmin)
         {
-            NavigationManager.NavigateTo("/");
+            navManager.NavigateTo("/");
         }
 
         allBookings = db.GetBookingsFromSql("SELECT * FROM booking");
