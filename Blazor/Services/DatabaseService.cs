@@ -42,8 +42,25 @@ namespace Blazor.Services
         //Henter bookings for en specifik bruger ved brug af UserID 
         public async Task<List<Booking>> GetBookingsFromUserID(int UserID)
         {
-            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + $"Booking/Bookings/{UserID}");
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + $"Booking/userid/{UserID}");
         }
+
+        //Henter bookings for en specifik bruger ved brug af UserID 
+        public async Task<List<Booking>> GetBookingsFromRoomId(int RoomId)
+        {
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + $"Booking/roomid/{RoomId}");
+        }
+
+        public async Task<Room> GetRoomById(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<Room>(_baseURL + $"Room/RoomId/{id}");
+        }
+
+        public async Task<Booking> GetBookingByRoomIdForSpecificDate(int id, DateTime dateStart, DateTime dateEnd)
+        {
+            return await _httpClient.GetFromJsonAsync<Booking>(_baseURL + $"Booking/BookingsForRoomForSpecificDate/{id}");
+        }
+
         //Sender Support besked til Database 
         public async Task PostSupportRequest(SupportRequest request)
         {

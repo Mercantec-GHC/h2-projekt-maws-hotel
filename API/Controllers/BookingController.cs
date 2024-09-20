@@ -148,11 +148,43 @@ namespace API.Controllers
             return allBookings;
         }
 
+        // Get bookings for a specific room that overlap with a given date range
+        [HttpGet("BookingsForRoomForSpecificDate/{roomId}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsForRoomAndDateRange(int roomId, DateTime dateStart, DateTime dateEnd)
+        {
+            var overlappingBookings = new List<Booking>();
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                var query = $"SELECT * FROM booking WHERE room_id = {roomId} AND " +
+                            $"('{dateStart:yyyy-MM-dd}' < date_end AND '{dateEnd:yyyy-MM-dd}' > date_start)";
+                connection.Open();
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            overlappingBookings.Add(new Booking
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                DateStart = Convert.ToDateTime(reader["date_start"]),
+                                DateEnd = Convert.ToDateTime(reader["date_end"]),
+                                ProfileId = Convert.ToInt32(reader["profile_id"]),
+                                RoomId = Convert.ToInt32(reader["room_id"])
+                            });
+                        }
+                    }
+                }
+            }
+            return overlappingBookings;
+        }
+
+
         // Get bookings from UserID
-        [HttpGet("Bookings/{UserID}")]
+        [HttpGet("userid/{UserID}")]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsFromUserID(int UserID)
         {
-            var allBookings = new List<Booking>();
+            List<Booking> allBookings = new List<Booking>();
             using (var connection = new NpgsqlConnection(_connectionString))
             {
                 var today = DateTime.Today.ToString("yyyy-MM-dd");
@@ -178,5 +210,36 @@ namespace API.Controllers
             }
             return allBookings;
         }
+
+        // Get bookings from RoomID
+        [HttpGet("roomid/{RoomId}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> GetBookingsFromRoomId(int RoomID)
+        {
+            var allBookings = new List<Booking>();
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                var today = DateTime.Today.ToString("yyyy-MM-dd");
+                var query = $"SELECT * FROM booking WHERE room_id = '{RoomID}' AND date_end >= '{today}' ORDER BY date_start";
+                connection.Open();
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            allBookings.Add(new Booking
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                DateStart = Convert.ToDateTime(reader["date_start"]),
+                                DateEnd = Convert.ToDateTime(reader["date_end"]),
+                                ProfileId = Convert.ToInt32(reader["profile_id"]),
+                                RoomId = Convert.ToInt32(reader["room_id"])
+                            });
+                        }
+                    }
+                }
+            }
+            return allBookings;
+        }
     }
-    }
+}

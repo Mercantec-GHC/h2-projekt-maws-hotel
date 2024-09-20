@@ -39,12 +39,42 @@ namespace API.Controllers
                                 DigitalKey = Convert.ToInt32(reader["digital_key"]),
                                 Type = Convert.ToInt32(reader["type"]),
                                 Photos = reader["photos"].ToString(),
+                                Description = reader["description"].ToString()
                             });
                         }
                     }
                 }
             }
             return allRooms;
+        }
+
+        [HttpGet("RoomId/{RoomId}")]
+        public async Task<ActionResult<Room>> GetRoomById(int RoomId)
+        {
+            Room room = new Room();
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new NpgsqlCommand($"SELECT * FROM room WHERE id = '{RoomId}'", connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            room = new Room
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                Price = Convert.ToSingle(reader["price"]),
+                                DigitalKey = Convert.ToInt32(reader["digital_key"]),
+                                Type = Convert.ToInt32(reader["type"]),
+                                Photos = reader["photos"].ToString(),
+                                Description = reader["description"].ToString()
+                            };
+                        }
+                    }
+                }
+            }
+            return room;
         }
     }
 }

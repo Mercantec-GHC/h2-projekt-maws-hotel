@@ -1,9 +1,6 @@
 ﻿@page "/room-details/{roomId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
-@using static Blazor.Services.DatabaseService
-@inject Blazor.Services.DatabaseService db
-@inject NavigationManager navManager
 @using Microsoft.JSInterop
 @inject IJSRuntime jsRuntime
 @using DomainModels
@@ -281,12 +278,12 @@ else
     private Room? room;
     private DateTime date_start;
     private DateTime date_end;
-    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
-    public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
+    public List<Room> allRooms = new List<Room>();
+    public List<Booking> allBookings = new List<Booking>();
 
     protected override async Task OnInitializedAsync()
     {
-        room = db.GetRoomsFromSql($"SELECT * FROM room WHERE id = {RoomId}").SingleOrDefault();
+        room = await dbService.GetRoomById(RoomId);
         if (room == null)
         {
             await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
@@ -298,7 +295,7 @@ else
 
         for (int i = 0; i < allRooms.Count; i++)
         {
-            if (allRooms[i].CurrentlyBooked == true) continue; /*already checked so just skip*/
+            if (allRooms[i].CurrentlyBooked == true) continue; 
             for (int j = 0; j < allBookings.Count; j++)
             {
                 if (allRooms[i].Id == allBookings[j].RoomId)
@@ -335,7 +332,7 @@ else
         }
 
         // Hent eksisterende bookinger for værelset i den angivne periode
-        var existingBookings = db.GetBookingsFromSql($"SELECT * FROM booking WHERE room_id = {RoomId} AND " +
+        var existingBookings = dbService.GetBookingsFromSql($"SELECT * FROM booking WHERE room_id = {RoomId} AND " +
                                                      $"('{date_start:yyyy-MM-dd}' < date_end AND '{date_end:yyyy-MM-dd}' > date_start)");
 
         if (existingBookings.Any())
@@ -345,7 +342,7 @@ else
         }
 
         // Indsæt ny booking
-        var bookingSuccess = db.ExecuteSql($"INSERT INTO booking (date_start, date_end, profile_id, room_id) " +
+        var bookingSuccess = db.ExecuteSql($"INSERT INTO booking (date_start, date_end, profile_id, room_id) " + 
                                            $"VALUES ('{date_start:yyyy-MM-dd}', '{date_end:yyyy-MM-dd}', {AppState.UserId}, {RoomId})");
 
         if (bookingSuccess != 0)

@@ -21,7 +21,7 @@ namespace API.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> PostSupportRequest([FromBody] SupportRequest request)
+        public async Task<IActionResult> PostSupportRequest(SupportRequest request)
         {
             if (request == null)
             {
