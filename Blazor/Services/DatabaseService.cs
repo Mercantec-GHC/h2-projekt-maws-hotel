@@ -53,5 +53,9 @@ namespace Blazor.Services
         {
             await _httpClient.PostAsJsonAsync(_baseURL + "Booking", request);
         }
+        public async Task DeleteBooking(int id)
+        {
+            await _httpClient.DeleteFromJsonAsync<Booking>(_baseURL + $"Booking/DeleteBooking/{id}");
+        }
     }
 }
