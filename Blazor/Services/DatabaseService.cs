@@ -56,20 +56,27 @@ namespace Blazor.Services
             return await _httpClient.GetFromJsonAsync<Room>(_baseURL + $"Room/RoomId/{id}");
         }
 
-        public async Task<Booking> GetBookingByRoomIdForSpecificDate(int id, DateTime dateStart, DateTime dateEnd)
+        // Tjekker for eksisterende bookinger for et specifikt værelsesnummer
+        public async Task<List<Booking>> CheckExistingBookings(int roomId, DateTime dateStart, DateTime dateEnd)
         {
-            return await _httpClient.GetFromJsonAsync<Booking>(_baseURL + $"Booking/BookingsForRoomForSpecificDate/{id}");
+            var url = $"{_baseURL}Booking/CheckExistingBookings/{roomId}?dateStart={dateStart:yyyy-MM-dd}&dateEnd={dateEnd:yyyy-MM-dd}";
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(url);
         }
+
+        // Opretter en ny booking
+        public async Task PostBooking(Booking request)
+        {
+            await _httpClient.PostAsJsonAsync(_baseURL + "Booking/CreateBooking", request);
+        }
+
 
         //Sender Support besked til Database 
         public async Task PostSupportRequest(SupportRequest request)
         {
              await _httpClient.PostAsJsonAsync(_baseURL + "Support", request);
         }
-        public async Task PostBooking(Booking request)
-        {
-            await _httpClient.PostAsJsonAsync(_baseURL + "Booking", request);
-        }
+        
+        //Sletter en booking 
         public async Task DeleteBooking(int id)
         {
             await _httpClient.DeleteFromJsonAsync<Booking>(_baseURL + $"Booking/DeleteBooking/{id}");

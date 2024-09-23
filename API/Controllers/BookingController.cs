@@ -51,9 +51,40 @@ namespace API.Controllers
             }
         }
 
-        // Method to add a new booking
-        [HttpPost]
-        public IActionResult AddBooking(Booking bookingRequest)
+        // Tjekker for eksisterende bookinger for et specifikt værelsesnummer
+        [HttpGet("CheckExistingBookings/{roomId}")]
+        public async Task<ActionResult<IEnumerable<Booking>>> CheckExistingBookings(int roomId, DateTime dateStart, DateTime dateEnd)
+        {
+            var existingBookings = new List<Booking>();
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                var query = $"SELECT * FROM booking WHERE room_id = {roomId} AND " +
+                            $"('{dateStart:yyyy-MM-dd}' < date_end AND '{dateEnd:yyyy-MM-dd}' > date_start)";
+                connection.Open();
+                using (var command = new NpgsqlCommand(query, connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            existingBookings.Add(new Booking
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                DateStart = Convert.ToDateTime(reader["date_start"]),
+                                DateEnd = Convert.ToDateTime(reader["date_end"]),
+                                ProfileId = Convert.ToInt32(reader["profile_id"]),
+                                RoomId = Convert.ToInt32(reader["room_id"])
+                            });
+                        }
+                    }
+                }
+            }
+            return existingBookings;
+        }
+
+        // Opretter en ny booking
+        [HttpPost("CreateBooking")]
+        public IActionResult CreateBooking(Booking bookingRequest)
         {
             try
             {
@@ -73,20 +104,21 @@ namespace API.Controllers
 
                         if (rowsAffected > 0)
                         {
-                            return Ok(new { message = "Booking added successfully." });
+                            return Ok(new { message = "Booking created successfully." });
                         }
                         else
                         {
-                            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Failed to add booking." });
+                            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Failed to create booking." });
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
-                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error adding booking.", error = ex.Message });
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error creating booking.", error = ex.Message });
             }
         }
+
 
         // Get all bookings 
         [HttpGet]
