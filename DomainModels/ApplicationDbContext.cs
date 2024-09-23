@@ -11,7 +11,10 @@ namespace DomainModels
 
         public DbSet<Profile> Profiles { get; set; }
 
-        // ... other DbSet properties ...
+        public DbSet<Room> Rooms { get; set; }
+
+        public DbSet<Booking> Bookings { get; set; }
+        
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

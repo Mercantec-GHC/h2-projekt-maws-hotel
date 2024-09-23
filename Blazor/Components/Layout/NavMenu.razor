@@ -153,11 +153,11 @@
     private string errorMessage = string.Empty;
     private bool modal = false;
 
-    private void HandleValidSubmit()
+    private async Task HandleValidSubmit()
     {
         try
         {
-            dbService.AddSupportRequest(supportRequest);
+            await dbService.PostSupportRequest(supportRequest);
             // Eventuelt feedback til brugeren om, at deres anmodning blev sendt.
             supportRequest = new SupportRequest(); // Reset formularen
             modal = false;

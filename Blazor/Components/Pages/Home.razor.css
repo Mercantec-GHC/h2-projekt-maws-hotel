@@ -52,6 +52,7 @@
     border-radius: 20px;
     margin: 2rem;
     padding: 1rem;
+    box-shadow: 0 0.2rem 0.5rem rgba(0,0,0,0.6);
 }
 
     .category i {
@@ -197,7 +198,12 @@
 .price {
     color: rgb(255,130,0);
     margin: 0;
+    font-size: 1.4rem;
+    text-shadow: 1px 1px 1px rgb(190,47,48);
+    font-weight: bold;
+    padding: 0.5rem;
 }
+
 
 .card-btn {
     display: flex;

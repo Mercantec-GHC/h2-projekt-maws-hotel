@@ -52,7 +52,7 @@
                 <img class="card-img-top" src="./Maws-hoteller-photos/Standard01.jpg" alt="Standard Room" />
                 <div class="card-body">
                     <h5 class="card-title">Standard Room</h5>
-                    <p class="card-text">This is a long description</p>
+                    <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 1)?.Description.ToString()</p>
                     <!-- Vis prisen for standardværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 1)?.Price.ToString("C")</p>
@@ -65,8 +65,8 @@
             <div class="card">
                 <img class="card-img-top" src="./Maws-hoteller-photos/Komfort01.jpg" alt="Komfort Room" />
                 <div class="card-body">
-                    <h5 class="card-title">Komfort Room</h5>
-                    <p class="card-text">This is a long description</p>
+                    <h5 class="card-title">Comfort Room</h5>
+                    <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 2)?.Description.ToString()</p>
                     <!-- Vis prisen for komfortværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 2)?.Price.ToString("C")</p>
@@ -80,7 +80,7 @@
                 <img class="card-img-top" src="./Maws-hoteller-photos/Suite01.jpg" alt="Suite Room" />
                 <div class="card-body">
                     <h5 class="card-title">Suite Room</h5>
-                    <p class="card-text">This is a long description</p>
+                    <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 3)?.Description.ToString()</p>
                     <!-- Vis prisen for suiteværelset -->
                     <div class="price-book-container">
                         <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 3)?.Price.ToString("C")</p>
@@ -111,10 +111,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allRooms = db.GetRoomsFromSql("SELECT * FROM room");
-        var today = DateTime.Today.ToString("yyyy-MM-dd");
-        var query = $"SELECT * FROM booking WHERE date_start <= '{today}' AND date_end >= '{today}'";
-        allBookings = db.GetBookingsFromSql(query);
+        allRooms = await dbService.GetRooms();
+        allBookings = await dbService.GetBookingsForToday();
         total_rooms = allRooms.Count;
 
 
@@ -124,19 +122,28 @@
 
     public async Task FindAndNavigateToRoom(int roomType)
     {
-        // Find a free room of the given type
-        var freeRoom = allRooms.FirstOrDefault(r => r.Type == roomType && !r.CurrentlyBooked);
-
-        if (freeRoom != null)
+        if (AppState.LoggedIn)
         {
-            // Navigate to room details if a free room is found
-            NavigationManager.NavigateTo($"/room-details/{freeRoom.Id}");
+            // Find a free room of the given type
+            var freeRoom = allRooms.FirstOrDefault(r => r.Type == roomType && !r.CurrentlyBooked);
+
+            if (freeRoom != null)
+            {
+                // Navigate to room details if a free room is found
+                NavigationManager.NavigateTo($"/room-details/{freeRoom.Id}");
+            }
+            else
+            {
+                // Optionally, show a message or alert if no rooms are available
+                await JSRuntime.InvokeVoidAsync("alert", "No available rooms of this type at the moment.");
+            }
         }
         else
         {
-            // Optionally, show a message or alert if no rooms are available
-            await JSRuntime.InvokeVoidAsync("alert", "No available rooms of this type at the moment.");
+            NavigationManager.NavigateTo("/login");
+
         }
+
     }
 
     public void gotoBooking(int id)

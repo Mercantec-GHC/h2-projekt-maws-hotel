@@ -1,9 +1,5 @@
 ﻿@page "/admin-edit-profile/{id:int}"
 @using DomainModels
-@inject IHttpClientFactory HttpClientFactory
-@inject NavigationManager NavigationManager
-@inject AppState AppState
-@inject IJSRuntime JSRuntime
 @inject ILogger<AdminEditProfile> Logger
 
 <h3>Admin Edit Profile</h3>
@@ -62,19 +58,19 @@ else
     public int id { get; set; }
 
     private Profile? profile;
+    private HttpClient httpClient;
 
     protected override void OnInitialized()
     {
         httpClient = HttpClientFactory.CreateClient("API");
     }
 
-    private HttpClient httpClient;
 
     protected override async Task OnInitializedAsync()
     {
         if (!AppState.LoggedIn || !AppState.IsAdmin)
         {
-            NavigationManager.NavigateTo("/");
+            navManager.NavigateTo("/");
             return;
         }
 
@@ -95,7 +91,7 @@ else
             if (response.IsSuccessStatusCode)
             {
                 await JSRuntime.InvokeVoidAsync("alert", "Profile updated successfully.");
-                NavigationManager.NavigateTo("/admin-profile-list");
+                navManager.NavigateTo("/admin-profile-list");
             }
             else
             {
@@ -113,6 +109,6 @@ else
 
     private void Cancel()
     {
-        NavigationManager.NavigateTo("/admin-profile-list");
+        navManager.NavigateTo("/admin-profile-list");
     }
 }
