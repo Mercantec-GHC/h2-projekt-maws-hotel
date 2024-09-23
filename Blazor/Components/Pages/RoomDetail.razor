@@ -11,7 +11,6 @@
 
 <div class="container d-flex justify-content-center vh-100">
     <div class="text-center">
-        <h3>Værelsesdetaljer</h3>
 
         @if (room != null)
         {
@@ -19,7 +18,7 @@
                 <i class="bi bi-house-door" style="font-size: 70px;"></i>
 
                 <div class="card-price-tag">
-                    <span class="price-value">100,-</span>
+                    <span class="price-value">@room.Price,-</span>
                 </div>
                 <svg text-rendering="geometricPrecision"
                      shape-rendering="geometricPrecision"
@@ -258,7 +257,7 @@
                     </div>
                 </div>
                 <div class="add-to-cart-btn">
-                    <button @onclick="BookRoom">Add to cart</button>
+                    <button @onclick="BookRoom">Book now</button>
                 </div>
             </div>
 }

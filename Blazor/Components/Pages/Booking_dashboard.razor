@@ -88,14 +88,14 @@
             navManager.NavigateTo("/");
         }
 
-        allBookings = db.GetBookingsFromSql("SELECT * FROM booking");
+        allBookings = await dbService.GetBookings();
         total_bookings = allBookings.Count;
         
 
     }
 
     public void delete_booking_from_id(int id){
-        db.ExecuteSql($"DELETE FROM booking WHERE id = {id};");
+        dbService.DeleteBooking(id);
 
         var bookingToDelete = allBookings.FirstOrDefault(b => b.Id == id);
         if (bookingToDelete != null)
