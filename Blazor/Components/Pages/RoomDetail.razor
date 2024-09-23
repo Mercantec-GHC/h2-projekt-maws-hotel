@@ -336,7 +336,7 @@ else
 
         await dbService.PostBooking(newBooking);
         await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
-        navManager.NavigateTo("/bookings");
+        navManager.NavigateTo("/ProfileDashboard");
     }
 
 }

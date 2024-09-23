@@ -44,8 +44,9 @@ table {
     font-size: 0.7rem;
 }
     .btn-danger:hover {
-        padding: 0.3rem 0.6rem;
+        padding: 0 0.6rem;
         transform: scale(1.05);
+        transition: 0.3s;
     }
 .btn-danger i {
     padding: 0;
@@ -68,10 +69,11 @@ table {
     background-color: #282c30;
 }
 
-.btn-goto-profile:hover {
-    padding: 0.3rem 0.6rem;
-    transform: scale(1.05);
-}
+    .btn-goto-profile:hover {
+        padding: 0 0.6rem;
+        transform: scale(1.05);
+        transition: 0.3s;
+    }
 
     .btn-goto-profile i {
         padding: 0;
