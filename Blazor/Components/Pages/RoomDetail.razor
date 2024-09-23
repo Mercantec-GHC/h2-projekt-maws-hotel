@@ -1,9 +1,6 @@
 ﻿@page "/room-details/{roomId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
-@using static Blazor.Services.DatabaseService
-@inject Blazor.Services.DatabaseService db
-@inject NavigationManager navManager
 @using Microsoft.JSInterop
 @inject IJSRuntime jsRuntime
 @using DomainModels
@@ -14,6 +11,7 @@
 
 <div class="container d-flex justify-content-center vh-100">
     <div class="text-center">
+        <h3>Værelsesdetaljer</h3>
 
         @if (room != null)
         {
@@ -183,7 +181,7 @@
                                 <h3>Standard room</h3>
                             } else if (room.Type == 2)
                             {
-                                <h3>Comfort room</h3>
+                                <h3>Komfort room</h3>
                             }
                             else if (room.Type == 3) {
                                 <h3>Suite room</h3>
@@ -243,7 +241,8 @@
                                 </span>
                             </div>
                         </span>
-                        @room.Description
+                        
+                        Skriv description her, så det bliver vist rigtig rigtig flot.
                     </div>
                     <div class="right-info">
                         <ul class="features-list">
@@ -259,7 +258,7 @@
                     </div>
                 </div>
                 <div class="add-to-cart-btn">
-                    <button @onclick="BookRoom">Book now</button>
+                    <button @onclick="BookRoom">Add to cart</button>
                 </div>
             </div>
 }
@@ -279,37 +278,23 @@ else
     private Room? room;
     private DateTime date_start;
     private DateTime date_end;
-    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
-    public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
+    public List<Room> allRooms = new List<Room>();
+    public List<Booking> allBookings = new List<Booking>();
 
     protected override async Task OnInitializedAsync()
     {
-        room = db.GetRoomsFromSql($"SELECT * FROM room WHERE id = {RoomId}").SingleOrDefault();
+        room = await dbService.GetRoomById(RoomId);
         if (room == null)
         {
             await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
             navManager.NavigateTo("/error");
-
+            return;
         }
+
         date_start = DateTime.Now;
         date_end = DateTime.Now.AddDays(1);
 
-        for (int i = 0; i < allRooms.Count; i++)
-        {
-            if (allRooms[i].CurrentlyBooked == true) continue; 
-            for (int j = 0; j < allBookings.Count; j++)
-            {
-                if (allRooms[i].Id == allBookings[j].RoomId)
-                {
-                    allRooms[i].CurrentlyBooked = true;
-                    allBookings.RemoveAt(j);
-                    break;
-
-                }
-            }
-        }
         allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
-
     }
 
     private async Task BookRoom()
@@ -332,9 +317,8 @@ else
             return;
         }
 
-        // Hent eksisterende bookinger for værelset i den angivne periode
-        var existingBookings = db.GetBookingsFromSql($"SELECT * FROM booking WHERE room_id = {RoomId} AND " +
-                                                     $"('{date_start:yyyy-MM-dd}' < date_end AND '{date_end:yyyy-MM-dd}' > date_start)");
+        // Tjek for eksisterende bookinger
+        var existingBookings = await dbService.CheckExistingBookings(RoomId, date_start, date_end);
 
         if (existingBookings.Any())
         {
@@ -342,19 +326,21 @@ else
             return;
         }
 
-        // Indsæt ny booking
-        var bookingSuccess = db.ExecuteSql($"INSERT INTO booking (date_start, date_end, profile_id, room_id) " +
-                                           $"VALUES ('{date_start:yyyy-MM-dd}', '{date_end:yyyy-MM-dd}', {AppState.UserId}, {RoomId})");
+        // Opret en ny booking
+        var newBooking = new Booking
+            {
+                DateStart = date_start,
+                DateEnd = date_end,
+                RoomId = RoomId,
+                ProfileId = AppState.UserId
+            };
 
-        if (bookingSuccess != 0)
-        {
-            await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
-            navManager.NavigateTo("/ProfileDashboard");
-        }
-        else
-        {
-            await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under booking. Prøv igen.");
-        }
+        await dbService.PostBooking(newBooking);
+        await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
+        navManager.NavigateTo("/bookings");
     }
+
+}
+
 
 }

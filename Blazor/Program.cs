@@ -1,10 +1,7 @@
 using Blazor.Components;
 using Blazor.Services;
-using DomainModels;  
-using Microsoft.AspNetCore.Authentication;
-using Microsoft.EntityFrameworkCore;  
-using System.Net.NetworkInformation;
-
+using DomainModels;
+using Microsoft.EntityFrameworkCore;
 
 public class Program
 {
@@ -12,22 +9,28 @@ public class Program
     {
         var builder = WebApplication.CreateBuilder(args);
 
-        
+        // Get the connection string from appsettings or environment variable
         var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
             ?? Environment.GetEnvironmentVariable("DefaultConnection");
 
         // Configure ApplicationDbContext
         builder.Services.AddDbContext<ApplicationDbContext>(options =>
-            options.UseNpgsql(connectionString));  
+            options.UseNpgsql(connectionString));
 
-        
-        builder.Services.AddSingleton<DatabaseService>(sp => new DatabaseService(connectionString!));
+        builder.Services.AddScoped<HttpClient>();
+
+        // Register DatabaseService with both connectionString and HttpClient
+        builder.Services.AddScoped<DatabaseService>(sp =>
+        {
+            var httpClient = sp.GetRequiredService<HttpClient>();
+            return new DatabaseService(connectionString, httpClient);
+        });
 
         // AuthenticationService Registration
         builder.Services.AddAuthentication("Cookies")
             .AddCookie("Cookies", options =>
             {
-                
+                // Cookie options configuration
             });
 
         // Register AppState
@@ -39,7 +42,7 @@ public class Program
 
         builder.Services.AddHttpClient("API", client =>
         {
-            client.BaseAddress = new Uri("https://localhost:7207/"); 
+            client.BaseAddress = new Uri("https://localhost:7207/");
         });
 
         builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("API"));

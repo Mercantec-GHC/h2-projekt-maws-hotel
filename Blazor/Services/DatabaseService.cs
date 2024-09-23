@@ -8,6 +8,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using static Blazor.Services.DatabaseService;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 
 namespace Blazor.Services
@@ -15,189 +16,70 @@ namespace Blazor.Services
     public class DatabaseService
     {
         private readonly string connectionString;
+        private readonly HttpClient _httpClient;
+        private readonly string _baseURL = "https://localhost:7207/api/";
 
-        public DatabaseService(string connectionString)
+        public DatabaseService(string connectionString, HttpClient httpClient)
         {
             this.connectionString = connectionString;
+            _httpClient = httpClient;
+        }
+        //Henter alle rum
+        public async Task<List<Room>> GetRooms()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Room>>(_baseURL + "Room");
+        }
+        //Henter alle bookings
+        public async Task<List<Booking>> GetBookings()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + "Booking");
+        }
+        //Henter alle bookings for i dag
+        public async Task<List<Booking>> GetBookingsForToday()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + "Booking/BookingsToday");
+        }
+        //Henter bookings for en specifik bruger ved brug af UserID 
+        public async Task<List<Booking>> GetBookingsFromUserID(int UserID)
+        {
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + $"Booking/userid/{UserID}");
         }
 
-        public List<Room> GetRoomsFromSql(string sql)
+        //Henter bookings for en specifik bruger ved brug af UserID 
+        public async Task<List<Booking>> GetBookingsFromRoomId(int RoomId)
         {
-            List<Room> allRooms = new List<Room>();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            allRooms.Add(new Room
-                            {
-                                Id = Convert.ToInt32(reader["id"]),
-                                Price = Convert.ToSingle(reader["price"]),
-                                DigitalKey = Convert.ToInt32(reader["digital_key"]),
-                                Type = Convert.ToInt32(reader["type"]),
-                                Photos = reader["photos"].ToString(),
-                                Description = reader["description"].ToString()
-                            });
-                        }
-                    }
-                }
-            }
-            return allRooms;
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + $"Booking/roomid/{RoomId}");
         }
 
-        public List<Booking> GetBookingsFromSql(string sql)
+        public async Task<Room> GetRoomById(int id)
         {
-            List<Booking> allBookings = new List<Booking>();
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            allBookings.Add(new Booking
-                            {
-                                Id = Convert.ToInt32(reader["id"]),
-                                DateStart = Convert.ToDateTime(reader["date_start"]),
-                                DateEnd = Convert.ToDateTime(reader["date_end"]),
-                                ProfileId = Convert.ToInt32(reader["profile_id"]),
-                                RoomId = Convert.ToInt32(reader["room_id"])
-                            });
-                        }
-                    }
-                }
-            }
-
-            return allBookings;
-
+            return await _httpClient.GetFromJsonAsync<Room>(_baseURL + $"Room/RoomId/{id}");
         }
 
-        public List<Profile> GetProfilesFromSql(string sql)
+        // Tjekker for eksisterende bookinger for et specifikt værelsesnummer
+        public async Task<List<Booking>> CheckExistingBookings(int roomId, DateTime dateStart, DateTime dateEnd)
         {
-            var allProfiles = new List<Profile>();
-
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    using (var reader = command.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            allProfiles.Add(new Profile
-                            {
-                                Id = Convert.ToInt32(reader["id"]),
-                                Name = reader["name"].ToString(),
-                                Email = reader["email"].ToString(),
-                                Password = reader["password"].ToString(),
-                                Birthday = reader["birthday"] != DBNull.Value ? Convert.ToDateTime(reader["birthday"]) : (DateTime?)null,
-                                Address = reader["address"].ToString(),
-                                PhoneNumber = reader["phone_number"].ToString(),
-                                Administrator = Convert.ToBoolean(reader["administrator"])
-                            });
-                        }
-                    }
-                }
-            }
-
-            return allProfiles;
+            var url = $"{_baseURL}Booking/CheckExistingBookings/{roomId}?dateStart={dateStart:yyyy-MM-dd}&dateEnd={dateEnd:yyyy-MM-dd}";
+            return await _httpClient.GetFromJsonAsync<List<Booking>>(url);
         }
 
-        public bool UpdateProfile(Profile profile)
+        // Opretter en ny booking
+        public async Task PostBooking(Booking request)
         {
-            try
-            {
-                using (var connection = new NpgsqlConnection(connectionString))
-                {
-                    connection.Open();
-                    using (var command = new NpgsqlCommand())
-                    {
-                        command.Connection = connection;
-                        command.CommandText = @"
-                            UPDATE profile 
-                            SET name = @Name, email = @Email, birthday = @Birthday, 
-                                address = @Address, phone_number = @PhoneNumber, administrator = @Administrator
-                            WHERE id = @Id";
-
-                        command.Parameters.AddWithValue("@Id", profile.Id);
-                        command.Parameters.AddWithValue("@Name", profile.Name);
-                        command.Parameters.AddWithValue("@Email", profile.Email);
-                        command.Parameters.AddWithValue("@Birthday", profile.Birthday ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@Address", profile.Address ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@PhoneNumber", profile.PhoneNumber ?? (object)DBNull.Value);
-                        command.Parameters.AddWithValue("@Administrator", profile.Administrator);
-
-                        int rowsAffected = command.ExecuteNonQuery();
-                        return rowsAffected > 0;
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine($"Error in UpdateProfile: {ex.Message}");
-                return false;
-            }
+            await _httpClient.PostAsJsonAsync(_baseURL + "Booking/CreateBooking", request);
         }
 
-        public int ExecuteSql(string sql)
+
+        //Sender Support besked til Database 
+        public async Task PostSupportRequest(SupportRequest request)
         {
-
-            var rowsaffected = -1;
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                connection.Open();
-                using (var command = new NpgsqlCommand(sql, connection))
-                {
-                    var result = command.ExecuteScalar();
-
-                    if (result != null && result != DBNull.Value)
-                    {
-                        rowsaffected = Convert.ToInt32(result);
-                    }
-                }
-            }
-            return rowsaffected;
+             await _httpClient.PostAsJsonAsync(_baseURL + "Support", request);
         }
-
-        public void AddSupportRequest(SupportRequest request)
+        
+        //Sletter en booking 
+        public async Task DeleteBooking(int id)
         {
-            using (var connection = new NpgsqlConnection(connectionString))
-            {
-                var sql = "INSERT INTO SupportRequests (Name, Email, Subject, Message, CreatedAt, Status) " +
-                      "VALUES (@Name, @Email, @Subject, @Message, @CreatedAt, @Status)";
-                connection.Open();
-                using (var cmd = new NpgsqlCommand(sql, connection))
-
-                {
-
-                    cmd.Parameters.AddWithValue("Name", request.Name);
-                    cmd.Parameters.AddWithValue("Email", request.Email);
-                    cmd.Parameters.AddWithValue("Subject", request.Subject);
-                    cmd.Parameters.AddWithValue("Message", request.Message);
-                    cmd.Parameters.AddWithValue("CreatedAt", DateTime.Now);
-                    cmd.Parameters.AddWithValue("Status", "Pending");
-
-                    cmd.ExecuteNonQuery();
-
-                }
-            }
-
+            await _httpClient.DeleteFromJsonAsync<Booking>(_baseURL + $"Booking/DeleteBooking/{id}");
         }
     }
-
 }
-
-
-    
-
-
-
-
-
