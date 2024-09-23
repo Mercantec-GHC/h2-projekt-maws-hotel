@@ -32,22 +32,22 @@
 .edit-profile-btn:hover {
     padding: 0.4rem 1rem;
     transform: scale(1.05);
+    transition: 0.3s;
     color: rgba(255,161,30,1);
 }
 
     .edit-profile-btn i {
-        padding: 0;
-        margin: 0 0.5rem;
         font-size: 1rem;
         color: white;
+        padding: 0 0.2rem;
         background-color: transparent;
     }
 
-/* LOADING ANIMATION */
-.pl {
-    width: 8em;
-    height: 8em;
-}
+        /* LOADING ANIMATION */
+        .pl {
+            width: 8em;
+            height: 8em;
+        }
 
     .pl circle {
         transform-box: fill-box;

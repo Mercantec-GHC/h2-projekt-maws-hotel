@@ -3,9 +3,6 @@
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 @using DomainModels
-@inject AppState AppState
-@inject HttpClient Http
-@inject NavigationManager NavigationManager
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -114,11 +111,9 @@
         allRooms = await dbService.GetRooms();
         allBookings = await dbService.GetBookingsForToday();
         total_rooms = allRooms.Count;
-
-
-
-
     }
+
+
 
     public async Task FindAndNavigateToRoom(int roomType)
     {
@@ -130,7 +125,7 @@
             if (freeRoom != null)
             {
                 // Navigate to room details if a free room is found
-                NavigationManager.NavigateTo($"/room-details/{freeRoom.Id}");
+                navManager.NavigateTo($"/room-details/{freeRoom.Id}");
             }
             else
             {
@@ -140,7 +135,7 @@
         }
         else
         {
-            NavigationManager.NavigateTo("/login");
+            navManager.NavigateTo("/login");
 
         }
 
@@ -151,11 +146,11 @@
         
         if (!AppState.LoggedIn)
         {
-            NavigationManager.NavigateTo("/login");
+            navManager.NavigateTo("/login");
         }
         else
         {
-            NavigationManager.NavigateTo($"/room-details/{id}");
+            navManager.NavigateTo($"/room-details/{id}");
         }
     }
     private void SetSortColumn(string colunm)

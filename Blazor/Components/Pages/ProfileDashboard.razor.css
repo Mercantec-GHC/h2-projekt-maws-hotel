@@ -56,6 +56,17 @@ body {
     position: relative;
 }
 
+.show-name {
+    box-shadow: black 0 2px 2rem 0;
+    padding: 0.3rem;
+    margin: 1.5rem;
+    border-radius: 20px;
+}
+
+.show-role i, .show-phonenumber i {
+    padding: 0 0.5rem;
+}
+
 .card-block {
     padding: 0;
     width: 100%;
@@ -152,6 +163,7 @@ h6 {
 }
 
     .btn-danger:hover {
+        transition: 0.3s;
         background-color: #c82333;
     }
 
@@ -162,6 +174,7 @@ h6 {
 }
 
     .btn-primary:hover {
+        transition: 0.3s;
         background-color: #0056b3;
     }
 
@@ -182,9 +195,10 @@ h6 {
     border: none;
 }
 
-.edit-profile-btn:hover {
-    color:white;
-}
+    .edit-profile-btn:hover {
+        transition: 0.3s;
+        color: white;
+    }
 
 /* DELETE BUTTON */
 .card-btn {
@@ -195,7 +209,7 @@ h6 {
     border-radius: 20px 0 20px 0;
     border: none;
     cursor: pointer;
-    transition: 400ms;
+    transition: 0.3s;
     padding: 0.5rem 1rem;
     margin: 1rem 0;
 }
@@ -216,10 +230,11 @@ h6 {
     margin: 0;
 }
 
-.card-btn:hover {
-    background: rgb(255,130,0);
-    color: white;
-}
+    .card-btn:hover {
+        background: rgb(255,130,0);
+        transition: 0.3s;
+        color: white;
+    }
 
 .card-btn i {
     color: white;
@@ -241,6 +256,7 @@ h6 {
     .btn-goto-booking:hover {
         padding: 0.4rem 1rem;
         transform: scale(1.05);
+        transition: 0.3s;
         color: rgba(255,161,30,1);
     }
 

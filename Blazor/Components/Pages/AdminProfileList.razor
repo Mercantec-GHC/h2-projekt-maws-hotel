@@ -46,7 +46,10 @@
                         <td>@profile.Name</td>
                         <td>@profile.Email</td>
                         <td>
-                            <a href="@($"/admin-edit-profile/{profile.Id}")" class="edit-profile-btn">Edit</a>
+                            <a href="@($"/admin-edit-profile/{profile.Id}")" class="edit-profile-btn">
+                                <i class="bi bi-pencil-square"></i>
+                                Edit
+                            </a>
                         </td>
                     </tr>
                 }
