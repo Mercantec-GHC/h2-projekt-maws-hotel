@@ -183,8 +183,9 @@
 
 
 .card img {
-    max-width: 25rem;
     width: 100%;
+    max-height: 20rem;
+    height: 13rem;
     border-radius: 20px 20px 0 0;
 }
 
@@ -192,6 +193,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    bottom: 0rem;
+    margin:1rem 0 0 0;
+
 }
 
 .price {
@@ -257,7 +261,7 @@
 
 .toggler {
     position: absolute;
-    top: 0.5rem; 
+    top: 0.8rem; 
     left: 50%;
     transform: translateX(-50%);
     z-index: 10;

@@ -175,8 +175,20 @@
                 </svg>
                 <div class="card-info">
                     <div class="left-info">
+                        <p>@room.Name</p>
+                            @if (room != null && !string.IsNullOrEmpty(room.Name))
+                            {
+                                <p>@room.Name</p>
+                            }
+                            else
+                            {
+                                <p>@room.Name</p>
+                                <p>Navn: Ingen informationer tilgængelige</p>
+                            }
                         <span class="product-title">
-                            @if(room.Type == 1){
+
+
+@*                             @if(room.Type == 1){
                                 <h3>Standard room</h3>
                             } else if (room.Type == 2)
                             {
@@ -185,7 +197,7 @@
                             else if (room.Type == 3) {
                                 <h3>Suite room</h3>
 
-                            }
+                            } *@
 
                             <div class="star-rating">
                                 <span class="star">
@@ -282,19 +294,30 @@ else
 
     protected override async Task OnInitializedAsync()
     {
-        room = await dbService.GetRoomById(RoomId);
-        if (room == null)
+        try
         {
-            await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
-            navManager.NavigateTo("/error");
-            return;
+            room = await dbService.GetRoomById(RoomId);
+            if (room == null)
+            {
+                Console.WriteLine($"Error: Unable to fetch room with ID: {RoomId}");
+                await jsRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
+                navManager.NavigateTo("/error");
+                return;
+            }
+
+            date_start = DateTime.Now;
+            date_end = DateTime.Now.AddDays(1);
+
+            allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
         }
-
-        date_start = DateTime.Now;
-        date_end = DateTime.Now.AddDays(1);
-
-        allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Database error: {ex.Message}");
+            await jsRuntime.InvokeVoidAsync("alert", $"En fejl opstod: {ex.Message}");
+            navManager.NavigateTo("/error");
+        }
     }
+
 
     private async Task BookRoom()
     {
