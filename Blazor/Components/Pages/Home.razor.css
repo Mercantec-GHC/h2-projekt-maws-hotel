@@ -184,7 +184,6 @@
 
 .card img {
     max-width: 25rem;
-    max-height: 20rem;
     width: 100%;
     border-radius: 20px 20px 0 0;
 }
@@ -247,3 +246,98 @@
     max-height: 20rem;
     width: 100%;
 }
+
+/* SINGLE OR DOUBLE SWITCH */
+/* SINGLE OR DOUBLE SWITCH */
+.toggler {
+    width: 72px;
+    margin: 40px auto;
+}
+
+    .toggler input {
+        display: none;
+    }
+
+    .toggler label {
+        display: block;
+        position: relative;
+        width: 72px;
+        height: 36px;
+        border: 1px solid #d6d6d6;
+        border-radius: 36px;
+        background: #e4e8e8;
+        cursor: pointer;
+    }
+
+        .toggler label::after {
+            display: block;
+            border-radius: 100%;
+            background-color: #d7062a;
+            content: '';
+            animation-name: toggler-size;
+            animation-duration: 0.15s;
+            animation-timing-function: ease-out;
+            animation-direction: forwards;
+            animation-iteration-count: 1;
+            animation-play-state: running;
+            width: 26px; /* Opdateret størrelse */
+            height: 26px; /* Opdateret størrelse */
+        }
+
+        .toggler label::after, .toggler label .toggler-on, .toggler label .toggler-off {
+            position: absolute;
+            top: 50%;
+            left: 25%;
+            width: 26px; /* Opdateret størrelse */
+            height: 26px; /* Opdateret størrelse */
+            transform: translateY(-50%) translateX(-50%);
+            transition: left 0.15s ease-in-out, background-color 0.2s ease-out, width 0.15s ease-in-out, height 0.15s ease-in-out, opacity 0.15s ease-in-out;
+        }
+
+    .toggler input:checked + label::after, .toggler input:checked + label .toggler-on, .toggler input:checked + label .toggler-off {
+        left: 75%;
+    }
+
+    .toggler input:checked + label::after {
+        background-color: #50ac5d;
+        animation-name: toggler-size2;
+    }
+
+    .toggler .toggler-on, .toggler .toggler-off {
+        opacity: 1;
+        z-index: 2;
+        font-size: 20px;
+        color: #fff;
+    }
+
+    .toggler input:checked + label .toggler-off, .toggler input:not(:checked) + label .toggler-on {
+        width: 0;
+        height: 0;
+        opacity: 0;
+    }
+
+@keyframes toggler-size {
+    0%, 100% {
+        width: 22px; /* Opdateret størrelse */
+        height: 22px; /* Opdateret størrelse */
+    }
+
+    50% {
+        width: 18px; /* Justeret til animationen */
+        height: 18px; /* Justeret til animationen */
+    }
+}
+
+@keyframes toggler-size2 {
+    0%, 100% {
+        width: 22px; /* Opdateret størrelse */
+        height: 22px; /* Opdateret størrelse */
+    }
+
+    50% {
+        width: 18px; /* Justeret til animationen */
+        height: 18px; /* Justeret til animationen */
+    }
+}
+
+/* ---- End SINGLE OR DOUBLE TOGGLE */
