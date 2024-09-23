@@ -1,11 +1,9 @@
 ﻿@page "/"
-@inject Blazor.Services.DatabaseService db
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 @using DomainModels
 @inject AppState AppState
 @inject HttpClient Http
-@inject NavigationManager NavigationManager
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -103,23 +101,17 @@
     public string current;
     public bool ascending = true;
 
-    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
-    public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
+    public List<Room> allRooms = new List<Room>();
+    public List<Booking> allBookings = new List<Booking>();
 
     public int booked_count = 0;
     public int total_rooms = 0;
 
     protected override async Task OnInitializedAsync()
     {
-        allRooms = db.GetRoomsFromSql("SELECT * FROM room");
-        var today = DateTime.Today.ToString("yyyy-MM-dd");
-        var query = $"SELECT * FROM booking WHERE date_start <= '{today}' AND date_end >= '{today}'";
-        allBookings = db.GetBookingsFromSql(query);
+        allRooms = await dbService.GetRooms();
+        allBookings = await dbService.GetBookingsForToday();
         total_rooms = allRooms.Count;
-
-
-
-
     }
 
     public async Task FindAndNavigateToRoom(int roomType)
@@ -130,7 +122,7 @@
         if (freeRoom != null)
         {
             // Navigate to room details if a free room is found
-            NavigationManager.NavigateTo($"/room-details/{freeRoom.Id}");
+            navManager.NavigateTo($"/room-details/{freeRoom.Id}");
         }
         else
         {
@@ -144,11 +136,11 @@
         
         if (!AppState.LoggedIn)
         {
-            NavigationManager.NavigateTo("/login");
+            navManager.NavigateTo("/login");
         }
         else
         {
-            NavigationManager.NavigateTo($"/room-details/{id}");
+            navManager.NavigateTo($"/room-details/{id}");
         }
     }
     private void SetSortColumn(string colunm)
