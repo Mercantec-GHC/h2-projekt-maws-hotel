@@ -2,6 +2,7 @@ using Blazor.Components;
 using Blazor.Services;
 using DomainModels;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.JSInterop;
 
 public class Program
 {
@@ -46,6 +47,7 @@ public class Program
         });
 
         builder.Services.AddScoped(sp => sp.GetRequiredService<IHttpClientFactory>().CreateClient("API"));
+
 
         var app = builder.Build();
 

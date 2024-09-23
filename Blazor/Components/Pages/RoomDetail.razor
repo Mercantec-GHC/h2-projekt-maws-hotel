@@ -175,7 +175,8 @@
                 </svg>
                 <div class="card-info">
                     <div class="left-info">
-                        <p>@room.Name</p>
+                        <p>@allRooms.FirstOrDefault(r => r.Type == 5)?.Name.ToString()</p>
+                        
                             @if (room != null && !string.IsNullOrEmpty(room.Name))
                             {
                                 <p>@room.Name</p>
@@ -272,6 +273,7 @@
                     <button @onclick="BookRoom">Book now</button>
                 </div>
             </div>
+
 }
 else
 {
@@ -279,11 +281,13 @@ else
 }
     </div>
 </div>
+            
 
 
 
 
 @code {
+
     [Parameter]
     public int RoomId { get; set; }
     private Room? room;
@@ -317,7 +321,7 @@ else
             navManager.NavigateTo("/error");
         }
     }
-
+        
 
     private async Task BookRoom()
     {
@@ -358,8 +362,9 @@ else
             };
 
         await dbService.PostBooking(newBooking);
-        await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
-        navManager.NavigateTo("/ProfileDashboard");
+        //await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
+        navManager.NavigateTo("/BookSuccess");
+
     }
 
 }
