@@ -5,9 +5,9 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 
-<div class="login-box">
+<div class="login-box" @onkeypress="Enter">
     <p>Login</p>
-    <form>
+    <form >
         <div class="user-box">
             <input required="" name="" type="text" @bind-value="loginDto.Email"/>
             <label>Email</label>
@@ -16,7 +16,7 @@
             <input required="" name="" type="password" @bind-value="loginDto.Password"/>
             <label>Password</label>
         </div>
-        <a @onclick="HandleValidSubmit">
+        <a @onclick="HandleValidSubmit" >
             <span></span>
             <span></span>
             <span></span>
@@ -30,6 +30,16 @@
 @code {
     private LoginDto loginDto = new LoginDto();
 
+    // Activate login submit when "Enter" is pressed.
+    private async Task Enter(KeyboardEventArgs e)
+    {
+        if (e.Code == "Enter" || e.Code == "NumpadEnter")
+        {
+            await HandleValidSubmit();
+        }
+    }
+
+    // Handle login submit.
     private async Task HandleValidSubmit()
     {
         var response = await HttpClient.PostAsJsonAsync("api/profile/login", loginDto);

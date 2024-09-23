@@ -1,8 +1,11 @@
-﻿.login-box {
+﻿body {
+}
+
+.login-box {
     position: absolute;
     top: 50%;
     left: 50%;
-    width: 400px;
+    width: 500px;
     padding: 40px;
     margin: 20px auto;
     transform: translate(-50%, -55%);
@@ -13,7 +16,7 @@
 }
 
 .login-box p:first-child {
-    margin: 0 0 30px; 
+    margin: 0 0 30px;
     padding: 0;
     color: #fff;
     text-align: center;

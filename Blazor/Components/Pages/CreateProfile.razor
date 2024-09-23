@@ -1,11 +1,57 @@
 @page "/create-profile"
 @using DomainModels
-@inject IHttpClientFactory HttpClientFactory
-@inject NavigationManager NavigationManager
 
-<h3>Create Profile</h3>
+<div class="login-box">
+    <p>Sign up</p>
+    <form>
+        <div class="container text-center">
+            <div class="row align-items-start">
+                <div class="col">
+                    <div class="user-box">
+                        <input required="" name="" type="text" @bind-value="registerDto.Name" />
+                        <label>Name</label>
+                    </div>
+                    <div class="user-box">
+                        <input required="" name="" type="text" @bind-value="registerDto.Email" />
+                        <label>Email</label>
+                    </div>
+                    <div class="user-box">
+                        <input required="" name="" type="password" @bind-value="registerDto.Password" />
+                        <label>Password</label>
+                    </div>
+                    <div class="user-box">
+                        <input required="" name="" type="password" @bind-value="secondPassword"/>
+                        <label>Password</label>
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="user-box">
+                        <input required="" name="" type="datetime" @bind-value="registerDto.Birthday" />
+                        <label>Birthday</label>
+                    </div>
+                    <div class="user-box">
+                        <input required="" name="" type="text" @bind-value="registerDto.Address" />
+                        <label>Address</label>
+                    </div>
+                    <div class="user-box">
+                        <input required="" name="" type="text" @bind-value="registerDto.PhoneNumber" />
+                        <label>Phone Number</label>
+                    </div>
+                    <a @onclick="HandleValidSubmit">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        Submit
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+    <p>Already have an account <a href="" class="a2">Login!</a></p>
+</div>
 
-<EditForm Model="@registerDto" OnValidSubmit="@HandleValidSubmit">
+@* <EditForm Model="@registerDto" OnValidSubmit="@HandleValidSubmit">
     <DataAnnotationsValidator />
     <ValidationSummary />
 
@@ -42,7 +88,7 @@
     <button type="submit" id="createProfileBtn" name="createProfileBtn" class="btn btn-primary" autocomplete="off">
         Create Profile
     </button>
-</EditForm>
+</EditForm> *@
 
 @if (!string.IsNullOrEmpty(errorMessage))
 {
@@ -51,6 +97,7 @@
 
 @code {
     private RegisterDto registerDto = new RegisterDto();
+    private string secondPassword = "";
     private string errorMessage = string.Empty;
 
     private async Task HandleValidSubmit()
@@ -63,22 +110,24 @@
             {
                 registerDto.Birthday = registerDto.Birthday.Value.ToUniversalTime();
             }
+            if (registerDto.Password == secondPassword)
+            {   
+                var response = await Http.PostAsJsonAsync("https://localhost:7207/api/Profile/register", registerDto);
+                var responseContent = await response.Content.ReadAsStringAsync();
 
-            var client = HttpClientFactory.CreateClient("API");
-            Console.WriteLine($"Sending request to: {client.BaseAddress}api/Profile/register");
-            Console.WriteLine($"Profile data: {System.Text.Json.JsonSerializer.Serialize(registerDto)}");
-            var response = await client.PostAsJsonAsync("api/Profile/register", registerDto);
-            Console.WriteLine($"Response status: {response.StatusCode}");
-            var responseContent = await response.Content.ReadAsStringAsync();
-            Console.WriteLine($"Response content: {responseContent}");
-
-            if (response.IsSuccessStatusCode)
-            {
-                NavigationManager.NavigateTo("/login");
+                if (response.IsSuccessStatusCode)
+                {
+                    navManager.NavigateTo("/login");
+                }
+                else
+                {
+                    errorMessage = $"Registration failed: {responseContent}";
+                    Console.WriteLine(errorMessage);
+                }
             }
             else
             {
-                errorMessage = $"Registration failed: {responseContent}";
+                errorMessage = $"Both passwords needs to be the same!!";
                 Console.WriteLine(errorMessage);
             }
         }
