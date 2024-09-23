@@ -198,10 +198,9 @@
 .price {
     color: rgb(255,130,0);
     margin: 0;
+    font-size: 1.4rem;
+    text-shadow: 1px 1px 1px rgb(190,47,48);
     font-weight: bold;
-    /* Tilføjet for mere 3D-effekt */
-    box-shadow: 0 2px 0 rgba(0,0,0,0.7);
-    
     padding: 0.5rem;
 }
 

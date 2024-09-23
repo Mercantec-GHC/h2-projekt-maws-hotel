@@ -14,7 +14,6 @@
 
 <div class="container d-flex justify-content-center vh-100">
     <div class="text-center">
-        <h3>Værelsesdetaljer</h3>
 
         @if (room != null)
         {
@@ -260,7 +259,7 @@
                     </div>
                 </div>
                 <div class="add-to-cart-btn">
-                    <button @onclick="BookRoom">Add to cart</button>
+                    <button @onclick="BookRoom">Book now</button>
                 </div>
             </div>
 }
@@ -350,7 +349,7 @@ else
         if (bookingSuccess != 0)
         {
             await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
-            navManager.NavigateTo("/bookings");
+            navManager.NavigateTo("/ProfileDashboard");
         }
         else
         {

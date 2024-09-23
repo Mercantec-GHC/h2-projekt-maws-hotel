@@ -124,19 +124,28 @@
 
     public async Task FindAndNavigateToRoom(int roomType)
     {
-        // Find a free room of the given type
-        var freeRoom = allRooms.FirstOrDefault(r => r.Type == roomType && !r.CurrentlyBooked);
-
-        if (freeRoom != null)
+        if (AppState.LoggedIn)
         {
-            // Navigate to room details if a free room is found
-            NavigationManager.NavigateTo($"/room-details/{freeRoom.Id}");
+            // Find a free room of the given type
+            var freeRoom = allRooms.FirstOrDefault(r => r.Type == roomType && !r.CurrentlyBooked);
+
+            if (freeRoom != null)
+            {
+                // Navigate to room details if a free room is found
+                NavigationManager.NavigateTo($"/room-details/{freeRoom.Id}");
+            }
+            else
+            {
+                // Optionally, show a message or alert if no rooms are available
+                await JSRuntime.InvokeVoidAsync("alert", "No available rooms of this type at the moment.");
+            }
         }
         else
         {
-            // Optionally, show a message or alert if no rooms are available
-            await JSRuntime.InvokeVoidAsync("alert", "No available rooms of this type at the moment.");
+            NavigationManager.NavigateTo("/login");
+
         }
+
     }
 
     public void gotoBooking(int id)

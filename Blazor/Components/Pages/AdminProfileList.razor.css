@@ -35,6 +35,14 @@
     color: rgba(255,161,30,1);
 }
 
+    .edit-profile-btn i {
+        padding: 0;
+        margin: 0 0.5rem;
+        font-size: 1rem;
+        color: white;
+        background-color: transparent;
+    }
+
 /* LOADING ANIMATION */
 .pl {
     width: 8em;

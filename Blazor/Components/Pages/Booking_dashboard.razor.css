@@ -35,38 +35,33 @@ table {
 
 
 /* DELETE BUTTON */
-.card-btn {
-    display: flex;
-    gap: 3rem;
-    background-color: #181717;
-    border-radius: 20px 0 20px 0;
-    cursor: pointer;
-    transition: 400ms;
-    margin: 0.5rem 0.5rem;
-}
+
 
 .btn-danger {
     border-radius: 20px 0 20px 0;
-    padding: 0.3rem 0.6rem;
     margin: 0 1rem 0 0;
+    padding: 0.1rem 0.6rem;
     font-size: 0.7rem;
 }
     .btn-danger:hover {
         padding: 0.3rem 0.6rem;
         transform: scale(1.05);
     }
+.btn-danger i {
+    padding: 0;
+    margin: 0 0.5rem;
+    font-size: 1rem;
+    color: white;
+    background-color: transparent;
+}
 
 
-    .card-btn i {
-        color: white;
-        padding: 0;
-    }
 
 /* ---- END DELETE BUTTON ---- */
 
 .btn-goto-profile {
     border-radius: 20px 0 20px 0;
-    padding: 0.3rem 0.6rem;
+    padding: 0.1rem 0.6rem;
     margin: 0 1rem 0 0;
     font-size: 0.7rem;
     color: white;
@@ -77,6 +72,15 @@ table {
     padding: 0.3rem 0.6rem;
     transform: scale(1.05);
 }
+
+    .btn-goto-profile i {
+        padding: 0;
+        margin: 0 0.5rem;
+        font-size: 1rem;
+        color: white;
+        background-color: transparent;
+    }
+
 
 /* LOADING ANIMATION */
 .pl {
