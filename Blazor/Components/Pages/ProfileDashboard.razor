@@ -23,10 +23,21 @@
                                     <div class="m-b-25">
                                         <img src="https://img.icons8.com/bubbles/100/000000/user.png" class="img-radius" alt="User-Profile-Image">
                                     </div>
+
                                     @if (profile != null)
                                     {
-                                        <h6 class="f-w-600">@profile.Name</h6>
-                                        <p>@profile.Address</p>
+                                    <h6 class="show-name">@profile.Name</h6>
+                                        @if (AppState.IsAdmin)
+                                        {
+                                            <h6 class="show-role"><i class="bi bi-award"></i>Administrator</h6>
+
+                                        } else
+                                        {
+                                            <h6 class="show-role"><i class="bi bi-award"></i>User</h6>
+
+                                        }
+                                        <p></p>
+                                        <p class="show-phonenumber"><i class="bi bi-telephone"></i>@profile.PhoneNumber</p>
                                         
                                         <i class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                                         
@@ -42,7 +53,7 @@
                                 <div class="card-block">
                                     @if (profile != null)
                                     {
-                                        <h6 class="m-b-20 p-b-5 b-b-default f-w-800 title">Information</h6>
+                                        <center><h6 class="m-b-20 p-b-5 b-b-default f-w-800 title" style="#282c30">Information</h6></center>
                                         
                                         <div class="row">
                                             <div class="col-sm-6">
@@ -50,8 +61,8 @@
                                                 <h6 class="text-muted f-w-400">@profile.Email</h6>
                                             </div>
                                             <div class="col-sm-6">
-                                                <p class="m-b-10 f-w-600">Phone</p>
-                                                <h6 class="text-muted f-w-400">@profile.PhoneNumber</h6>
+                                                <p class="m-b-10 f-w-600">Address</p>
+                                                <h6 class="text-muted f-w-400">@profile.Address</h6>
                                             </div>
                                         </div>
                                         
@@ -66,35 +77,38 @@
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Upcoming Bookings</h6>
                                     @if (upcomingBookings != null && upcomingBookings.Any())
                                     {
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Booking ID</th>
-                                                    <th>Room</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Booking ID</th>
-                                                    <td>Action</td>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var booking in upcomingBookings)
-                                                {
+                                        <div class="table-container">
+                                            <table class="table">
+                                                <thead>
                                                     <tr>
-                                                        <td>@booking.Id</td>
-                                                        <td>@booking.RoomId</td>
-                                                        <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
-                                                        <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
-                                                        <td>@booking.Id </td>
-                                                        <td><button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking.RoomId))">
-                                                            Goto booking
-                                                            </button>
-                                                        </td>
-
+                                                        <th>Booking ID</th>
+                                                        <th>Room</th>
+                                                        <th>Start Date</th>
+                                                        <th>End Date</th>
+                                                        <th>Total price</th>
+                                                        <th>Action</th>
                                                     </tr>
-                                                }
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var booking in upcomingBookings)
+                                                    {
+                                                        <tr>
+                                                            <td>@booking.Id</td>
+                                                            <td>@booking.RoomId</td>
+                                                            <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
+                                                            <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
+                                                            <td>@CalculateTotalPrice(booking)</td>
+                                                            <td>
+                                                                <button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking.RoomId))">
+                                                                Show
+                                                                </button>
+                                                            </td>
+
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     }
                                     else
                                     {
@@ -113,6 +127,8 @@
 @code {
     private Profile? profile;
     public List<DomainModels.Booking> upcomingBookings = new List<DomainModels.Booking>();
+    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -120,10 +136,25 @@
         {
             profile = await HttpClient.GetFromJsonAsync<Profile>($"api/profile/{AppState.UserId}");
             upcomingBookings = await db.GetBookingsFromUserID(AppState.UserId);
+            allRooms = await db.GetRooms();
+
         }
     }
 
-    
+    private decimal CalculateTotalPrice(Booking booking)
+    {
+        var room = allRooms.FirstOrDefault(r => r.Id == booking.RoomId);
+        if (room == null)
+        {
+            return 0;
+        }
+
+        var days = (booking.DateEnd - booking.DateStart).Days;
+        if (days == 0) days = 1;
+
+        return days * (decimal)room.Price;
+    }
+
 
     private void EditProfile()
     {

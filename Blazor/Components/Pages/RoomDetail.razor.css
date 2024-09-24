@@ -161,13 +161,13 @@ ul {
     right: 12px;
     top: 0;
     color: #fff;
-    font-size: 0.9rem;
+    font-size: 1.5rem;
     font-weight: 600;
     padding: auto 1rem;
     border-radius: 0 0 5px 5px;
     background: linear-gradient(rgba(190,47,48,1), rgba(255,161,30,1));
     width: 5rem;
-    height: 1.5rem;
+    height: auto;
 }
 
 .card svg {
@@ -259,3 +259,4 @@ i {
     .date-input::-webkit-calendar-picker-indicator {
         filter: invert(1); 
     }
+

@@ -39,7 +39,8 @@ namespace API.Controllers
                                 DigitalKey = Convert.ToInt32(reader["digital_key"]),
                                 Type = Convert.ToInt32(reader["type"]),
                                 Photos = reader["photos"].ToString(),
-                                Description = reader["description"].ToString()
+                                Description = reader["description"].ToString(),
+                                Name = Convert.ToString(reader["name"])
                             });
                         }
                     }
