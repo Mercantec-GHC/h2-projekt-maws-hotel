@@ -77,36 +77,38 @@
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Upcoming Bookings</h6>
                                     @if (upcomingBookings != null && upcomingBookings.Any())
                                     {
-                                        <table class="table">
-                                            <thead>
-                                                <tr>
-                                                    <th>Booking ID</th>
-                                                    <th>Room</th>
-                                                    <th>Start Date</th>
-                                                    <th>End Date</th>
-                                                    <th>Total price</th>
-                                                    <th>Action</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                @foreach (var booking in upcomingBookings)
-                                                {
+                                        <div class="table-container">
+                                            <table class="table">
+                                                <thead>
                                                     <tr>
-                                                        <td>@booking.Id</td>
-                                                        <td>@booking.RoomId</td>
-                                                        <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
-                                                        <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
-                                                        <td>@CalculateTotalPrice(booking)</td>
-                                                        <td>
-                                                            <button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking.RoomId))">
-                                                            Show
-                                                            </button>
-                                                        </td>
-
+                                                        <th>Booking ID</th>
+                                                        <th>Room</th>
+                                                        <th>Start Date</th>
+                                                        <th>End Date</th>
+                                                        <th>Total price</th>
+                                                        <th>Action</th>
                                                     </tr>
-                                                }
-                                            </tbody>
-                                        </table>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var booking in upcomingBookings)
+                                                    {
+                                                        <tr>
+                                                            <td>@booking.Id</td>
+                                                            <td>@booking.RoomId</td>
+                                                            <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
+                                                            <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
+                                                            <td>@CalculateTotalPrice(booking)</td>
+                                                            <td>
+                                                                <button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking.RoomId))">
+                                                                Show
+                                                                </button>
+                                                            </td>
+
+                                                        </tr>
+                                                    }
+                                                </tbody>
+                                            </table>
+                                        </div>
                                     }
                                     else
                                     {
@@ -125,7 +127,7 @@
 @code {
     private Profile? profile;
     public List<DomainModels.Booking> upcomingBookings = new List<DomainModels.Booking>();
-    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>(); // Load rooms for price calculations
+    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
 
 
     protected override async Task OnInitializedAsync()
@@ -134,23 +136,23 @@
         {
             profile = await HttpClient.GetFromJsonAsync<Profile>($"api/profile/{AppState.UserId}");
             upcomingBookings = await db.GetBookingsFromUserID(AppState.UserId);
-            allRooms = await db.GetRooms(); // Fetch all rooms
+            allRooms = await db.GetRooms();
 
         }
     }
 
     private decimal CalculateTotalPrice(Booking booking)
     {
-        var room = allRooms.FirstOrDefault(r => r.Id == booking.RoomId); // Find the room
+        var room = allRooms.FirstOrDefault(r => r.Id == booking.RoomId);
         if (room == null)
         {
-            return 0; // If the room is not found, return 0 as a fallback
+            return 0;
         }
 
         var days = (booking.DateEnd - booking.DateStart).Days;
-        if (days == 0) days = 1; // Ensure minimum 1 day if start and end dates are the same
+        if (days == 0) days = 1;
 
-        return days * (decimal)room.Price; // Explicitly cast room.Price to decimal
+        return days * (decimal)room.Price;
     }
 
 

@@ -132,6 +132,17 @@ h6 {
     border-collapse: collapse;
 }
 
+/* Tilføj disse nye klasser til din HTML */
+.table-container {
+    height: 300px;
+    overflow-y: scroll;
+}
+
+.table-content {
+    height: 100%;
+}
+
+
     .table th,
     .table td {
         padding: 0.75rem;
@@ -146,6 +157,7 @@ h6 {
 
     .table tbody + tbody {
         border-top: 2px solid gray;
+        
     }
 
 /* Button Styling */

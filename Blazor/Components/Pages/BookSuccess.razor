@@ -63,3 +63,22 @@
         document.querySelector('.container').classList.add('animate');
     }
 </script>
+
+<style>
+    .container {
+        background-color: #ffffff;
+        display: flex;
+        width: 270px;
+        height: 120px;
+        position: relative;
+        border-radius: 6px;
+        transition: 0.3s ease-in-out;
+        top: 10rem;
+    }
+
+    .animate {
+        animation: slide-top 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) both, slide-post 1s cubic-bezier(0.165, 0.84, 0.44, 1) both, fade-in-fwd 0.3s 1s backwards;
+    }
+
+    /* Rest of your CSS styles */
+</style>
