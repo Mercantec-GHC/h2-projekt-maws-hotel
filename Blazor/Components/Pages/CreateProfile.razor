@@ -6,22 +6,34 @@
     <form>
         <div class="container text-center">
             <div class="row align-items-start">
-                <div class="col">
+                <div>
                     <div class="user-box">
                         <input required="" name="" type="text" @bind-value="registerDto.Name" />
                         <label>Name</label>
                     </div>
+                </div>
+                <div>
                     <div class="user-box">
                         <input required="" name="" type="text" @bind-value="registerDto.Email" />
                         <label>Email</label>
                     </div>
+                </div>
+                <div class="col">
                     <div class="user-box">
                         <input required="" name="" type="password" @bind-value="registerDto.Password" />
                         <label>Password</label>
                     </div>
+                </div>
+                <div class="col">
                     <div class="user-box">
                         <input required="" name="" type="password" @bind-value="secondPassword"/>
                         <label>Password</label>
+                    </div>
+                </div>
+                <div>
+                    <div class="user-box">
+                        <input required="" name="" type="text" @bind-value="registerDto.Address" />
+                        <label>Address</label>
                     </div>
                 </div>
                 <div class="col">
@@ -29,66 +41,25 @@
                         <input required="" name="" type="datetime" @bind-value="registerDto.Birthday" />
                         <label>Birthday</label>
                     </div>
-                    <div class="user-box">
-                        <input required="" name="" type="text" @bind-value="registerDto.Address" />
-                        <label>Address</label>
-                    </div>
+                </div>
+                <div class="col">
                     <div class="user-box">
                         <input required="" name="" type="text" @bind-value="registerDto.PhoneNumber" />
                         <label>Phone Number</label>
                     </div>
-                    <a @onclick="HandleValidSubmit">
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        <span></span>
-                        Submit
-                    </a>
                 </div>
             </div>
+            <a @onclick="HandleValidSubmit">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                Submit
+            </a>
         </div>
     </form>
     <p>Already have an account <a href="" class="a2">Login!</a></p>
 </div>
-
-@* <EditForm Model="@registerDto" OnValidSubmit="@HandleValidSubmit">
-    <DataAnnotationsValidator />
-    <ValidationSummary />
-
-    <div class="form-group">
-        <label for="name">Name:</label>
-        <InputText id="name" @bind-Value="registerDto.Name" class="form-control" autocomplete="name" />
-    </div>
-
-    <div class="form-group">
-        <label for="email">Email:</label>
-        <InputText id="email" @bind-Value="registerDto.Email" class="form-control" autocomplete="email" />
-    </div>
-
-    <div class="form-group">
-        <label for="password">Password:</label>
-        <InputText id="password" @bind-Value="registerDto.Password" class="form-control" type="password" autocomplete="new-password" />
-    </div>
-
-    <div class="form-group">
-        <label for="birthday">Birthday:</label>
-        <InputDate id="birthday" @bind-Value="registerDto.Birthday" class="form-control" autocomplete="bday" />
-    </div>
-
-    <div class="form-group">
-        <label for="address">Address:</label>
-        <InputText id="address" @bind-Value="registerDto.Address" class="form-control" autocomplete="street-address" />
-    </div>
-
-    <div class="form-group">
-        <label for="phoneNumber">Phone Number:</label>
-        <InputText id="phoneNumber" @bind-Value="registerDto.PhoneNumber" class="form-control" autocomplete="tel" />
-    </div>
-
-    <button type="submit" id="createProfileBtn" name="createProfileBtn" class="btn btn-primary" autocomplete="off">
-        Create Profile
-    </button>
-</EditForm> *@
 
 @if (!string.IsNullOrEmpty(errorMessage))
 {
@@ -112,16 +83,15 @@
             }
             if (registerDto.Password == secondPassword)
             {   
-                var response = await Http.PostAsJsonAsync("https://localhost:7207/api/Profile/register", registerDto);
-                var responseContent = await response.Content.ReadAsStringAsync();
+                var response = await dbService.PostProfile(registerDto);
 
-                if (response.IsSuccessStatusCode)
+                if (response == "Registration successful!")
                 {
                     navManager.NavigateTo("/login");
                 }
                 else
                 {
-                    errorMessage = $"Registration failed: {responseContent}";
+                    errorMessage = $"Registration failed: {response}";
                     Console.WriteLine(errorMessage);
                 }
             }

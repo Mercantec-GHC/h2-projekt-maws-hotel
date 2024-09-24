@@ -42,7 +42,7 @@
     // Handle login submit.
     private async Task HandleValidSubmit()
     {
-        var response = await HttpClient.PostAsJsonAsync("api/profile/login", loginDto);
+        var response = await dbService.LoginProfile(loginDto);
 
         if (response.IsSuccessStatusCode)
         {
@@ -61,12 +61,5 @@
         {
             Console.WriteLine("Forkerte oplysninger, prøv igen");
         }
-    }
-
-    private class LoginResult
-    {
-        public string? Token { get; set; }
-        public int UserId { get; set; }
-        public bool IsAdmin { get; set; }
     }
 }

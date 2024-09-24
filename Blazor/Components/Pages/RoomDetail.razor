@@ -268,9 +268,6 @@ else
     </div>
 </div>
 
-
-
-
 @code {
     [Parameter]
     public int RoomId { get; set; }
@@ -316,7 +313,7 @@ else
             return;
         }
 
-        // Tjek for eksisterende bookinger
+        // check for exiting bookings.
         var existingBookings = await dbService.CheckExistingBookings(RoomId, date_start, date_end);
 
         if (existingBookings.Any())
@@ -325,21 +322,17 @@ else
             return;
         }
 
-        // Opret en ny booking
+        // Create a new booking.
         var newBooking = new Booking
-            {
-                DateStart = date_start,
-                DateEnd = date_end,
-                RoomId = RoomId,
-                ProfileId = AppState.UserId
-            };
+        {
+            DateStart = date_start,
+            DateEnd = date_end,
+            RoomId = RoomId,
+            ProfileId = AppState.UserId
+        };
 
         await dbService.PostBooking(newBooking);
         await jsRuntime.InvokeVoidAsync("alert", "Værelset er blevet booket succesfuldt!");
         navManager.NavigateTo("/bookings");
     }
-
-}
-
-
 }

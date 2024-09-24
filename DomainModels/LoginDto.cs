@@ -14,4 +14,11 @@ namespace DomainModels
         [Column("password")]
         public string Password { get; set; } = string.Empty;
     }
+
+    public class LoginResult
+    {
+        public string? Token { get; set; }
+        public int UserId { get; set; }
+        public bool IsAdmin { get; set; }
+    }
 }

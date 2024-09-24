@@ -9,6 +9,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using static Blazor.Services.DatabaseService;
 using Microsoft.AspNetCore.Http.HttpResults;
+using static System.Net.WebRequestMethods;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Blazor.Services
@@ -80,6 +82,27 @@ namespace Blazor.Services
         public async Task DeleteBooking(int id)
         {
             await _httpClient.DeleteFromJsonAsync<Booking>(_baseURL + $"Booking/DeleteBooking/{id}");
+        }
+
+        // Opretter en ny profile
+        public async Task<string> PostProfile(RegisterDto request)
+        {
+            var response = await _httpClient.PostAsJsonAsync(_baseURL + "Profile/register", request); 
+
+            if (response.IsSuccessStatusCode)
+            {
+                return "Registration successful!";
+            }
+            else
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        // Login to profile
+        public async Task<HttpResponseMessage> LoginProfile(LoginDto loginDto)
+        {
+             return await _httpClient.PostAsJsonAsync(_baseURL + "profile/login", loginDto);
         }
     }
 }
