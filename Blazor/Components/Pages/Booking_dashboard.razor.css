@@ -30,8 +30,16 @@ td {
 
 table {
     width: 99%;
-    margin: 1rem auto
+    margin: 1rem auto;
 }
+
+.container {
+    margin: 1rem auto;
+    border-radius: 20px;
+    border: 2px solid rgba(0,0,0,0.5);
+    box-shadow: rgba(0,0,0,0.5) 0px 0px 5rem;
+}
+
 
 
 /* DELETE BUTTON */

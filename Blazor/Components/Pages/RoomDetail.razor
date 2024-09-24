@@ -175,30 +175,8 @@
                 </svg>
                 <div class="card-info">
                     <div class="left-info">
-                        <p>@allRooms.FirstOrDefault(r => r.Type == 5)?.Name.ToString()</p>
-                        
-                            @if (room != null && !string.IsNullOrEmpty(room.Name))
-                            {
-                                <p>@room.Name</p>
-                            }
-                            else
-                            {
-                                <p>@room.Name</p>
-                                <p>Navn: Ingen informationer tilgængelige</p>
-                            }
                         <span class="product-title">
-
-
-@*                             @if(room.Type == 1){
-                                <h3>Standard room</h3>
-                            } else if (room.Type == 2)
-                            {
-                                <h3>Komfort room</h3>
-                            }
-                            else if (room.Type == 3) {
-                                <h3>Suite room</h3>
-
-                            } *@
+                            @room.Name
 
                             <div class="star-rating">
                                 <span class="star">
@@ -253,8 +231,7 @@
                                 </span>
                             </div>
                         </span>
-                        
-                        Skriv description her, så det bliver vist rigtig rigtig flot.
+                        @room.Description
                     </div>
                     <div class="right-info">
                         <ul class="features-list">
@@ -277,7 +254,7 @@
 }
 else
 {
-    <p>Indlæser værelsesoplysninger...</p>
+    <p>No rooms available today!</p>
 }
     </div>
 </div>
@@ -290,7 +267,7 @@ else
 
     [Parameter]
     public int RoomId { get; set; }
-    private Room? room;
+    private Room room;
     private DateTime date_start;
     private DateTime date_end;
     public List<Room> allRooms = new List<Room>();
