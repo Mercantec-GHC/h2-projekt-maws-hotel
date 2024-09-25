@@ -1,63 +1,132 @@
 .custom-navbar {
-    color: rgb(255, 130, 0) !important; 
-    background: #282c30;
-    border-bottom: 2px solid #343a40;
+    color: #ffffff !important;
+    background: linear-gradient(to right, #1a1a1a, #2c2c2c);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 1rem;
 }
 
 .navbar-logo {
-    max-height: 4rem;
-    border-radius: 50px;
+    max-height: 3.5rem;
+    border-radius: 0;
+    transition: transform 0.3s ease;
 }
 
+    .navbar-logo:hover {
+        transform: scale(1.05);
+    }
+
 .navbar-brand {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: rgb(255, 130, 0);
+    display: flex;
+    align-items: center;
+    font-size: 1.8rem;
+    font-weight: 300;
+    color: #ffffff;
+    letter-spacing: 1px;
+    text-decoration: none;
+    margin-right: 2rem;
+}
+
+.brand-text {
+    margin-left: 1rem;
 }
 
 .navbar-toggler {
     appearance: none;
     cursor: pointer;
-    width: 3rem;
+    width: 2.5rem;
     height: 2.5rem;
-    background-color: #fff;
-    border-radius: 5px;
-    border: none;
+    background-color: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.5);
+    border-radius: 3px;
+    transition: background-color 0.3s ease;
 }
 
     .navbar-toggler:hover {
-        background-color: rgba(255, 255, 255, 0.7);
+        background-color: rgba(255, 255, 255, 0.1);
     }
 
-/* Ændrer farven på nav-link elementerne i navigationen */
 .navbar-nav .nav-link {
-    color: rgb(255, 130, 0) !important; /* Opdateret farve */
+    color: #ffffff !important;
     padding: 0.75rem 1.25rem;
     transition: background-color 0.3s ease, color 0.3s ease;
-    border-radius: 30px;
+    border-radius: 3px;
+    font-weight: 400;
+    letter-spacing: 0.5px;
 }
 
-    /* Ændrer farven på nav-link elementerne ved hover */
     .navbar-nav .nav-link:hover {
-        color: rgb(255, 130, 0, 0.7) !important;
+        color: #f0f0f0 !important;
+        background-color: rgba(255, 255, 255, 0.1);
     }
 
-    /* Ændrer farven på det aktive nav-link element */
     .navbar-nav .nav-link.active {
-        color: rgb(255, 130, 0) !important;
+        color: #ffffff !important;
+        background-color: rgba(255, 255, 255, 0.2);
     }
 
 .nav-item {
-    margin-right: 0.5rem;
+    margin-right: 0.75rem;
 }
 
 .bi {
     margin-right: 0.5rem;
-    font-size: 1.25rem;
+    font-size: 1.1rem;
 }
 
 .navbar-nav.ms-auto .nav-link {
-    margin-right: 1rem;
+    margin-right: 0.75rem;
+}
+
+.navbar-collapse {
+    flex-grow: 1;
+    display: flex;
+    justify-content: space-between;
+}
+
+.navbar-nav {
+    align-items: center;
+}
+
+    .navbar-nav .nav-link {
+        position: relative;
+        overflow: hidden;
+    }
+
+        .navbar-nav .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background-color: #ffffff;
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+
+        .navbar-nav .nav-link:hover::after,
+        .navbar-nav .nav-link.active::after {
+            transform: translateX(0);
+        }
+
+@media (max-width: 991px) {
+    .navbar-collapse {
+        flex-direction: column;
+    }
+
+    .navbar-nav.me-auto,
+    .navbar-nav.ms-auto {
+        width: 100%;
+    }
+
+    .navbar-nav.me-auto {
+        order: 1;
+    }
+
+    .navbar-nav.ms-auto {
+        order: 2;
+    }
 }
 
 @media (max-width: 767px) {
@@ -66,11 +135,17 @@
     }
 
     .navbar-brand {
-        font-size: 1.2rem;
+        font-size: 1.5rem;
+        margin-right: 1rem;
     }
 
     .navbar-nav .nav-item {
         margin-right: 0;
+        margin-bottom: 0.5rem;
+    }
+
+    .brand-text {
+        display: none;
     }
 }
 
