@@ -95,7 +95,7 @@
                     <h5 class="card-title">@allRooms.FirstOrDefault(r => r.Type == 5)?.Name.ToString()</h5>
                     <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 5)?.Description.ToString()</p>
                     <!-- Vis prisen for suiteværelset -->
-                    <div class="price-container" style="margin-top:1.5rem">
+                    <div class="price-container">
                         <div class="price-book-container">
                             <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 5)?.Price.ToString("C")</p>
                             <button class="card-btn" @onclick="() => FindAndNavigateToRoom(5)">
