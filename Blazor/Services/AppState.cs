@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using Microsoft.JSInterop;
 using Microsoft.IdentityModel.JsonWebTokens;
 
@@ -48,11 +49,11 @@ public class AppState
     }
     public void Logout()
     {
-       
+
         LoggedIn = false;
         UserId = 0;
 
-        
+
         NotifyStateChanged();
     }
 
@@ -60,22 +61,44 @@ public class AppState
 
     public async Task InitializeStateAsync(IJSRuntime JSRuntime)
     {
-        var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
+        try
+        {
+            var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
 
-        if (!string.IsNullOrEmpty(token))
-        {
-            var claims = DecodeToken(token);
-            LoggedIn = true;
-            UserId = claims.UserId;
-            IsAdmin = claims.IsAdmin;
+            if (!string.IsNullOrEmpty(token))
+            {
+                var claims = DecodeToken(token);
+                LoggedIn = true;
+                UserId = claims.UserId;
+                IsAdmin = claims.IsAdmin;
+            }
+            else
+            {
+                LoggedIn = false;
+                UserId = 0;
+                IsAdmin = false;
+            }
         }
-        else
+        catch (TaskCanceledException)
         {
+            // Handle the task cancellation
+            Console.WriteLine("Task was canceled during state initialization.");
             LoggedIn = false;
             UserId = 0;
             IsAdmin = false;
         }
-        NotifyStateChanged();
+        catch (Exception ex)
+        {
+            // Handle other exceptions
+            Console.WriteLine($"An error occurred during state initialization: {ex.Message}");
+            LoggedIn = false;
+            UserId = 0;
+            IsAdmin = false;
+        }
+        finally
+        {
+            NotifyStateChanged();
+        }
     }
 
     private (int UserId, bool IsAdmin) DecodeToken(string token)
@@ -87,7 +110,7 @@ public class AppState
         var roleClaim = jsonToken.GetClaim("http://schemas.microsoft.com/ws/2008/06/identity/claims/role");
 
         int userId = int.Parse(userIdClaim?.Value ?? "0");
-        bool isAdmin = roleClaim?.Value == "Administrator"; 
+        bool isAdmin = roleClaim?.Value == "Administrator";
 
         return (userId, isAdmin);
     }
