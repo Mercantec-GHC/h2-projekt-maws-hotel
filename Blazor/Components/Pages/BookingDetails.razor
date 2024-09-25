@@ -86,7 +86,7 @@
         booking = await dbService.GetBookingById(bookingId);
 
         // Fetch profile details
-        profile = await dbService.GetProfileByUserID(booking.UserId);
+        profile = await dbService.GetProfileByUserID(booking.ProfileId);
     }
 
     private async Task ToggleEdit()
@@ -94,7 +94,7 @@
         if (!isDisabled)
         {
             // Save changes
-            await dbService.UpdateBooking(booking);
+            //await dbService.UpdateBooking(booking);
         }
 
         isDisabled = !isDisabled;
