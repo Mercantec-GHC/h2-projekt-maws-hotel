@@ -61,6 +61,7 @@ public class AppState
     public async Task InitializeStateAsync(IJSRuntime JSRuntime)
     {
         var token = await JSRuntime.InvokeAsync<string>("localStorage.getItem", "authToken");
+
         if (!string.IsNullOrEmpty(token))
         {
             var claims = DecodeToken(token);

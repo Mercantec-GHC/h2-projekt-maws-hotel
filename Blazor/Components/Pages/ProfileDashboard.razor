@@ -1,11 +1,6 @@
 ﻿@page "/ProfileDashboard"
 @using DomainModels
 @inject AppState AppState
-@inject HttpClient HttpClient
-@inject HttpClient Http
-@inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
-@inject Blazor.Services.DatabaseService db
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
@@ -44,7 +39,16 @@
                                     }
                                     else
                                     {
-                                        <h6 class="f-w-600">Loading...</h6>
+                                        <center>
+                                            <svg class="pl" width="128px" height="128px" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+                                                <circle class="pl__ring1" cx="64" cy="64" r="60" fill="none" stroke="hsl(3,90%,55%)" stroke-width="8" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="377 377" stroke-dashoffset="-376.4"></circle>
+                                                <circle class="pl__ring2" cx="64" cy="64" r="52.5" fill="none" stroke="hsl(13,90%,55%)" stroke-width="7" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="329.9 329.9" stroke-dashoffset="-329.3"></circle>
+                                                <circle class="pl__ring3" cx="64" cy="64" r="46" fill="none" stroke="hsl(23,90%,55%)" stroke-width="6" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="289 289" stroke-dashoffset="-288.6"></circle>
+                                                <circle class="pl__ring4" cx="64" cy="64" r="40.5" fill="none" stroke="hsl(33,90%,55%)" stroke-width="5" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="254.5 254.5" stroke-dashoffset="-254"></circle>
+                                                <circle class="pl__ring5" cx="64" cy="64" r="36" fill="none" stroke="hsl(43,90%,55%)" stroke-width="4" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="226.2 226.2" stroke-dashoffset="-225.8"></circle>
+                                                <circle class="pl__ring6" cx="64" cy="64" r="32.5" fill="none" stroke="hsl(53,90%,55%)" stroke-width="3" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="204.2 204.2" stroke-dashoffset="-203.9"></circle>
+                                            </svg>
+                                        </center>
                                     }
                                 </div>
                             </div>
@@ -71,7 +75,16 @@
                                     }
                                     else
                                     {
-                                        <p>Loading...</p>
+                                        <center>
+                                            <svg class="pl" width="128px" height="128px" viewBox="0 0 128 128" xmlns="http://www.w3.org/2000/svg">
+                                                <circle class="pl__ring1" cx="64" cy="64" r="60" fill="none" stroke="hsl(3,90%,55%)" stroke-width="8" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="377 377" stroke-dashoffset="-376.4"></circle>
+                                                <circle class="pl__ring2" cx="64" cy="64" r="52.5" fill="none" stroke="hsl(13,90%,55%)" stroke-width="7" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="329.9 329.9" stroke-dashoffset="-329.3"></circle>
+                                                <circle class="pl__ring3" cx="64" cy="64" r="46" fill="none" stroke="hsl(23,90%,55%)" stroke-width="6" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="289 289" stroke-dashoffset="-288.6"></circle>
+                                                <circle class="pl__ring4" cx="64" cy="64" r="40.5" fill="none" stroke="hsl(33,90%,55%)" stroke-width="5" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="254.5 254.5" stroke-dashoffset="-254"></circle>
+                                                <circle class="pl__ring5" cx="64" cy="64" r="36" fill="none" stroke="hsl(43,90%,55%)" stroke-width="4" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="226.2 226.2" stroke-dashoffset="-225.8"></circle>
+                                                <circle class="pl__ring6" cx="64" cy="64" r="32.5" fill="none" stroke="hsl(53,90%,55%)" stroke-width="3" transform="rotate(-90,64,64)" stroke-linecap="round" stroke-dasharray="204.2 204.2" stroke-dashoffset="-203.9"></circle>
+                                            </svg>
+                                        </center>
                                     }
 
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Upcoming Bookings</h6>
@@ -99,7 +112,7 @@
                                                             <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
                                                             <td>@CalculateTotalPrice(booking)</td>
                                                             <td>
-                                                                <button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking.RoomId))">
+                                                                <button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking))">
                                                                 Show
                                                                 </button>
                                                             </td>
@@ -134,9 +147,9 @@
     {
         if (AppState.LoggedIn)
         {
-            profile = await HttpClient.GetFromJsonAsync<Profile>($"api/profile/{AppState.UserId}");
-            upcomingBookings = await db.GetBookingsFromUserID(AppState.UserId);
-            allRooms = await db.GetRooms();
+            profile = await Http.GetFromJsonAsync<Profile>($"api/profile/{AppState.UserId}");
+            upcomingBookings = await dbService.GetBookingsFromUserID(AppState.UserId);
+            allRooms = await dbService.GetRooms();
 
         }
     }
@@ -158,12 +171,14 @@
 
     private void EditProfile()
     {
-        NavigationManager.NavigateTo($"/EditProfile/{profile?.Id}");
+        navManager.NavigateTo($"/EditProfile/{profile?.Id}");
     }
 
-    private void GotoBooking(int bookingId)
+    private void GotoBooking(Booking booking)
     {
-        NavigationManager.NavigateTo($"/room-details/{bookingId}");
+        Console.WriteLine($"Navigating to booking with ID: {booking.Id}");
+        navManager.NavigateTo($"/booking-details/{booking.Id}");
     }
+
 
 }

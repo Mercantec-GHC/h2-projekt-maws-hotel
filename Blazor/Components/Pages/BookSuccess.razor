@@ -3,7 +3,7 @@
 @inject Blazor.Services.DatabaseService db
 @inject IJSRuntime JSRuntime
 
-@* <div class="container">
+<div class="container" id="animationContainer">
     <div class="left-side">
         <div class="card">
             <div class="card-line"></div>
@@ -21,34 +21,13 @@
     <div class="right-side">
         <div class="new">Checkout</div>
     </div>
-</div> *@
-
-
-<div class="container animate">
-    <div class="container">
-        <div class="left-side">
-            <div class="card">
-                <div class="card-line"></div>
-                <div class="buttons"></div>
-            </div>
-            <div class="post">
-                <div class="post-line"></div>
-                <div class="screen">
-                    <div class="dollar">$</div>
-                </div>
-                <div class="numbers"></div>
-                <div class="numbers-line2"></div>
-            </div>
-        </div>
-        <div class="right-side">
-            <div class="new">Checkout</div>
-        </div>
-    </div>
 </div>
 
 @code {
     protected override async Task OnInitializedAsync()
     {
+        // Wait for the component to be fully initialized, then start the animation
+        await Task.Delay(1000); // Delay for 1 second
         await InvokeJS("initAnimation()");
     }
 
@@ -58,27 +37,9 @@
     }
 }
 
+@* Inline JavaScript to handle animation *@
 <script>
     function initAnimation() {
-        document.querySelector('.container').classList.add('animate');
-    }
+        document.querySelector('#animationContainer').classList.add('animate');
+        }
 </script>
-
-<style>
-    .container {
-        background-color: #ffffff;
-        display: flex;
-        width: 270px;
-        height: 120px;
-        position: relative;
-        border-radius: 6px;
-        transition: 0.3s ease-in-out;
-        top: 10rem;
-    }
-
-    .animate {
-        animation: slide-top 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) both, slide-post 1s cubic-bezier(0.165, 0.84, 0.44, 1) both, fade-in-fwd 0.3s 1s backwards;
-    }
-
-    /* Rest of your CSS styles */
-</style>

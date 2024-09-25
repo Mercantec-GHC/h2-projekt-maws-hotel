@@ -273,5 +273,39 @@ namespace API.Controllers
             }
             return allBookings;
         }
+
+        // Get booking by ID 
+        [HttpGet("BookingID/{id}")]
+        public async Task<ActionResult<Booking>> GetBookingById(int id)
+        {
+            Booking booking = null; 
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+                using (var command = new NpgsqlCommand($"SELECT * FROM booking WHERE id = {id}", connection))
+                {
+                    using (var reader = command.ExecuteReader())
+                    {
+                        if (reader.Read()) 
+                        {
+                            booking = new Booking
+                            {
+                                Id = Convert.ToInt32(reader["id"]),
+                                DateStart = Convert.ToDateTime(reader["date_start"]),
+                                DateEnd = Convert.ToDateTime(reader["date_end"]),
+                                ProfileId = Convert.ToInt32(reader["profile_id"]),
+                                RoomId = Convert.ToInt32(reader["room_id"])
+                            };
+                        }
+                    }
+                }
+            }
+            if (booking == null) 
+            {
+                return NotFound(); 
+            }
+            return Ok(booking); 
+        }
+
     }
 }

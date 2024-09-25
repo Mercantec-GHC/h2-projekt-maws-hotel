@@ -4,8 +4,8 @@
 @inject ILogger<AdminProfileList> Logger
 
 <div class="container">
-    <center><h3 class="title">Admin Profile List</h3></center>
-
+@*     <center><h3 class="title">Admin Profile List</h3></center>
+ *@
     @if (!AppState.LoggedIn || !AppState.IsAdmin)
     {
         <p>You do not have permission to access this page.</p>
@@ -28,33 +28,34 @@
         <div class="form-group">
             <input type="text" class="form-control" placeholder="Search profiles..." @bind="searchTerm" @bind:event="oninput" @onkeyup="FilterProfiles" />
         </div>
-
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>Email</th>
-                    <th>Actions</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var profile in filteredProfiles)
-                {
+        <div class="table-container">
+            <table class="table">
+                <thead>
                     <tr>
-                        <td>@profile.Id</td>
-                        <td>@profile.Name</td>
-                        <td>@profile.Email</td>
-                        <td>
-                            <a href="@($"/admin-edit-profile/{profile.Id}")" class="edit-profile-btn">
-                                <i class="bi bi-pencil-square"></i>
-                                Edit
-                            </a>
-                        </td>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Actions</th>
                     </tr>
-                }
-            </tbody>
-        </table>
+                </thead>
+                <tbody>
+                    @foreach (var profile in filteredProfiles)
+                    {
+                        <tr>
+                            <td>@profile.Id</td>
+                            <td>@profile.Name</td>
+                            <td>@profile.Email</td>
+                            <td>
+                                <a href="@($"/admin-edit-profile/{profile.Id}")" class="edit-profile-btn">
+                                    <i class="bi bi-pencil-square"></i>
+                                    Edit
+                                </a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
     }
 </div>
 
