@@ -79,36 +79,3 @@
         display: none;
     }
 }
-
-.modal {
-    backdrop-filter: blur(2px);
-}
-
-.modal-content {
-    border-radius: 10px;
-    box-shadow: 0px 6px 30px rgba(255, 255, 255, 0.2);
-    background: rgb(40,44,48);
-    background: #282c30;
-    color: white;
-}
-
-.modal-header {
-    color: rgb(255, 130, 0);
-}
-
-.btn-outline-primary {
-    color: rgb(255, 130, 0);
-    border-color: rgb(255, 130, 0);
-    border-radius: 10px 0 10px 0;
-}
-
-.btn-outline-primary:hover {
-    background-color: rgb(255, 130, 0);
-    color: black;
-    border-color: rgb(255, 130, 0);
-    border-radius: 10px 0 10px 0;
-}
-
-.bi-x-lg {
-    cursor: pointer;
-}

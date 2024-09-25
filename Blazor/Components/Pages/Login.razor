@@ -1,9 +1,6 @@
 @page "/login"
 @using DomainModels
 @inject AppState AppState
-@inject HttpClient HttpClient
-@inject NavigationManager NavigationManager
-@inject IJSRuntime JSRuntime
 
 <div class="login-box" @onkeypress="Enter">
     <p>Login</p>
@@ -53,12 +50,13 @@
                 AppState.LoggedIn = true;
                 AppState.UserId = result.UserId;
                 AppState.IsAdmin = result.IsAdmin;
-                NavigationManager.NavigateTo("/");
+                navManager.NavigateTo("/");
             }
-            NavigationManager.NavigateTo("/ProfileDashboard");
+            navManager.NavigateTo("/ProfileDashboard");
         }
         else
         {
+            await JSRuntime.InvokeVoidAsync("alert", "Try again.");
             Console.WriteLine("Forkerte oplysninger, prøv igen");
         }
     }
