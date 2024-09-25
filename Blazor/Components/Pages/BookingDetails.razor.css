@@ -23,10 +23,10 @@
     animation: fadeIn 0.5s ease-out;
 }
 
-.booking-card-full:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.15);
-}
+    .booking-card-full:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 12px 50px rgba(0, 0, 0, 0.15);
+    }
 
 .booking-header {
     border-radius: 20px 0 0 20px;
@@ -45,14 +45,34 @@
     animation: rotate 20s linear infinite;
 }
 
-.booking-icon:hover {
-    transform: scale(1.1);
-}
+    .booking-icon:hover {
+        transform: scale(1.1);
+    }
 
 .booking-id {
-    font-size: 1.2rem;
-    margin-top: 1rem;
+    font-size: 1.4rem;
+    margin-top: 1.5rem;
+    padding: 0.8rem 1.2rem;
+    background-color: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    display: inline-block;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: relative;
+    overflow: hidden;
 }
+
+    .booking-id::before {
+        content: '';
+        position: absolute;
+        top: -2px;
+        left: -2px;
+        right: -2px;
+        bottom: -2px;
+        background: linear-gradient(45deg, #ff8200, #ffd700, #ff8200);
+        z-index: -1;
+        filter: blur(10px);
+        opacity: 0.7;
+    }
 
 .card-block {
     padding: 2rem;
@@ -78,20 +98,20 @@ h2 {
     transition: color 0.3s ease-in-out;
 }
 
-.title:hover {
-    color: #ff8200;
-}
+    .title:hover {
+        color: #ff8200;
+    }
 
-.title::after {
-    content: '';
-    position: absolute;
-    bottom: -1px;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50%;
-    height: 2px;
-    background-color: #ff8200;
-}
+    .title::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 50%;
+        height: 2px;
+        background-color: #ff8200;
+    }
 
 .m-b-10 {
     margin-bottom: 10px;
@@ -114,19 +134,19 @@ h2 {
     transition: border-color 0.3s, box-shadow 0.3s, transform 0.2s;
 }
 
-.date-input:focus {
-    outline: none;
-    border-color: #ff8200;
-    box-shadow: 0 0 10px rgba(255, 130, 0, 0.2);
-    transform: scale(1.02);
-}
+    .date-input:focus {
+        outline: none;
+        border-color: #ff8200;
+        box-shadow: 0 0 10px rgba(255, 130, 0, 0.2);
+        transform: scale(1.02);
+    }
 
-.date-input:disabled {
-    background-color: #f8f9fa;
-    border-color: #e3e3e3;
-    color: #999;
-    cursor: not-allowed;
-}
+    .date-input:disabled {
+        background-color: #f8f9fa;
+        border-color: #e3e3e3;
+        color: #999;
+        cursor: not-allowed;
+    }
 
 .edit-button {
     display: inline-block;
@@ -143,16 +163,16 @@ h2 {
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
-.edit-button:hover {
-    background-color: #ff9933;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255, 130, 0, 0.2);
-    animation: pulse 1s infinite;
-}
+    .edit-button:hover {
+        background-color: #ff9933;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(255, 130, 0, 0.2);
+        animation: pulse 1s infinite;
+    }
 
-.edit-button:active {
-    transform: translateY(0);
-}
+    .edit-button:active {
+        transform: translateY(0);
+    }
 
 @media only screen and (max-width: 767px) {
     .booking-card-full .booking-header {
@@ -164,9 +184,11 @@ h2 {
     0% {
         transform: scale(1);
     }
+
     50% {
         transform: scale(1.05);
     }
+
     100% {
         transform: scale(1);
     }
@@ -176,6 +198,7 @@ h2 {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -186,6 +209,7 @@ h2 {
         opacity: 0;
         transform: translateY(20px);
     }
+
     to {
         opacity: 1;
         transform: translateY(0);
