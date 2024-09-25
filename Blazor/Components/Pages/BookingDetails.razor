@@ -5,10 +5,98 @@
 @inject AppState AppState
 @using Microsoft.JSInterop
 
-<p>@booking.DateStart</p> <p>@booking.DateEnd</p>
+<PageTitle>Booking Details</PageTitle>
+
+<HeadContent>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</HeadContent>
+
+<div class="container">
+    <div class="page-content">
+        <div class="padding">
+            <div class="row justify-content-center">
+                <div class="col-md-8 col-lg-10">
+                    <div class="card booking-card-full shadow-lg rounded">
+                        <div class="row m-l-0 m-r-0">
+                            <div class="col-sm-4 bg-c-lite-green booking-header">
+                                <div class="card-block text-center text-white">
+                                    <h2>Booking Details</h2>
+                                    <div class="m-b-25">
+                                        <i class="bi bi-calendar-check booking-icon"></i>
+                                    </div>
+                                    <h6 class="booking-id">Booking ID: @bookingId</h6>
+                                </div>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="card-block">
+                                    <h6 class="m-b-20 p-b-5 b-b-default f-w-600 title">Customer Information</h6>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">Name</p>
+                                            <h6 class="text-muted f-w-400">@profile.Name</h6>
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">Email</p>
+                                            <h6 class="text-muted f-w-400">@profile.Email</h6>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">Phone</p>
+                                            <h6 class="text-muted f-w-400">@profile.PhoneNumber</h6>
+                                        </div>
+                                    </div>
+                                    <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Booking Dates</h6>
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">Start Date</p>
+                                            <input type="date" id="dateStart" class="date-input" disabled="@isDisabled" @bind="booking.DateStart" />
+                                        </div>
+                                        <div class="col-sm-6">
+                                            <p class="m-b-10 f-w-600">End Date</p>
+                                            <input type="date" id="dateEnd" class="date-input" disabled="@isDisabled" @bind="booking.DateEnd" />
+                                        </div>
+                                    </div>
+                                    <div class="row mt-4">
+                                        <div class="col-sm-12 text-center">
+                                            <button class="edit-button" @onclick="ToggleEdit">@(isDisabled ? "Edit" : "Save")</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 
 @code {
     [Parameter]
     public int bookingId { get; set; }
+
+    private Profile profile = new Profile();
     private Booking booking = new Booking();
+    private bool isDisabled = true;
+
+    protected override async Task OnInitializedAsync()
+    {
+        // Fetch booking details
+        booking = await dbService.GetBookingById(bookingId);
+
+        // Fetch profile details
+        profile = await dbService.GetProfileByUserID(booking.UserId);
+    }
+
+    private async Task ToggleEdit()
+    {
+        if (!isDisabled)
+        {
+            // Save changes
+            await dbService.UpdateBooking(booking);
+        }
+
+        isDisabled = !isDisabled;
+    }
 }

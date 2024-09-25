@@ -74,7 +74,7 @@ namespace Blazor.Services
         // Henter booking via ID 
         public async Task<Booking> GetBookingById(int id)
         {
-           return await _httpClient.GetFromJsonAsync<Booking>(_baseURL + $"BookingID/{id}");
+           return await _httpClient.GetFromJsonAsync<Booking>(_baseURL + $"Booking/BookingID/{id}");
         }
 
 
@@ -111,5 +111,11 @@ namespace Blazor.Services
         {
              return await _httpClient.PostAsJsonAsync(_baseURL + "profile/login", loginDto);
         }
+
+        public async Task<Profile> GetProfileByUserID(int userID)
+        {
+            return await _httpClient.GetFromJsonAsync<Profile>(_baseURL + $"profile/{userID}");
+        }
+
     }
 }

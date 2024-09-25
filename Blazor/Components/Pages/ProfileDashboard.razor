@@ -32,7 +32,7 @@
 
                                         }
                                         <p></p>
-                                        <p class="show-phonenumber"><i class="bi bi-telephone"></i>@profile.PhoneNumber</p>
+                                        <p class="show-phonenumber"><i class="bi bi-telephone"></i>+45 @FormatPhoneNumber(profile.PhoneNumber)</p>
                                         
                                         <i class="mdi mdi-square-edit-outline feather icon-edit m-t-10 f-16"></i>
                                         
@@ -110,7 +110,7 @@
                                                             <td>@booking.RoomId</td>
                                                             <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
                                                             <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
-                                                            <td>@CalculateTotalPrice(booking)</td>
+                                                            <td>@CalculateTotalPrice(booking).ToString("#,##0.00")</td>
                                                             <td>
                                                                 <button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking))">
                                                                 Show
@@ -147,7 +147,8 @@
     {
         if (AppState.LoggedIn)
         {
-            profile = await Http.GetFromJsonAsync<Profile>($"api/profile/{AppState.UserId}");
+
+            profile = await dbService.GetProfileByUserID(AppState.UserId);
             upcomingBookings = await dbService.GetBookingsFromUserID(AppState.UserId);
             allRooms = await dbService.GetRooms();
 
@@ -180,5 +181,10 @@
         navManager.NavigateTo($"/booking-details/{booking.Id}");
     }
 
+    private string FormatPhoneNumber(string phoneNumber)
+    {
+        return string.Join(" ", Enumerable.Range(0, phoneNumber.Length / 2)
+            .Select(i => phoneNumber.Substring(i * 2, 2)));
+    }
 
 }
