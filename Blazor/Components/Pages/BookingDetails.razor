@@ -1,0 +1,14 @@
+﻿@page "/booking-details/{bookingId:int}"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+@using DomainModels
+@inject AppState AppState
+@using Microsoft.JSInterop
+
+<p>@booking.DateStart</p> <p>@booking.DateEnd</p>
+
+@code {
+    [Parameter]
+    public int bookingId { get; set; }
+    private Booking booking = new Booking();
+}
