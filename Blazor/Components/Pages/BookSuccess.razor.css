@@ -22,7 +22,6 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    cursor: pointer;
     transition: 0.3s;
     flex-shrink: 0;
     overflow: hidden;
@@ -32,16 +31,9 @@
     display: flex;
     align-items: center;
     overflow: hidden;
-    cursor: pointer;
     justify-content: space-between;
     white-space: nowrap;
     transition: 0.3s;
-}
-
-.arrow {
-    width: 20px;
-    height: 20px;
-    margin-right: 20px;
 }
 
 .new {
@@ -60,9 +52,7 @@
     z-index: 10;
     flex-direction: column;
     align-items: center;
-    -webkit-box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
-    -moz-box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
-    -webkit-box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
+    box-shadow: 9px 9px 9px -2px rgba(77, 200, 143, 0.72);
 }
 
 .card-line {
@@ -94,32 +84,25 @@
     margin: 10px 0 0 -30px;
 }
 
-.container:hover .card {
+/* Animation styles */
+.animate .card {
     animation: slide-top 1.2s cubic-bezier(0.645, 0.045, 0.355, 1) both;
 }
 
-.container:hover .post {
+.animate .post {
     animation: slide-post 1s cubic-bezier(0.165, 0.84, 0.44, 1) both;
 }
 
 @keyframes slide-top {
     0% {
-        -webkit-transform: translateY(0);
         transform: translateY(0);
     }
 
     50% {
-        -webkit-transform: translateY(-70px) rotate(90deg);
-        transform: translateY(-70px) rotate(90deg);
-    }
-
-    60% {
-        -webkit-transform: translateY(-70px) rotate(90deg);
         transform: translateY(-70px) rotate(90deg);
     }
 
     100% {
-        -webkit-transform: translateY(-8px) rotate(90deg);
         transform: translateY(-8px) rotate(90deg);
     }
 }
@@ -131,7 +114,6 @@
     position: absolute;
     z-index: 11;
     bottom: 10px;
-    top: 120px;
     border-radius: 6px;
     overflow: hidden;
 }
@@ -190,13 +172,11 @@
 }
 
 @keyframes slide-post {
-    50% {
-        -webkit-transform: translateY(0);
+    0% {
         transform: translateY(0);
     }
 
     100% {
-        -webkit-transform: translateY(-70px);
         transform: translateY(-70px);
     }
 }
@@ -212,7 +192,7 @@
     text-align: center;
 }
 
-.container:hover .dollar {
+.animate .dollar {
     animation: fade-in-fwd 0.3s 1s backwards;
 }
 

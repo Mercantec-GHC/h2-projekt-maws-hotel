@@ -3,31 +3,31 @@
 @inject Blazor.Services.DatabaseService db
 @inject IJSRuntime JSRuntime
 
-<div class="container animate">
-    <div class="container">
-        <div class="left-side">
-            <div class="card">
-                <div class="card-line"></div>
-                <div class="buttons"></div>
-            </div>
-            <div class="post">
-                <div class="post-line"></div>
-                <div class="screen">
-                    <div class="dollar">$</div>
-                </div>
-                <div class="numbers"></div>
-                <div class="numbers-line2"></div>
-            </div>
+<div class="container" id="animationContainer">
+    <div class="left-side">
+        <div class="card">
+            <div class="card-line"></div>
+            <div class="buttons"></div>
         </div>
-        <div class="right-side">
-            <div class="new">Checkout</div>
+        <div class="post">
+            <div class="post-line"></div>
+            <div class="screen">
+                <div class="dollar">$</div>
+            </div>
+            <div class="numbers"></div>
+            <div class="numbers-line2"></div>
         </div>
+    </div>
+    <div class="right-side">
+        <div class="new">Checkout</div>
     </div>
 </div>
 
 @code {
     protected override async Task OnInitializedAsync()
     {
+        // Wait for the component to be fully initialized, then start the animation
+        await Task.Delay(1000); // Delay for 1 second
         await InvokeJS("initAnimation()");
     }
 
@@ -37,9 +37,9 @@
     }
 }
 
+@* Inline JavaScript to handle animation *@
 <script>
     function initAnimation() {
-        // Automatically add the animation class
-        document.querySelector('.container').classList.add('animate');
-    }
+        document.querySelector('#animationContainer').classList.add('animate');
+        }
 </script>

@@ -71,6 +71,13 @@ namespace Blazor.Services
             await _httpClient.PostAsJsonAsync(_baseURL + "Booking/CreateBooking", request);
         }
 
+        // Henter booking via ID 
+        public async Task<Booking> GetBookingById(int id)
+        {
+           return await _httpClient.GetFromJsonAsync<Booking>(_baseURL + $"BookingID/{id}");
+        }
+
+
 
         //Sender Support besked til Database 
         public async Task PostSupportRequest(SupportRequest request)
