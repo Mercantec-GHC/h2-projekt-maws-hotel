@@ -4,8 +4,6 @@
 @inject ILogger<AdminProfileList> Logger
 
 <div class="container">
-@*     <center><h3 class="title">Admin Profile List</h3></center>
- *@
     @if (!AppState.LoggedIn || !AppState.IsAdmin)
     {
         <p>You do not have permission to access this page.</p>
@@ -25,8 +23,8 @@
     }
     else
     {
-        <div class="form-group">
-            <input type="text" class="form-control" placeholder="Search profiles..." @bind="searchTerm" @bind:event="oninput" @onkeyup="FilterProfiles" />
+        <div class="search-container">
+            <input type="text" class="form-control search-input" placeholder="Search profiles..." @bind="searchTerm" @bind:event="oninput" @onkeyup="FilterProfiles" />
         </div>
         <div class="table-container">
             <table class="table">
@@ -46,9 +44,8 @@
                             <td>@profile.Name</td>
                             <td>@profile.Email</td>
                             <td>
-                                <a href="@($"/admin-edit-profile/{profile.Id}")" class="edit-profile-btn">
-                                    <i class="bi bi-pencil-square"></i>
-                                    Edit
+                                <a href="@($"/admin-edit-profile/{profile.Id}")" class="btn-edit-profile">
+                                    <i class="bi bi-pencil-square"></i> Edit
                                 </a>
                             </td>
                         </tr>
