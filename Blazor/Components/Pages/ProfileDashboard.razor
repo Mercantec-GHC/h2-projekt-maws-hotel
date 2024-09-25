@@ -110,7 +110,7 @@
                                                             <td>@booking.RoomId</td>
                                                             <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
                                                             <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
-                                                            <td>@CalculateTotalPrice(booking).ToString("#,##0.00")</td>
+                                                            <td>@CalculateTotalPrice(booking).ToString("C2", new System.Globalization.CultureInfo("da-DK"))</td>
                                                             <td>
                                                                 <button class="btn-goto-booking" @onclick="@(() => GotoBooking(booking))">
                                                                 Show
