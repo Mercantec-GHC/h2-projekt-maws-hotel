@@ -37,7 +37,7 @@
                         <td>@booking.RoomId</td>
                         <td>
                             <button class="btn btn-danger delete-profile-btn" @onclick="() => delete_booking_from_id(booking.Id)">
-                                <i class="bi bi-trash delete-profile-btn" style="color:white;"></i> Delete  profil
+                                <i class="bi bi-trash delete-profile-btn" style="color:white;"></i> Delete  booking
                             </button>
 
                             <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/admin-edit-profile/{booking.ProfileId}"))">
