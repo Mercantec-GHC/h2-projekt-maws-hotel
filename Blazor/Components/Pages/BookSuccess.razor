@@ -3,7 +3,7 @@
 @inject Blazor.Services.DatabaseService db
 @inject NavigationManager NavigationManager
 
-<div class="container">
+<div class="container" style="transform: scale(1.5); transform-origin: top left;">
     <div class="left-side">
         <div class="card">
             <div class="card-line"></div>
@@ -18,20 +18,17 @@
             <div class="numbers-line2"></div>
         </div>
     </div>
-    <div class="right-side">
-        <div class="new">Checkout</div>
-    </div>
 </div>
 
 @code {
     protected override async Task OnInitializedAsync()
     {
-        
-        await Task.Delay(2000);
-        
+        //Make it 1,75 seconds delayed so it redirects after the animation
+        await Task.Delay(1750);
+
         NavigationManager.NavigateTo("/ProfileDashboard");
 
-        
+
         await InvokeJS("initAnimation()");
     }
 
@@ -48,6 +45,6 @@
         container.style.animationPlayState = 'running';
     }
 
-    
+
     window.onload = initAnimation;
 </script>
