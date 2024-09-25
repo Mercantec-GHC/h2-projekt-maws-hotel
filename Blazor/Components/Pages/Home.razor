@@ -87,19 +87,21 @@
                 }
                 </div>
             </div>
-                
 
-             <div class="card">
+
+            <div class="card">
                 <img class="card-img-top" src="@allRooms.FirstOrDefault(r => r.Type == 5)?.Photos.ToString()" alt="Standard Room" />
                 <div class="card-body">
                     <h5 class="card-title">@allRooms.FirstOrDefault(r => r.Type == 5)?.Name.ToString()</h5>
                     <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 5)?.Description.ToString()</p>
                     <!-- Vis prisen for suiteværelset -->
-                    <div class="price-book-container">
-                        <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 5)?.Price.ToString("C")</p>
-                        <button class="card-btn" @onclick="() => FindAndNavigateToRoom(5)">
-                            <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
-                        </button>
+                    <div class="price-container" style="margin-top:1.5rem">
+                        <div class="price-book-container">
+                            <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 5)?.Price.ToString("C")</p>
+                            <button class="card-btn" @onclick="() => FindAndNavigateToRoom(5)">
+                                <i class="bi bi-cart-plus"></i> <p class="text">Book now</p>
+                            </button>
+                        </div>
                     </div>
                 </div>
             </div>

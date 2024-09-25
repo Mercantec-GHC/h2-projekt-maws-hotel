@@ -1,6 +1,4 @@
-﻿
-
-.home-background {
+﻿.home-background {
     position: relative;
     text-align: center;
 }
@@ -161,6 +159,7 @@
 }
 
 .card {
+    width: 300px;
     border-radius: 20px;
     border: 1px solid lightgray;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
@@ -195,8 +194,7 @@
     justify-content: space-between;
     align-items: center;
     bottom: 0rem;
-    margin:1rem 0 0 0;
-
+    margin: 1rem 0 0 0
 }
 
 .price {
