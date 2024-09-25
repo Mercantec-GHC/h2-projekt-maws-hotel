@@ -1,9 +1,9 @@
 ﻿@page "/BookSuccess"
 @using DomainModels
 @inject Blazor.Services.DatabaseService db
-@inject IJSRuntime JSRuntime
+@inject NavigationManager NavigationManager
 
-<div class="container" id="animationContainer">
+<div class="container">
     <div class="left-side">
         <div class="card">
             <div class="card-line"></div>
@@ -26,8 +26,12 @@
 @code {
     protected override async Task OnInitializedAsync()
     {
-        // Wait for the component to be fully initialized, then start the animation
-        await Task.Delay(1000); // Delay for 1 second
+        
+        await Task.Delay(2000);
+        
+        NavigationManager.NavigateTo("/ProfileDashboard");
+
+        
         await InvokeJS("initAnimation()");
     }
 
@@ -37,9 +41,13 @@
     }
 }
 
-@* Inline JavaScript to handle animation *@
 <script>
     function initAnimation() {
-        document.querySelector('#animationContainer').classList.add('animate');
-        }
+        const container = document.querySelector('.container');
+        container.classList.add('animate');
+        container.style.animationPlayState = 'running';
+    }
+
+    
+    window.onload = initAnimation;
 </script>
