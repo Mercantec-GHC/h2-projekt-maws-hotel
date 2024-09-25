@@ -48,7 +48,7 @@ namespace API.Controllers
             }
             return allRooms;
         }
-
+        //Get room by ID 
         [HttpGet("RoomId/{RoomId}")]
         public async Task<ActionResult<Room>> GetRoomById(int RoomId)
         {

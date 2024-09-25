@@ -13,14 +13,6 @@
     animation: slide-top 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) both, slide-post 1s cubic-bezier(0.165, 0.84, 0.44, 1) both, fade-in-fwd 0.3s 1s backwards;
 }
 
-    .container:hover {
-        transform: scale(1.03);
-    }
-
-        .container:hover .left-side {
-            width: 100%;
-        }
-
 .left-side {
     background-color: #5de2a3;
     width: 130px;
@@ -45,10 +37,6 @@
     white-space: nowrap;
     transition: 0.3s;
 }
-
-    .right-side:hover {
-        background-color: #f9f7f9;
-    }
 
 .arrow {
     width: 20px;
@@ -89,10 +77,6 @@
     .container {
         transform: scale(0.7);
     }
-
-        .container:hover {
-            transform: scale(0.74);
-        }
 
     .new {
         font-size: 18px;
@@ -242,76 +226,4 @@
         opacity: 1;
         transform: translateY(0);
     }
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-.animate {
-    animation: slide-top 0.2s cubic-bezier(0.645, 0.045, 0.355, 1) both, slide-post 1s cubic-bezier(0.165, 0.84, 0.44, 1) both, fade-in-fwd 0.3s 1s backwards;
-}
-
-@keyframes slide-top {
-    0% {
-        transform: translateY(0);
-    }
-
-    50%, 60% {
-        transform: translateY(-70px) rotate(90deg);
-    }
-
-    100% {
-        transform: translateY(-8px) rotate(90deg);
-    }
-}
-
-@keyframes slide-post {
-    50% {
-        transform: translateY(0);
-    }
-
-    100% {
-        transform: translateY(-70px);
-    }
-}
-
-@keyframes fade-in-fwd {
-    0% {
-        opacity: 0;
-        transform: translateY(-5px);
-    }
-
-    100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
-}
-
-
-
-.hover {
-    transform: scale(1.03);
 }
