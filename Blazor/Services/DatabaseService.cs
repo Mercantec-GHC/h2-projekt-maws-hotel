@@ -138,6 +138,5 @@ namespace Blazor.Services
         {
             return await _httpClient.GetFromJsonAsync<Profile>(_baseURL + $"profile/{userID}");
         }
-
     }
 }

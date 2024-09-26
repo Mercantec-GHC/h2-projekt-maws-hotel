@@ -135,6 +135,7 @@ namespace API.Controllers
             profile.Birthday = updatedProfile.Birthday;
             profile.Address = updatedProfile.Address;
             profile.PhoneNumber = updatedProfile.PhoneNumber;
+            profile.Administrator = updatedProfile.Administrator;
 
             try
             {
