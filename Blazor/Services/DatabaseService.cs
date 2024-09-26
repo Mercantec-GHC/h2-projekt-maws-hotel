@@ -128,6 +128,10 @@ namespace Blazor.Services
             }
         }
 
+        public async Task<HttpResponseMessage> EditProfile(int id, Profile profile){
+            return await _httpClient.PutAsJsonAsync(_baseURL + $"profile/{id}", profile);
+        }
+
         // Login to profile
         public async Task<HttpResponseMessage> LoginProfile(LoginDto loginDto)
         {

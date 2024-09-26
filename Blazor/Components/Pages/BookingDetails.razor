@@ -58,8 +58,11 @@
                                         </div>
                                     </div>
                                     <div class="row mt-4">
-                                        <div class="col-sm-12 text-center">
+                                        <div class="col-sm-6 text-center">
                                             <button class="edit-button" @onclick="ToggleEdit">@(isDisabled ? "Edit" : "Save")</button>
+                                        </div>
+                                        <div class="col-sm-6 text-center">
+                                            <button class="cancel-button" @onclick="Cancel">Cancel</button>
                                         </div>
                                     </div>
                                 </div>
@@ -75,7 +78,6 @@
 @code {
     [Parameter]
     public int bookingId { get; set; }
-
     private Profile profile = new Profile();
     private Booking booking = new Booking();
     private bool isDisabled = true;
@@ -89,6 +91,8 @@
         profile = await dbService.GetProfileByUserID(booking.ProfileId);
     }
 
+
+
     private async Task ToggleEdit()
     {
         if (!isDisabled)
@@ -99,4 +103,10 @@
 
         isDisabled = !isDisabled;
     }
+
+    private void Cancel()
+    {
+        navManager.NavigateTo("/ProfileDashboard");
+    }
+
 }

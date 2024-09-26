@@ -51,9 +51,9 @@
 
                     @if (AppState.IsAdmin)
                     {
-                        <div class="form-group form-check">
-                            <label class="form-check-label">
-                                <InputCheckbox @bind-Value="profile.Administrator" class="form-check-input" />
+                        <div class="form-group custom-checkbox">
+                            <input type="checkbox" id="adminCheckbox" @bind="profile.Administrator" class="custom-check-input" />
+                            <label for="adminCheckbox" class="custom-check-label">
                                 <span class="checkmark"></span>
                                 Administrator
                             </label>
@@ -61,7 +61,7 @@
                     }
 
                     <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">Save Changes</button>
                         <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancel</button>
                     </div>
                 </EditForm>
@@ -96,11 +96,17 @@
             profile.Birthday = profile.Birthday.Value.ToUniversalTime();
         }
 
-        var response = await Http.PutAsJsonAsync($"api/profile/{id}", profile);
+        var response = await dbService.EditProfile(profile.Id, profile);
 
         if (response.IsSuccessStatusCode)
         {
-            navManager.NavigateTo("/ProfileDashboard");
+            if(AppState.IsAdmin && profile.Administrator == false){
+                AppState.Logout();
+                navManager.NavigateTo("/login");
+            }
+            else{
+                navManager.NavigateTo("/ProfileDashboard");
+            }
         }
         else
         {
