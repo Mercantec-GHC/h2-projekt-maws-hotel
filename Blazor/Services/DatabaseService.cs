@@ -139,5 +139,11 @@ namespace Blazor.Services
             return await _httpClient.GetFromJsonAsync<Profile>(_baseURL + $"profile/{userID}");
         }
 
+        // Delete support request by ID
+        public async Task<HttpResponseMessage> DeleteSupportRequest(int id)
+        {
+            return await _httpClient.DeleteAsync(_baseURL + $"Support/{id}");
+        }
+
     }
 }

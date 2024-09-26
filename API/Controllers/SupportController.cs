@@ -184,8 +184,37 @@ namespace API.Controllers
             }
         }
 
-        
-        }
+        //Delete Support Request By Id
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSupportRequest(int id)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(_connectionString))
+                {
+                    await connection.OpenAsync();
+                    var sql = "DELETE FROM SupportRequests WHERE Id = @Id";
+                    using (var cmd = new NpgsqlCommand(sql, connection))
+                    {
+                        cmd.Parameters.AddWithValue("Id", id);
 
+                        int rowsAffected = await cmd.ExecuteNonQueryAsync();
+                        if (rowsAffected > 0)
+                        {
+                            return Ok(new { message = $"Support request with ID {id} deleted successfully" });
+                        }
+                        else
+                        {
+                            return NotFound($"Support request with ID {id} not found.");
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = $"An error occurred: {ex.Message}" });
+            }
+        }
     }
+}
 
