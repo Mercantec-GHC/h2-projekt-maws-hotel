@@ -120,6 +120,45 @@ namespace API.Controllers
         }
 
 
+    // Edit an existing booking by ID
+    [HttpPut("EditBooking/{id}")]
+    public IActionResult EditBooking(int id, Booking bookingRequest)
+    {
+        try
+        {
+            using (var connection = new NpgsqlConnection(_connectionString))
+            {
+                connection.Open();
+                var sql = "UPDATE booking SET date_start = @DateStart, date_end = @DateEnd, " +
+                          "profile_id = @ProfileId, room_id = @RoomId WHERE id = @Id";
+                using (var command = new NpgsqlCommand(sql, connection))
+                {
+                    command.Parameters.AddWithValue("@Id", id);
+                    command.Parameters.AddWithValue("@DateStart", bookingRequest.DateStart);
+                    command.Parameters.AddWithValue("@DateEnd", bookingRequest.DateEnd);
+                    command.Parameters.AddWithValue("@ProfileId", bookingRequest.ProfileId);
+                    command.Parameters.AddWithValue("@RoomId", bookingRequest.RoomId);
+
+                    int rowsAffected = command.ExecuteNonQuery();
+
+                    if (rowsAffected > 0)
+                    {
+                        return Ok(new { message = "Booking updated successfully." });
+                    }
+                    else
+                    {
+                        return NotFound(new { message = "Booking not found." });
+                    }
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error updating booking.", error = ex.Message });
+        }
+    }
+
+
         // Get all bookings 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Booking>>> GetBookings()

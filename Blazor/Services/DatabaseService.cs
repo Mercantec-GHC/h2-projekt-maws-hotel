@@ -77,6 +77,12 @@ namespace Blazor.Services
            return await _httpClient.GetFromJsonAsync<Booking>(_baseURL + $"Booking/BookingID/{id}");
         }
 
+         // Ændre en eksisterende booking
+    public async Task<HttpResponseMessage> EditBooking(int id, Booking bookingRequest)
+    {
+        return await _httpClient.PutAsJsonAsync(_baseURL + $"Booking/EditBooking/{id}", bookingRequest);
+    }
+
 
 
         //Sender Support besked til Database 
