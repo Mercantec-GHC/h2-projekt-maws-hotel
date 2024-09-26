@@ -3,58 +3,76 @@
 
 
 
-<h3>Edit Profile</h3>
+<PageTitle>Edit Profile</PageTitle>
 
-@if (profile != null)
-{
-    <EditForm Model="@profile" OnValidSubmit="HandleValidSubmit">
-        <DataAnnotationsValidator />
-        <ValidationSummary />
+<HeadContent>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</HeadContent>
 
-        <div>
-            <label for="name">Name:</label>
-            <InputText id="name" @bind-Value="profile.Name" class="form-control" />
+<div class="container">
+    @if (profile != null)
+    {
+        <div class="admin-edit-profile">
+            <div class="profile-header">
+                <div class="profile-icon">
+                    <i class="bi bi-person-circle"></i>
+                </div>
+                <h3>Edit Profile</h3>
+            </div>
+            <div class="card-block">
+                <EditForm Model="@profile" OnValidSubmit="HandleValidSubmit">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <InputText id="name" @bind-Value="profile.Name" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <InputText id="email" @bind-Value="profile.Email" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="birthday">Birthday:</label>
+                        <InputDate id="birthday" @bind-Value="profile.Birthday" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <InputText id="address" @bind-Value="profile.Address" class="form-control" />
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone">Phone Number:</label>
+                        <InputText id="phone" @bind-Value="profile.PhoneNumber" class="form-control" />
+                    </div>
+
+                    @if (AppState.IsAdmin)
+                    {
+                        <div class="form-group form-check">
+                            <label class="form-check-label">
+                                <InputCheckbox @bind-Value="profile.Administrator" class="form-check-input" />
+                                <span class="checkmark"></span>
+                                Administrator
+                            </label>
+                        </div>
+                    }
+
+                    <div class="text-center mt-4">
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                        <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+                    </div>
+                </EditForm>
+            </div>
         </div>
-
-        <div>
-            <label for="email">Email:</label>
-            <InputText id="email" @bind-Value="profile.Email" class="form-control" />
-        </div>
-
-        <div>
-            <label for="birthday">Birthday:</label>
-            <InputDate id="birthday" @bind-Value="profile.Birthday" class="form-control" />
-        </div>
-
-        <div>
-            <label for="address">Address:</label>
-            <InputText id="address" @bind-Value="profile.Address" class="form-control" />
-        </div>
-
-        <div>
-            <label for="phone">Phone Number:</label>
-            <InputText id="phone" @bind-Value="profile.PhoneNumber" class="form-control" />
-        </div>
-        @if (AppState.IsAdmin)
-        {
-            <div>
-                <label for="administrator">Administrator:</label>
-                <InputCheckbox id="administrator" @bind-Value="profile.Administrator" />
-            </div>   
-        }
-
-        <button type="submit" class="btn btn-primary">Save</button>
-        <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancel</button>
-        <button class="btn btn-danger delete-profile-btn" @onclick="DeleteProfile">
-            <i class="bi bi-trash"></i> Delete  profil
-        </button>
-    </EditForm>
-}
-else
-{
-    <p>Loading...</p>
-}
-
+    }
+    else
+    {
+        <p class="loading">Loading...</p>
+    }
+</div>
 @code {
     [Parameter]
     public int id { get; set; }
