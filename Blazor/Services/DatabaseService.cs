@@ -83,12 +83,28 @@ namespace Blazor.Services
         return await _httpClient.PutAsJsonAsync(_baseURL + $"Booking/EditBooking/{id}", bookingRequest);
     }
 
-
-
-        //Sender Support besked til Database 
+        //Create Support Request 
         public async Task PostSupportRequest(SupportRequest request)
         {
              await _httpClient.PostAsJsonAsync(_baseURL + "Support", request);
+        }
+
+         // Get all support requests
+        public async Task<List<SupportRequest>> GetAllSupportRequests()
+        {
+            return await _httpClient.GetFromJsonAsync<List<SupportRequest>>(_baseURL + "Support");
+        }
+
+        // Get support request by ID
+        public async Task<SupportRequest> GetSupportRequestById(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<SupportRequest>(_baseURL + $"Support/{id}");
+        }
+
+        // Update support request
+        public async Task<HttpResponseMessage> UpdateSupportRequest(int id, SupportRequest request)
+        {
+            return await _httpClient.PutAsJsonAsync(_baseURL + $"Support/{id}", request);
         }
         
         //Sletter en booking 
