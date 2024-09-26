@@ -20,7 +20,7 @@ namespace API.Controllers
             _connectionString = configuration.GetConnectionString("DefaultConnection");
         }
 
-        // Method to delete booking from ID
+        // Delete booking from ID
         [HttpDelete("DeleteBooking/{id}")]
         public IActionResult DeleteBooking(int id)
         {
@@ -82,7 +82,7 @@ namespace API.Controllers
             return existingBookings;
         }
 
-        // Opretter en ny booking
+        // Create a new booking 
         [HttpPost("CreateBooking")]
         public IActionResult CreateBooking(Booking bookingRequest)
         {
