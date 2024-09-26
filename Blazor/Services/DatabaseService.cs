@@ -128,6 +128,10 @@ namespace Blazor.Services
             }
         }
 
+        public async Task<HttpResponseMessage> EditProfile(int id, Profile profile){
+            return await _httpClient.PutAsJsonAsync(_baseURL + $"profile/{id}", profile);
+        }
+
         // Login to profile
         public async Task<HttpResponseMessage> LoginProfile(LoginDto loginDto)
         {
@@ -138,5 +142,12 @@ namespace Blazor.Services
         {
             return await _httpClient.GetFromJsonAsync<Profile>(_baseURL + $"profile/{userID}");
         }
+
+        // Delete support request by ID
+        public async Task<HttpResponseMessage> DeleteSupportRequest(int id)
+        {
+            return await _httpClient.DeleteAsync(_baseURL + $"Support/{id}");
+        }
+
     }
 }

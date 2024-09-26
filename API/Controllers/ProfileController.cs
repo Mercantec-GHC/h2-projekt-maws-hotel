@@ -158,7 +158,7 @@ namespace API.Controllers
 
         private bool ProfileExists(int id)
         {
-            // Gå igennem alle profiler i databasen og tjek, om der findes en med det givne id
+            // Gï¿½ igennem alle profiler i databasen og tjek, om der findes en med det givne id
             foreach (var profile in _context.Profiles)
             {
                 if (profile.Id == id)

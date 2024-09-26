@@ -17,7 +17,7 @@
     transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
     animation: fadeIn 0.5s ease-out;
     display: flex;
-    min-height: 600px;
+    min-height: 600px; /* Adjust this value as needed */
 }
 
 .admin-edit-profile:hover {
@@ -91,6 +91,62 @@ label {
 
 .form-check {
     margin-top: 1rem;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.form-check-input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 25px;
+    width: 25px;
+    background-color: #eee;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.form-check:hover .checkmark {
+    background-color: #ccc;
+}
+
+.form-check-input:checked ~ .checkmark {
+    background-color: rgba(255,161,30,1);
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.form-check-input:checked ~ .checkmark:after {
+    display: block;
+}
+
+.form-check .checkmark:after {
+    left: 9px;
+    top: 5px;
+    width: 7px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 3px 3px 0;
+    transform: rotate(45deg);
+}
+
+.form-check-label {
+    margin-left: 10px;
+    line-height: 25px;
 }
 
 .btn {
