@@ -1,0 +1,15 @@
+﻿@page "/HandleSupportRequest{supportRequestId:int}"
+@attribute [Authorize]
+@using Microsoft.AspNetCore.Authorization
+
+<h3>EditSupportRequest</h3>
+
+@code {
+	[Parameter]
+	public int supportRequestId { get; set; }
+
+	protected override async Task OnInitializedAsync()
+	{
+		
+	}
+}

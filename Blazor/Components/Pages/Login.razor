@@ -2,15 +2,15 @@
 @using DomainModels
 @inject AppState AppState
 
-<div class="login-box" @onkeypress="Enter">
+<div class="login-box" >
     <p>Login</p>
     <form >
-        <div class="user-box">
-            <input required="" name="" type="text" @bind-value="loginDto.Email"/>
+        <div class="user-box" @onkeypress="Enter">
+            <input required="" name="" type="text" @bind="loginDto.Email" @bind:event="oninput"/>
             <label>Email</label>
         </div>
-        <div class="user-box">
-            <input required="" name="" type="password" @bind-value="loginDto.Password"/>
+        <div class="user-box" @onkeypress="Enter">
+            <input required="" name="" type="password" @bind="loginDto.Password" @bind:event="oninput"/>
             <label>Password</label>
         </div>
         <a @onclick="HandleValidSubmit" >

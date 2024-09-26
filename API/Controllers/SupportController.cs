@@ -56,26 +56,5 @@ namespace API.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, new { message = $"An error occurred: {ex.Message}" });
             }
         }
-
-        //private async Task AddSupportRequest(SupportRequest request)
-        //{
-        //    using (var connection = new NpgsqlConnection(connectionString))
-        //    {
-        //        var sql = "INSERT INTO SupportRequests (Name, Email, Subject, Message, CreatedAt, Status) " +
-        //              "VALUES (@Name, @Email, @Subject, @Message, @CreatedAt, @Status)";
-        //        await connection.OpenAsync();
-        //        using (var cmd = new NpgsqlCommand(sql, connection))
-        //        {
-        //            cmd.Parameters.AddWithValue("Name", request.Name);
-        //            cmd.Parameters.AddWithValue("Email", request.Email);
-        //            cmd.Parameters.AddWithValue("Subject", request.Subject);
-        //            cmd.Parameters.AddWithValue("Message", request.Message);
-        //            cmd.Parameters.AddWithValue("CreatedAt", DateTime.Now);
-        //            cmd.Parameters.AddWithValue("Status", "Pending");
-
-        //            await cmd.ExecuteNonQueryAsync();
-        //        }
-        //    }
-        //}
     }
 }
