@@ -4,8 +4,6 @@
 @using DomainModels
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-
-<h3>SupportRequestDashboard</h3>
 <PageTitle>SupportRequestDashboard</PageTitle>
 
 <div class="container">
@@ -21,6 +19,7 @@
 					<th>Email</th>
 					<th>Subject</th>
 					<th>Message</th>
+					<th>Actions</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -37,11 +36,11 @@
 						<td>@supportRequest.Subject</td>
 						<td>@supportRequest.Message</td>
 						<td>
-							<button class="btn btn-danger delete-supportRequest-btn" @onclicke="() => DeletesupportRequestFromId(supportRequest.Id)">
-								<i class="bi bi-trash delete-supportRequest-btn" style="color:white;"></i> Delete  booking
+							<button class="btn btn-danger delete-request-btn" @onclick="() => DeleteSupportRequestFromId(supportRequest.Id)">
+								<i class="bi bi-trash delete-request-btn" style="color:white;"></i> Delete request
 							</button>
-							<button class="btn-goto-supportRequest" onclick="@(() => navManager.NavigateTo($"/HandleSupportRequest/{supportRequest.Id}"))">
-								<i class="bi bi-headset-fill headset-icon"></i> Request
+							<button class="btn-goto-request" @onclick="@(() => navManager.NavigateTo($"/HandleSupportRequest/{supportRequest.Id}"))">
+								<i class="bi bi-clipboard-check-fill"></i> Request
 							</button>
 						</td>
 					</tr>
@@ -79,22 +78,30 @@
 		}
 
 		allSupportRequests = await dbService.GetAllSupportRequests();
+		allSupportRequests = allSupportRequests.OrderByDescending(x => x.Status).ToList();
 	}
 
 	private async Task DeleteSupportRequestFromId(int id)
 	{
-		
+		await dbService.DeleteSupportRequest(id);
+
+		var requestToDelete = allSupportRequests.First(b => b.Id == id);
+		if (requestToDelete != null)
+		{
+			allSupportRequests.Remove(requestToDelete);
+		}
+		StateHasChanged();
 	}
 
 	private string GetRowClass(SupportRequest supportRequest)
 	{
-		if (supportRequest.Status == "done")
+		if (supportRequest.Status == "Pending")
 		{
-			return "active-booking";
+			return "pending-request";
 		}
 		else
 		{
-			return "future-booking";
+			return "done-request";
 		}
 	}
 }
