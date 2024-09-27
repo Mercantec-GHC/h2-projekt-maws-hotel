@@ -1,15 +1,41 @@
 ﻿@page "/HandleSupportRequest/{supportRequestId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
+@using DomainModels
 
-<h3>EditSupportRequest</h3>
+<PageTitle>Edit Support Request</PageTitle>
+<HeadContent>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</HeadContent>
+
+<div class="container">
+	@if (!AppState.LoggedIn || !AppState.IsAdmin)
+	{
+		<p>You do not have permission to access this page.</p>
+	}
+	else if (supportRequest != null)
+	{
+		<div class="edit-support-request">
+			<div class="request-header">
+				<div class="icon-edit">
+					<i class="bi bi-headset"></i>
+				</div>
+				<h3>Edit Support Request</h3>
+			</div>
+			<div class="card-block">
+
+			</div>
+		</div>
+	}
+</div>
 
 @code {
 	[Parameter]
 	public int supportRequestId { get; set; }
+	private SupportRequest supportRequest = new SupportRequest();
 
 	protected override async Task OnInitializedAsync()
 	{
-		
+		supportRequest = await dbService.GetSupportRequestById(supportRequestId);
 	}
 }
