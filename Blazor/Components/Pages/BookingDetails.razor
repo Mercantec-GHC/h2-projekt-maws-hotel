@@ -61,9 +61,12 @@
                                         <div class="col-sm-6 text-center">
                                             <button class="edit-button" @onclick="ToggleEdit">@(isDisabled ? "Edit" : "Save")</button>
                                         </div>
-                                        <div class="col-sm-6 text-center">
-                                            <button class="cancel-button" @onclick="Cancel">Cancel</button>
-                                        </div>
+                                        @if (!isDisabled)
+                                        {
+                                            <div class="col-sm-6 text-center">
+                                                <button class="cancel-button" @onclick="Cancel">Cancel</button>
+                                            </div>
+                                        }
                                     </div>
                                 </div>
                             </div>
