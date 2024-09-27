@@ -18,8 +18,9 @@ body {
 /* Kort styling */
 .user-card-full {
     overflow: hidden;
-    border-radius: 10px;
-    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.1);
+    border-radius: 20px;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    box-shadow: 0 6px 40px rgba(0, 0, 0, 0.15);
     border: none;
     width: 100%;
     margin-bottom: 30px;
@@ -35,7 +36,7 @@ body {
 }
 
 .user-card-full .user-profile {
-    border-radius: 10px 0 0 5px;
+    border-radius: 20px 0 0 20px;
 }
 
 .title{
@@ -74,6 +75,10 @@ body {
 
 .m-b-25 {
     margin-bottom: 25px;
+}
+
+.col-lg-10 {
+    background-color: transparent;
 }
 
 .img-radius {
@@ -165,7 +170,7 @@ h6 {
 .btn {
     font-size: 14px;
     padding: 10px 20px;
-    border-radius: 20px 0 20px 0;
+    border-radius: 20px 20px 20px 20px;
     transition: background-color 0.3s ease;
 }
 
@@ -219,7 +224,7 @@ h6 {
     padding: 0.5rem;
     gap: 15px;
     background-color: #181717;
-    border-radius: 20px 0 20px 0;
+    border-radius: 20px 20px 20px 20px;
     border: none;
     cursor: pointer;
     transition: 0.3s;
@@ -259,7 +264,7 @@ h6 {
 
 .btn-goto-booking {
     background-color: #282c30;
-    border-radius: 20px 0 20px 0;
+    border-radius: 20px 20px 20px 2;
     text-decoration: none;
     color: white;
     padding: 0.4rem 1rem;
