@@ -5,6 +5,7 @@
 @using DomainModels
 @using System.Net.Mail
 @using System.Net
+@inject IConfiguration Configuration
 
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" />
 <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet" />
@@ -340,10 +341,11 @@ else
         // Send booking confirmation email
         try
         {
-            var smtpClient = new SmtpClient("smtp.gmail.com")
+            var emailSettings = Configuration.GetSection("EmailSettings");
+            var smtpClient = new SmtpClient(emailSettings["SmtpServer"])
             {
-                Port = 587,
-                Credentials = new NetworkCredential("sunsetresort69@gmail.com", "xyli expp xxvr cubu "),
+                Port = int.Parse(emailSettings["SmtpPort"]),
+                Credentials = new NetworkCredential(emailSettings["SmtpUsername"], emailSettings["SmtpPassword"]),
                 EnableSsl = true,
                 DeliveryMethod = SmtpDeliveryMethod.Network,
                 UseDefaultCredentials = false,
@@ -351,7 +353,7 @@ else
 
             var mailMessage = new MailMessage
             {
-                From = new MailAddress("sunsetresort69@gmail.com"),
+                From = new MailAddress(emailSettings["SmtpUsername"]),
                 Subject = "Booking Confirmation",
                 Body = $@"
                 <html>
