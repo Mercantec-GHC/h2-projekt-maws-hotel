@@ -91,14 +91,44 @@
         profile = await dbService.GetProfileByUserID(booking.ProfileId);
     }
 
-
-
     private async Task ToggleEdit()
     {
         if (!isDisabled)
         {
+            // Validate dates
+            if (booking.DateStart == default || booking.DateEnd == default)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Vælg venligst gyldige datoer for start og slut.");
+                return;
+            }
+
+            if (booking.DateStart >= booking.DateEnd)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Startdatoen skal være før slutdatoen.");
+                return;
+            }
+
+            if (booking.DateStart < DateTime.Now.Date)
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Du kan ikke booke et værelse i fortiden.");
+                return;
+            }
+
+            // Check for existing bookings
+            var existingBookings = await dbService.CheckExistingBookings(booking.RoomId, booking.DateStart, booking.DateEnd);
+
+            if (existingBookings.Any(b => b.Id != bookingId))
+            {
+                await JSRuntime.InvokeVoidAsync("alert", "Værelset er allerede booket i denne periode.");
+                return;
+            }
+
             // Save changes
-            //await dbService.UpdateBooking(booking);
+            var response = await dbService.EditBooking(bookingId, booking);
+            if (response.IsSuccessStatusCode)
+            {
+                navManager.NavigateTo("/ProfileDashboard");
+            }
         }
 
         isDisabled = !isDisabled;
@@ -108,5 +138,4 @@
     {
         navManager.NavigateTo("/ProfileDashboard");
     }
-
 }

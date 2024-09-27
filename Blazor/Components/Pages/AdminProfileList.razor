@@ -44,9 +44,7 @@
                             <td>@profile.Name</td>
                             <td>@profile.Email</td>
                             <td>
-                                <a href="@($"/admin-edit-profile/{profile.Id}")" class="btn-edit-profile">
-                                    <i class="bi bi-pencil-square"></i> Edit
-                                </a>
+                                <button class="edit-profile-btn position-absolute" @onclick="() => EditProfile(profile.Id)"><i class="bi bi-pencil-square"> Edit Profile</i></button>
                             </td>
                         </tr>
                     }
@@ -86,5 +84,17 @@
             p.Name.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
             p.Email.Contains(searchTerm, StringComparison.OrdinalIgnoreCase) ||
             p.Id.ToString().Contains(searchTerm)).ToList();
+    }
+
+    private void EditProfile(int profileId)
+    {
+        if (AppState.LoggedIn && AppState.IsAdmin)
+        {
+            navManager.NavigateTo($"/EditProfile/{profileId}");
+        }
+        else
+        {
+            navManager.NavigateTo("/");
+        }
     }
 }
