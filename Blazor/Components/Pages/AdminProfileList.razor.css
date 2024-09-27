@@ -19,7 +19,7 @@
     width: 100%;
     margin: 0;
     border-collapse: separate;
-    border-spacing: 0 10px; /* Added space between rows */
+    border-spacing: 0 10px;
 }
 
 .table th, .table td {
@@ -30,11 +30,11 @@
 .table th {
     font-weight: bold;
     color: #333;
-    background-color: transparent; /* Removed background */
+    background-color: transparent;
 }
 
 .table td {
-    background-color: #f8f9fa; /* Light background for data cells */
+    background-color: #f8f9fa;
     border-top: 1px solid #f0f0f0;
     border-bottom: 1px solid #f0f0f0;
 }
@@ -401,7 +401,6 @@
     transform-origin: 50% 50%;
 }
 
-/* ... (rest of the loading animation CSS remains unchanged) */
 
 /* ---- END LOADING ANIMATION ---- */
 
