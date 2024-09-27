@@ -82,7 +82,7 @@
     protected override async Task OnInitializedAsync()
     {
         profile = await Http.GetFromJsonAsync<Profile>($"api/profile/{id}");
-        if (profile == null || AppState.UserId != id)
+        if (profile == null)
         {
             navManager.NavigateTo("/");
 
@@ -100,7 +100,7 @@
 
         if (response.IsSuccessStatusCode)
         {
-            if(AppState.IsAdmin && profile.Administrator == false){
+            if(AppState.IsAdmin && profile.Administrator == false && profile.Id == AppState.UserId){
                 AppState.Logout();
                 navManager.NavigateTo("/login");
             }
