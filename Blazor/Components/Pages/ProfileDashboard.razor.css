@@ -25,15 +25,9 @@ body {
     width: 100%;
     margin-bottom: 30px;
     background-color: #ffffff;
+    border-radius: 20px !important;
 }
 
-.m-r-0 {
-    margin-right: 0;
-}
-
-.m-l-0 {
-    margin-left: 0;
-}
 
 .user-card-full .user-profile {
     border-radius: 20px 0 0 20px;
@@ -218,53 +212,11 @@ h6 {
         color: white;
     }
 
-/* DELETE BUTTON */
-.card-btn {
-    display: flex;
-    padding: 0.5rem;
-    gap: 15px;
-    background-color: #181717;
-    border-radius: 20px 20px 20px 20px;
-    border: none;
-    cursor: pointer;
-    transition: 0.3s;
-    padding: 0.5rem 1rem;
-    margin: 1rem 0;
-}
-
-.card-btn:hover {
-    background-color: transparent;
-}
-
-    .card-btn:hover .text {
-        color: #181717;
-    }
-
-.card-btn .text {
-    color: white;
-    font-weight: 700;
-    font-size: 1em;
-    transition: 400ms;
-    margin: 0;
-}
-
-    .card-btn:hover {
-        background: rgb(255,130,0);
-        transition: 0.3s;
-        color: white;
-    }
-
-.card-btn i {
-    color: white;
-    padding: 0;
-}
-
-/* ---- END DELETE BUTTON ---- */
 
 
 .btn-goto-booking {
     background-color: #282c30;
-    border-radius: 20px 20px 20px 2;
+    border-radius: 20px;
     text-decoration: none;
     color: white;
     padding: 0.4rem 1rem;
