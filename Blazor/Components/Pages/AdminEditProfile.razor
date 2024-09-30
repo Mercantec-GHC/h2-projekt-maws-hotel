@@ -16,42 +16,51 @@
     else if (profile != null)
     {
         <div class="admin-edit-profile">
+            <!-- Profile Header -->
             <div class="profile-header">
                 <div class="profile-icon">
                     <i class="bi bi-person-circle"></i>
                 </div>
                 <h3>Edit Profile</h3>
             </div>
+            
+            <!-- Edit Profile Form -->
             <div class="card-block">
                 <EditForm Model="@profile" OnValidSubmit="HandleValidSubmit">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
 
+                    <!-- Name Input -->
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <InputText id="name" @bind-Value="profile.Name" class="form-control" />
                     </div>
 
+                    <!-- Email Input -->
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <InputText id="email" @bind-Value="profile.Email" class="form-control" />
                     </div>
 
+                    <!-- Birthday Input -->
                     <div class="form-group">
                         <label for="birthday">Birthday:</label>
                         <InputDate id="birthday" @bind-Value="profile.Birthday" class="form-control" />
                     </div>
 
+                    <!-- Address Input -->
                     <div class="form-group">
                         <label for="address">Address:</label>
                         <InputText id="address" @bind-Value="profile.Address" class="form-control" />
                     </div>
 
+                    <!-- Phone Number Input -->
                     <div class="form-group">
                         <label for="phone">Phone Number:</label>
                         <InputText id="phone" @bind-Value="profile.PhoneNumber" class="form-control" />
                     </div>
 
+                    <!-- Administrator Checkbox -->
                     <div class="form-group form-check">
                         <label class="form-check-label">
                             <InputCheckbox @bind-Value="profile.Administrator" class="form-check-input" />
@@ -60,6 +69,7 @@
                         </label>
                     </div>
 
+                    <!-- Form Buttons -->
                     <div class="text-center mt-4">
                         <button type="submit" class="btn btn-primary">Save Changes</button>
                         <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancel</button>
@@ -75,18 +85,21 @@
 </div>
 
 @code {
+    // Parameter for profile ID
     [Parameter]
     public int id { get; set; }
 
+    // Profile object and HttpClient
     private Profile? profile;
     private HttpClient httpClient;
 
+    // Initialize HttpClient
     protected override void OnInitialized()
     {
         httpClient = HttpClientFactory.CreateClient("API");
     }
 
-
+    // Load profile data on initialization
     protected override async Task OnInitializedAsync()
     {
         if (!AppState.LoggedIn || !AppState.IsAdmin)
@@ -98,15 +111,18 @@
         profile = await httpClient.GetFromJsonAsync<Profile>($"api/profile/{id}");
     }
 
+    // Handle form submission
     private async Task HandleValidSubmit()
     {
         try
         {
+            // Convert birthday to UTC
             if (profile.Birthday.HasValue)
             {
                 profile.Birthday = profile.Birthday.Value.ToUniversalTime();
             }
 
+            // Send update request
             var response = await httpClient.PutAsJsonAsync($"api/profile/admin/{id}", profile);
 
             if (response.IsSuccessStatusCode)
@@ -128,6 +144,7 @@
         }
     }
 
+    // Handle cancel button click
     private void Cancel()
     {
         navManager.NavigateTo("/admin-profile-list");

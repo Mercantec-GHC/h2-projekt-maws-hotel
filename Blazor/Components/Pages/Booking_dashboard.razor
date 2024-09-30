@@ -2,12 +2,15 @@
 @using Microsoft.JSInterop
 @using DomainModels
 
+<!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-
 <PageTitle>booking_dashboard</PageTitle>
+
 <div class="container">
-    @if (allBookings != null && allBookings.Count > 0){
+    @if (allBookings != null && allBookings.Count > 0)
+    {
+        <!-- Bookings Table -->
         <table class="table">
             <thead>
                 <tr>
@@ -33,10 +36,12 @@
                         <td>@booking.ProfileId</td>
                         <td>@booking.RoomId</td>
                         <td>
+                            <!-- Delete Booking Button -->
                             <button class="btn btn-danger delete-profile-btn" @onclick="() => delete_booking_from_id(booking.Id)">
-                                <i class="bi bi-trash delete-profile-btn" style="color:white;"></i> Delete  booking
+                                <i class="bi bi-trash delete-profile-btn" style="color:white;"></i> Delete booking
                             </button>
 
+                            <!-- Go to Profile Button -->
                             <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/EditProfile/{booking.ProfileId}"))">
                                 <i class="bi bi-person-fill profile-icon"></i> Profile
                             </button>
@@ -44,12 +49,11 @@
                     </tr>
                 }
             </tbody>
-
         </table>
-
-
-    }else if (allBookings == null)
+    }
+    else if (allBookings == null)
     {
+        <!-- Loading Spinner -->
         <center>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" height="128px" width="128px" class="pl">
                 <circle stroke-dashoffset="-376.4" stroke-dasharray="377 377" stroke-linecap="round" transform="rotate(-90,64,64)" stroke-width="8" stroke="hsl(3,90%,55%)" fill="none" r="60" cy="64" cx="64" class="pl__ring1"></circle>
@@ -61,23 +65,21 @@
             </svg>
         </center>
     }
-    else{
-
+    else
+    {
         <p>No bookings found</p>
-
     }
 </div>
 
 @code {
+    // Properties
     public bool ascending = true;
-
     public string current;
     public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
-
     public int total_bookings = 0;
     private Profile? profile;
 
-
+    // Initialization
     protected override async Task OnInitializedAsync()
     {
         if (!AppState.LoggedIn || !AppState.IsAdmin)
@@ -89,7 +91,9 @@
         total_bookings = allBookings.Count;
     }
 
-    public void delete_booking_from_id(int id){
+    // Delete booking
+    public void delete_booking_from_id(int id)
+    {
         dbService.DeleteBooking(id);
 
         var bookingToDelete = allBookings.FirstOrDefault(b => b.Id == id);
@@ -102,6 +106,7 @@
         StateHasChanged();
     }
 
+    // Get row class based on booking status
     private string GetRowClass(DomainModels.Booking booking)
     {
         var now = DateTime.Now.Date;
@@ -119,9 +124,8 @@
         }
         return "future-booking";
     }
- 
 
-
+    // Set sort column
     private void SetSortColumn(string colunm)
     {
         if (current == colunm)
@@ -137,6 +141,7 @@
         SortRooms(current);
     }
 
+    // Sort rooms
     private void SortRooms(string colunm)
     {
         switch (colunm)
@@ -149,8 +154,4 @@
                 break;
         }
     }
-
-
 }
-
-

@@ -10,6 +10,7 @@
     }
     else if (profiles == null)
     {
+        <!-- Loading spinner -->
         <center>
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" height="128px" width="128px" class="pl">
                 <circle stroke-dashoffset="-376.4" stroke-dasharray="377 377" stroke-linecap="round" transform="rotate(-90,64,64)" stroke-width="8" stroke="hsl(3,90%,55%)" fill="none" r="60" cy="64" cx="64" class="pl__ring1"></circle>
@@ -23,9 +24,11 @@
     }
     else
     {
+        <!-- Search input -->
         <div class="search-container">
             <input type="text" class="form-control search-input" placeholder="Search profiles..." @bind="searchTerm" @bind:event="oninput" @onkeyup="FilterProfiles" />
         </div>
+        <!-- Profile table -->
         <div class="table-container">
             <table class="table">
                 <thead>
@@ -45,7 +48,6 @@
                             <td>@profile.Email</td>
                             <td>
                                 <button class="edit-profile-btn" @onclick="() => EditProfile(profile.Id)"><i class="bi bi-pencil-square"> Edit Profile</i></button>
-                                
                             </td>
                         </tr>
                     }
@@ -56,10 +58,12 @@
 </div>
 
 @code {
+    // Properties
     private List<Profile> profiles;
     private List<Profile> filteredProfiles;
     private string searchTerm = "";
 
+    // Initialization
     protected override async Task OnInitializedAsync()
     {
         try
@@ -79,6 +83,7 @@
         }
     }
 
+    // Filter profiles based on search term
     private void FilterProfiles()
     {
         filteredProfiles = profiles.Where(p =>
@@ -87,6 +92,7 @@
             p.Id.ToString().Contains(searchTerm)).ToList();
     }
 
+    // Navigate to edit profile page
     private void EditProfile(int profileId)
     {
         if (AppState.LoggedIn && AppState.IsAdmin)
