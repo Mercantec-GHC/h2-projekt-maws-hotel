@@ -11,16 +11,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </HeadContent>
 
-<!-- Main container -->
 <div class="container">
     <div class="page-content">
         <div class="padding">
             <div class="row justify-content-center">
                 <div class="col-md-8 col-lg-10">
-                    <!-- Booking card -->
                     <div class="card booking-card-full shadow-lg rounded">
                         <div class="row m-l-0 m-r-0">
-                            <!-- Booking header -->
                             <div class="col-sm-4 bg-c-lite-green booking-header">
                                 <div class="card-block text-center text-white">
                                     <h2>Booking Details</h2>
@@ -30,10 +27,8 @@
                                     <h6 class="booking-id">Booking ID: @bookingId</h6>
                                 </div>
                             </div>
-                            <!-- Booking details -->
                             <div class="col-sm-8">
                                 <div class="card-block">
-                                    <!-- Customer information section -->
                                     <h6 class="m-b-20 p-b-5 b-b-default f-w-600 title">Customer Information</h6>
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -51,7 +46,6 @@
                                             <h6 class="text-muted f-w-400">@profile.PhoneNumber</h6>
                                         </div>
                                     </div>
-                                    <!-- Booking dates section -->
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Booking Dates</h6>
                                     <div class="row">
                                         <div class="col-sm-6">
@@ -63,7 +57,6 @@
                                             <input type="date" id="dateEnd" class="date-input" disabled="@isDisabled" @bind="booking.DateEnd" />
                                         </div>
                                     </div>
-                                    <!-- Action buttons -->
                                     <div class="row mt-4">
                                         <div class="col-sm-6 text-center">
                                             <button class="edit-button" @onclick="ToggleEdit">@(isDisabled ? "Edit" : "Save")</button>
@@ -119,7 +112,6 @@
 
 
 @code {
-    // Parameters and properties
     [Parameter]
     public int bookingId { get; set; }
     private Profile profile = new Profile();
@@ -127,7 +119,6 @@
     private bool isDisabled = true;
     private bool showDeleteConfirmation = false;
 
-    // Initialization
     protected override async Task OnInitializedAsync()
     {
         // Fetch booking details
@@ -137,7 +128,6 @@
         profile = await dbService.GetProfileByUserID(booking.ProfileId);
     }
 
-    // Toggle edit mode and save changes
     private async Task ToggleEdit()
     {
         if (!isDisabled)
@@ -181,7 +171,13 @@
         isDisabled = !isDisabled;
     }
 
-    // Cancel editing and return to dashboard
+    private void showModal() {
+        showDeleteConfirmation = true;
+    }
+    private void hideModal() {
+        showDeleteConfirmation = false;
+    }
+
     private void Cancel()
     {
         navManager.NavigateTo("/ProfileDashboard");
