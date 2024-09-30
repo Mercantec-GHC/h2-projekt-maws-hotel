@@ -73,6 +73,10 @@
                                             <div class="col-sm-6 text-center">
                                                 <button class="cancel-button" @onclick="Cancel">Cancel</button>
                                             </div>
+                                        } else {
+                                            <div class="col-sm-6 text-center">
+                                                <button class="cancel-button" @onclick="showModal"><i class="bi bi-trash"></i> Delete Booking</button>
+                                            </div>
                                         }
                                     </div>
                                 </div>
@@ -85,6 +89,35 @@
     </div>
 </div>
 
+@if(showDeleteConfirmation)
+{
+    <div class="modal" tabindex="-1" style="display: block;">
+        <div class="user-box">
+        <p>Confirm Delete Booking?</p>
+        </div>
+            <form >
+                <center>
+                <a @onclick="() => DeleteBooking(bookingId)" >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Confirm
+                </a>
+                <br>
+                <a @onclick="hideModal" >
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    Cancel
+                </a>
+            </center>
+        </form>
+    </div>
+}
+
+
 @code {
     // Parameters and properties
     [Parameter]
@@ -92,6 +125,7 @@
     private Profile profile = new Profile();
     private Booking booking = new Booking();
     private bool isDisabled = true;
+    private bool showDeleteConfirmation = false;
 
     // Initialization
     protected override async Task OnInitializedAsync()
@@ -151,5 +185,18 @@
     private void Cancel()
     {
         navManager.NavigateTo("/ProfileDashboard");
+    }
+
+    private async Task DeleteBooking(int bookingId)
+    {
+        try {
+            await dbService.DeleteBooking(bookingId);
+            navManager.NavigateTo("/ProfileDashboard");
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine("Error deleting booking");
+        }
+        
     }
 }

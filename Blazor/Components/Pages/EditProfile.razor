@@ -93,7 +93,7 @@
     {
         if (profile.Birthday.HasValue)
         {
-            profile.Birthday = profile.Birthday.Value.ToUniversalTime();
+            profile.Birthday = DateTime.SpecifyKind(profile.Birthday.Value, DateTimeKind.Utc);
         }
 
         var response = await dbService.EditProfile(profile.Id, profile);
