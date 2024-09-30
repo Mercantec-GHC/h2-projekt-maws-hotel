@@ -6,9 +6,11 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 <PageTitle>SupportRequestDashboard</PageTitle>
 
+<!-- Support Request Dashboard Container -->
 <div class="container">
 	@if (allSupportRequests != null && allSupportRequests.Count >0)
 	{
+		<!-- Support Request Table -->
 		<table class="table">
 			<thead>
 				<tr>
@@ -50,6 +52,7 @@
 	}
 	else if (allSupportRequests == null)
 	{
+		<!-- Loading Animation -->
 		<center>
 			<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128" height="128px" width="128px" class="pl">
 				<circle stroke-dashoffset="-376.4" stroke-dasharray="377 377" stroke-linecap="round" transform="rotate(-90,64,64)" stroke-width="8" stroke="hsl(3,90%,55%)" fill="none" r="60" cy="64" cx="64" class="pl__ring1"></circle>

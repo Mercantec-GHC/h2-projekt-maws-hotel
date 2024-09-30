@@ -1,8 +1,6 @@
 ﻿@page "/EditProfile/{id:int}"
 @using DomainModels
 
-
-
 <PageTitle>Edit Profile</PageTitle>
 
 <HeadContent>
@@ -13,42 +11,44 @@
     @if (profile != null)
     {
         <div class="admin-edit-profile">
+            <!-- Profile Header -->
             <div class="profile-header">
                 <div class="profile-icon">
                     <i class="bi bi-person-circle"></i>
                 </div>
                 <h3>Edit Profile</h3>
             </div>
+            <!-- Edit Form -->
             <div class="card-block">
                 <EditForm Model="@profile" OnValidSubmit="HandleValidSubmit">
                     <DataAnnotationsValidator />
                     <ValidationSummary />
-
+                    <!-- Name Input -->
                     <div class="form-group">
                         <label for="name">Name:</label>
                         <InputText id="name" @bind-Value="profile.Name" class="form-control" />
                     </div>
-
+                    <!-- Email Input -->
                     <div class="form-group">
                         <label for="email">Email:</label>
                         <InputText id="email" @bind-Value="profile.Email" class="form-control" />
                     </div>
-
+                    <!-- Birthday Input -->
                     <div class="form-group">
                         <label for="birthday">Birthday:</label>
                         <InputDate id="birthday" @bind-Value="profile.Birthday" class="form-control" />
                     </div>
-
+                    <!-- Address Input -->
                     <div class="form-group">
                         <label for="address">Address:</label>
                         <InputText id="address" @bind-Value="profile.Address" class="form-control" />
                     </div>
-
+                    <!-- Phone Number Input -->
                     <div class="form-group">
                         <label for="phone">Phone Number:</label>
                         <InputText id="phone" @bind-Value="profile.PhoneNumber" class="form-control" />
                     </div>
-
+                    <!-- Admin Checkbox (only for admins) -->
                     @if (AppState.IsAdmin)
                     {
                         <div class="form-group custom-checkbox">
@@ -59,7 +59,7 @@
                             </label>
                         </div>
                     }
-
+                    <!-- Form Buttons -->
                     <div class="text-center mt-4">
                         <button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">Save Changes</button>
                         <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancel</button>
@@ -73,31 +73,26 @@
         <p class="loading">Loading...</p>
     }
 </div>
+
 @code {
     [Parameter]
     public int id { get; set; }
-
     private Profile? profile;
-
     protected override async Task OnInitializedAsync()
     {
         profile = await Http.GetFromJsonAsync<Profile>($"api/profile/{id}");
         if (profile == null)
         {
             navManager.NavigateTo("/");
-
         }
     }
-
     private async Task HandleValidSubmit()
     {
         if (profile.Birthday.HasValue)
         {
             profile.Birthday = profile.Birthday.Value.ToUniversalTime();
         }
-
         var response = await dbService.EditProfile(profile.Id, profile);
-
         if (response.IsSuccessStatusCode)
         {
             if(AppState.IsAdmin && profile.Administrator == false && profile.Id == AppState.UserId){
@@ -114,13 +109,11 @@
             Console.WriteLine("Error updating profile");
         }
     }
-
     private async Task DeleteProfile()
     {
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Er du sikker på, at du vil slette din profil?"))
         {
             var response = await Http.DeleteAsync($"api/profile/deactivate/{AppState.UserId}");
-
             if (response.IsSuccessStatusCode)
             {
                 AppState.Logout();
@@ -132,7 +125,6 @@
             }
         }
     }
-
     private void Cancel()
     {
         navManager.NavigateTo("/ProfileDashboard");

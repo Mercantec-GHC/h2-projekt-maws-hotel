@@ -2,18 +2,22 @@
 @using DomainModels
 @inject AppState AppState
 
-<div class="login-box" >
+<!-- Login box -->
+<div class="login-box">
     <p>Login</p>
-    <form >
+    <form>
+        <!-- Email input -->
         <div class="user-box" @onkeypress="Enter">
             <input required="" name="" type="text" @bind="loginDto.Email" @bind:event="oninput"/>
             <label>Email</label>
         </div>
+        <!-- Password input -->
         <div class="user-box" @onkeypress="Enter">
             <input required="" name="" type="password" @bind="loginDto.Password" @bind:event="oninput"/>
             <label>Password</label>
         </div>
-        <a @onclick="HandleValidSubmit" >
+        <!-- Submit button -->
+        <a @onclick="HandleValidSubmit">
             <span></span>
             <span></span>
             <span></span>
@@ -57,7 +61,7 @@
         else
         {
             await JSRuntime.InvokeVoidAsync("alert", "Try again.");
-            Console.WriteLine("Forkerte oplysninger, prøv igen");
+            Console.WriteLine("Forkerte oplysninger, prÃ¸v igen");
         }
     }
 }
