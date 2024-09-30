@@ -39,7 +39,7 @@
 							<button class="btn btn-danger delete-request-btn" @onclick="() => DeleteSupportRequestFromId(supportRequest.Id)">
 								<i class="bi bi-trash delete-request-btn" style="color:white;"></i> Delete request
 							</button>
-							<button class="btn-goto-request" @onclick="@(() => navManager.NavigateTo($"/HandleSupportRequest/{supportRequest.Id}"))">
+							<button class="btn-goto-request" @onclick="() => GoToEditSupportRequest(supportRequest.Id)">
 								<i class="bi bi-clipboard-check-fill"></i> Request
 							</button>
 						</td>
@@ -103,5 +103,11 @@
 		{
 			return "done-request";
 		}
+	}
+
+	private async Task GoToEditSupportRequest(int id)
+	{
+		navManager.NavigateTo($"/HandleSupportRequest/{id}");
+		StateHasChanged();
 	}
 }
