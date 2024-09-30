@@ -1,47 +1,55 @@
 @page "/create-profile"
 @using DomainModels
 
+<!-- Sign Up Form Container -->
 <div class="login-box">
     <p>Sign up</p>
     <form>
         <div class="container text-center">
             <div class="row align-items-start">
+                <!-- Name Input -->
                 <div>
                     <div class="user-box">
                         <input required="" name="" type="text" @bind-value="registerDto.Name" />
                         <label>Name</label>
                     </div>
                 </div>
+                <!-- Email Input -->
                 <div>
                     <div class="user-box">
                         <input required="" name="" type="text" @bind-value="registerDto.Email" />
                         <label>Email</label>
                     </div>
                 </div>
+                <!-- Password Input -->
                 <div class="col">
                     <div class="user-box">
                         <input required="" name="" type="password" @bind-value="registerDto.Password" />
                         <label>Password</label>
                     </div>
                 </div>
+                <!-- Confirm Password Input -->
                 <div class="col">
                     <div class="user-box">
                         <input required="" name="" type="password" @bind-value="secondPassword"/>
                         <label>Password</label>
                     </div>
                 </div>
+                <!-- Address Input -->
                 <div>
                     <div class="user-box">
                         <input required="" name="" type="text" @bind-value="registerDto.Address" />
                         <label>Address</label>
                     </div>
                 </div>
+                <!-- Birthday Input -->
                 <div class="col">
                     <div class="user-box">
                         <input required="" name="" type="datetime" @bind-value="registerDto.Birthday" />
                         <label>Birthday</label>
                     </div>
                 </div>
+                <!-- Phone Number Input -->
                 <div class="col">
                     <div class="user-box">
                         <input required="" name="" type="text" @bind-value="registerDto.PhoneNumber" />
@@ -49,6 +57,7 @@
                     </div>
                 </div>
             </div>
+            <!-- Submit Button -->
             <a @onclick="HandleValidSubmit">
                 <span></span>
                 <span></span>
@@ -58,31 +67,38 @@
             </a>
         </div>
     </form>
+    <!-- Login Link -->
     <p>Already have an account <a href="" class="a2">Login!</a></p>
 </div>
 
+<!-- Error Message Display -->
 @if (!string.IsNullOrEmpty(errorMessage))
 {
     <div class="alert alert-danger mt-3">@errorMessage</div>
 }
 
 @code {
+    // Properties
     private RegisterDto registerDto = new RegisterDto();
     private string secondPassword = "";
     private string errorMessage = string.Empty;
 
+    // Handle form submission
     private async Task HandleValidSubmit()
     {
         Console.WriteLine("HandleValidSubmit called");
         errorMessage = string.Empty;
         try
         {
+            // Convert birthday to UTC
             if (registerDto.Birthday.HasValue)
             {
                 registerDto.Birthday = registerDto.Birthday.Value.ToUniversalTime();
             }
+            // Check if passwords match
             if (registerDto.Password == secondPassword)
             {   
+                // Attempt to register the user
                 var response = await dbService.PostProfile(registerDto);
 
                 if (response == "Registration successful!")
@@ -103,6 +119,7 @@
         }
         catch (Exception ex)
         {
+            // Handle any exceptions
             errorMessage = $"An error occurred: {ex.Message}";
             Console.WriteLine($"Exception occurred: {ex.Message}");
             Console.WriteLine($"Stack trace: {ex.StackTrace}");

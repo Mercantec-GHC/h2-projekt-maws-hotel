@@ -149,5 +149,20 @@ namespace Blazor.Services
             return await _httpClient.DeleteAsync(_baseURL + $"Support/{id}");
         }
 
+        // Add this new method
+        public async Task<string> GetUserEmailById(int userId)
+        {
+            try
+            {
+                var profile = await _httpClient.GetFromJsonAsync<Profile>(_baseURL + $"profile/{userId}");
+                return profile?.Email ?? throw new Exception("User email not found");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error fetching user email: {ex.Message}");
+                throw;
+            }
+        }
+
     }
 }
