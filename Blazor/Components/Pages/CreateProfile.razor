@@ -86,7 +86,6 @@
     // Handle form submission
     private async Task HandleValidSubmit()
     {
-        Console.WriteLine("HandleValidSubmit called");
         errorMessage = string.Empty;
         try
         {
@@ -108,21 +107,17 @@
                 else
                 {
                     errorMessage = $"Registration failed: {response}";
-                    Console.WriteLine(errorMessage);
                 }
             }
             else
             {
                 errorMessage = $"Both passwords needs to be the same!!";
-                Console.WriteLine(errorMessage);
             }
         }
         catch (Exception ex)
         {
             // Handle any exceptions
             errorMessage = $"An error occurred: {ex.Message}";
-            Console.WriteLine($"Exception occurred: {ex.Message}");
-            Console.WriteLine($"Stack trace: {ex.StackTrace}");
         }
     }
 }

@@ -1,15 +1,98 @@
 ﻿@page "/HandleSupportRequest/{supportRequestId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
+@using DomainModels
 
-<h3>EditSupportRequest</h3>
+<PageTitle>Edit Support Request</PageTitle>
+<HeadContent>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</HeadContent>
+
+<div class="container">
+	@if (supportRequest != null)
+	{
+		<div class="edit-support-request">
+			<div class="request-header">
+				<div class="icon-edit">
+					<i class="bi bi-headset"></i>
+				</div>
+				<h3>Edit Support Request</h3>
+			</div>
+			<div class="card-block">
+				<div class="form-group">
+					<label for="Name">Name:</label>
+					<input type="text" @bind="supportRequest.Name" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label for="email">Email:</label>
+					<input type="text" @bind="supportRequest.Email" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label for="subject">Subject:</label>
+					<input type="text" @bind="supportRequest.Subject" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label for="message">Message:</label>
+					<input type="text" @bind="supportRequest.Message" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label for="status">Status:</label>
+					<select class="form-select" aria-label="Default select example" @bind="supportRequest.Status">
+						<option selected>@supportRequest.Status</option>
+						@if(supportRequest.Status == "Pending")
+						{
+							<option value="Done">Done</option>
+						}
+						else
+						{
+							<option value="Pending">Pending</option>
+						}
+					</select>
+				</div>
+				<div class="text-center mt-4">
+					<button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">Save Changes</button>
+					<button type="button" class="btn btn-secondary" @onclick="Cancel">Cancel</button>
+				</div>
+			</div>
+		</div>
+	}
+	else
+	{
+		<p class="loading" ¨>Loading...</p>
+	}
+</div>
 
 @code {
 	[Parameter]
 	public int supportRequestId { get; set; }
+	private SupportRequest? supportRequest = new SupportRequest();
 
 	protected override async Task OnInitializedAsync()
 	{
-		
+		supportRequest = await dbService.GetSupportRequestById(supportRequestId);
+		if (supportRequest == null)
+		{
+			navManager.NavigateTo("/SupportRequestDashboard");
+		}
+	}
+
+	private async Task HandleValidSubmit()
+	{
+		var response = await dbService.UpdateSupportRequest(supportRequestId, supportRequest);
+
+		if (response.IsSuccessStatusCode)
+		{
+			await JSRuntime.InvokeVoidAsync("alert", "Update successful");
+			navManager.NavigateTo("/SupportRequestDashboard");
+		}
+		else
+		{
+			await JSRuntime.InvokeVoidAsync("alert", $"{response}");
+		}
+	}
+
+	private void Cancel()
+	{
+		navManager.NavigateTo("/SupportRequestDashboard");
 	}
 }

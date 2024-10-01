@@ -39,7 +39,7 @@
 							<button class="btn btn-danger delete-request-btn" @onclick="() => DeleteSupportRequestFromId(supportRequest.Id)">
 								<i class="bi bi-trash delete-request-btn" style="color:white;"></i> Delete request
 							</button>
-							<button class="btn-goto-request" @onclick="@(() => navManager.NavigateTo($"/HandleSupportRequest/{supportRequest.Id}"))">
+							<button class="btn-goto-request" @onclick="() => GoToEditSupportRequest(supportRequest.Id)">
 								<i class="bi bi-clipboard-check-fill"></i> Request
 							</button>
 						</td>
@@ -70,6 +70,7 @@
 @code {
 	private List<SupportRequest> allSupportRequests = new List<SupportRequest>();
 
+	// When page loads 
 	protected override async Task OnInitializedAsync()
 	{
 		if (!AppState.LoggedIn || !AppState.IsAdmin)
@@ -81,6 +82,7 @@
 		allSupportRequests = allSupportRequests.OrderByDescending(x => x.Status).ToList();
 	}
 
+	// 
 	private async Task DeleteSupportRequestFromId(int id)
 	{
 		await dbService.DeleteSupportRequest(id);
@@ -103,5 +105,11 @@
 		{
 			return "done-request";
 		}
+	}
+
+	private async Task GoToEditSupportRequest(int id)
+	{
+		navManager.NavigateTo($"/HandleSupportRequest/{id}");
+		StateHasChanged();
 	}
 }
