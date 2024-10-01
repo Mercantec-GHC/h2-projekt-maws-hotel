@@ -110,10 +110,6 @@ h6 {
     margin-bottom: 10px;
 }
 
-.m-t-40 {
-    margin-top: 20px;
-}
-
 .m-t-10 {
     margin-top: 10px;
 }
@@ -250,8 +246,9 @@ h6 {
 
 /* From Uiverse.io by Nawsome */
 .pl {
-    width: 8em;
-    height: 8em;
+    width: 3em;
+    height: 3em;
+    margin: 2rem;
 }
 
     .pl circle {

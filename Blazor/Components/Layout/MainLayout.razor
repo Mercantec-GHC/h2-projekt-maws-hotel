@@ -2,9 +2,18 @@
 @inject NavigationManager NavigationManager
 @inject IJSRuntime JSRuntime
 @inherits LayoutComponentBase
+@using MudBlazor
 
 <div class="page">
+    @* Required *@
+<MudThemeProvider />
+<MudPopoverProvider />
 
+@* Needed for dialogs *@
+<MudDialogProvider />
+
+@* Needed for snackbars *@
+<MudSnackbarProvider />
 
     <main>
         <NavMenu />
