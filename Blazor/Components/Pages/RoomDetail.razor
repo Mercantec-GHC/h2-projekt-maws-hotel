@@ -240,10 +240,10 @@
                     </div>
                     <div class="right-info">
                         <MudContainer>
-                            <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_start" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate"/>
+                            <MudDatePicker style="color:white" Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_start" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate"/>
                         </MudContainer>
                         <MudContainer>
-                            <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_end" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate"/>
+                            <MudDatePicker Style="color:white" Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_end" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate"/>
                         </MudContainer>
                     </div>
                 </div>
@@ -263,6 +263,7 @@
 <style>
     .special-day {
         color: red !important;
+        pointer-events: none;
     }
 </style>
 
