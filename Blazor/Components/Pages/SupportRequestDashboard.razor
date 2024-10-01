@@ -70,6 +70,7 @@
 @code {
 	private List<SupportRequest> allSupportRequests = new List<SupportRequest>();
 
+	// When page loads 
 	protected override async Task OnInitializedAsync()
 	{
 		if (!AppState.LoggedIn || !AppState.IsAdmin)
@@ -81,6 +82,7 @@
 		allSupportRequests = allSupportRequests.OrderByDescending(x => x.Status).ToList();
 	}
 
+	// 
 	private async Task DeleteSupportRequestFromId(int id)
 	{
 		await dbService.DeleteSupportRequest(id);
