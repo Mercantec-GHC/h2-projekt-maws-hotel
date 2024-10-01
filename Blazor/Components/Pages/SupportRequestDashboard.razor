@@ -82,7 +82,7 @@
 		allSupportRequests = allSupportRequests.OrderByDescending(x => x.Status).ToList();
 	}
 
-	// 
+	// Delete support request
 	private async Task DeleteSupportRequestFromId(int id)
 	{
 		await dbService.DeleteSupportRequest(id);
@@ -95,6 +95,7 @@
 		StateHasChanged();
 	}
 
+	// Get row class based on supportRequest status
 	private string GetRowClass(SupportRequest supportRequest)
 	{
 		if (supportRequest.Status == "Pending")
@@ -107,6 +108,7 @@
 		}
 	}
 
+	// Go to a specific support request
 	private async Task GoToEditSupportRequest(int id)
 	{
 		navManager.NavigateTo($"/HandleSupportRequest/{id}");
