@@ -240,23 +240,11 @@
                     </div>
                     <div class="right-info">
                         <MudContainer>
-                        <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_start" DateFormat="dd.MM.yyyy" />
+                            <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_start" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate"/>
                         </MudContainer>
                         <MudContainer>
-                        <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_end" DateFormat="dd.MM.yyyy" />
+                            <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_end" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate"/>
                         </MudContainer>
-                        @* <ul class="features-list">
-                            <li class="list-item">
-                                <p class="feature-sub-title">Start date</p>
-                                <span class="feature-desc">
-                                    <MudDatePicker Label="Date Format" @bind-Value="date_start" DateFormat="dd.MM.yyyy" />
-                                </span>
-                            </li>
-                            <li class="list-item">
-                                <p class="feature-sub-title">End date</p>
-                                <span class="feature-desc"><input type="date" class="date-input" @bind="date_end" /></span>
-                            </li>
-                        </ul> *@
                     </div>
                 </div>
                 <div class="add-to-cart-btn">
@@ -272,6 +260,11 @@
     </div>
 </div>
 
+<style>
+    .special-day {
+        color: red !important;
+    }
+</style>
 
 @code {
 
@@ -282,6 +275,26 @@
     private DateTime? date_end; 
     public List<Room> allRooms = new List<Room>();
     public List<Booking> allBookings = new List<Booking>();
+
+
+    private List<Booking> exBookings = new List<Booking>();
+    private List<DateTime> specialDates = new List<DateTime>();
+
+
+    private string CheckDate(DateTime date)
+    {
+
+        foreach (var booking in exBookings)
+        {
+            specialDates.AddRange(Enumerable.Range(0, (booking.DateEnd - booking.DateStart).Days + 1).Select(DateTimeOffset => booking.DateStart.AddDays(DateTimeOffset)));
+        }
+        // compare only the date portion to find a match
+        return this.specialDates.Contains(date.Date) ? "special-day" : string.Empty;
+    }
+
+
+
+
 
     protected override async Task OnInitializedAsync()
     {
@@ -300,6 +313,9 @@
             date_end = DateTime.Now.AddDays(1);
 
             allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
+
+            // For the callender 
+            exBookings = await dbService.CheckExistingBookings(RoomId, (DateTime)date_start, (DateTime)date_end);
         }
         catch (Exception ex)
         {

@@ -93,6 +93,7 @@
         AppState.OnChange += StateHasChanged;
     }
 
+    // Handle Logout
     private async Task Logout()
     {
         await JSRuntime.InvokeVoidAsync("localStorage.removeItem", "authToken");
