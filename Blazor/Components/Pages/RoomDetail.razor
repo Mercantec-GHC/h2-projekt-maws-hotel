@@ -240,10 +240,10 @@
                     </div>
                     <div class="right-info">
                         <MudContainer>
-                        <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-value="date_start" DateFormat="dd.MM.yyyy" />
+                        <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_start" DateFormat="dd.MM.yyyy" />
                         </MudContainer>
                         <MudContainer>
-                        <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-value="date_end" DateFormat="dd.MM.yyyy" />
+                        <MudDatePicker Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_end" DateFormat="dd.MM.yyyy" />
                         </MudContainer>
                         @* <ul class="features-list">
                             <li class="list-item">
@@ -278,8 +278,8 @@
     [Parameter]
     public int RoomId { get; set; }
     private Room room;
-    private DateTime date_start { get; set; }
-    private DateTime date_end {get; set;}
+    private DateTime? date_start;
+    private DateTime? date_end; 
     public List<Room> allRooms = new List<Room>();
     public List<Booking> allBookings = new List<Booking>();
 
@@ -331,7 +331,7 @@
         }
 
         // check for exiting bookings.
-        var existingBookings = await dbService.CheckExistingBookings(RoomId, date_start, date_end);
+        var existingBookings = await dbService.CheckExistingBookings(RoomId, (DateTime)date_start, (DateTime)date_end);
 
         if (existingBookings.Any())
         {
@@ -342,8 +342,8 @@
         // Create a new booking.
         var newBooking = new Booking
             {
-                DateStart = date_start,
-                DateEnd = date_end,
+                DateStart = (DateTime)date_start,
+                DateEnd = (DateTime)date_end,
                 RoomId = RoomId,
                 ProfileId = AppState.UserId
             };
