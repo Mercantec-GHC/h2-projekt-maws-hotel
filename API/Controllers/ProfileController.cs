@@ -25,6 +25,7 @@ namespace API.Controllers
             _configuration = configuration;
         }
 
+        // Create profile
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto registerDto)
         {
@@ -49,60 +50,23 @@ namespace API.Controllers
             return Ok("Registration successful");
         }
 
-        [HttpPost("login")]
-        public async Task<IActionResult> Login(LoginDto loginDto)
+        // Get all profiles 
+        [HttpGet("all")]
+        // [Authorize(Roles = "Administrator")] // Temporarily comment this out for testing
+        public async Task<ActionResult<IEnumerable<Profile>>> GetAllProfiles()
         {
-            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == loginDto.Email);
-
-            if (profile == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, profile.Password))
+            try
             {
-                return Unauthorized("Invalid email or password");
+                return await _context.Profiles.ToListAsync();
             }
-
-            var token = GenerateJwtToken(profile);
-
-            return Ok(new { Token = token, UserId = profile.Id, IsAdmin = profile.Administrator });
-        }
-
-        [HttpDelete("deactivate/{id}")]
-        public async Task<IActionResult> DeleteProfile(int id)
-        {
-            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == id);
-
-            if (profile == null)
+            catch (Exception ex)
             {
-                return NotFound();
+                // Log the exception
+                return StatusCode(500, "An error occurred while fetching profiles");
             }
-
-            _context.Profiles.Remove(profile);
-            await _context.SaveChangesAsync();
-
-
-            return Ok();
         }
 
-        private string GenerateJwtToken(Profile profile)
-        {
-            var claims = new[]
-            {
-                new Claim(ClaimTypes.NameIdentifier, profile.Id.ToString()),
-                new Claim(ClaimTypes.Email, profile.Email),
-                new Claim(ClaimTypes.Role, profile.Administrator ? "Administrator" : "User")
-            };
-
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
-            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                issuer: _configuration["Jwt:Issuer"],
-                audience: _configuration["Jwt:Audience"],
-                claims: claims,
-                expires: DateTime.Now.AddDays(1),
-                signingCredentials: creds);
-
-            return new JwtSecurityTokenHandler().WriteToken(token);
-        }
-
+        // Get profile by id
         [HttpGet("{id}")]
         public async Task<ActionResult<Profile>> GetProfile(int id)
         {
@@ -116,6 +80,7 @@ namespace API.Controllers
             return profile;
         }
 
+        // Edit profile by id
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateProfile(int id, [FromBody] Profile updatedProfile)
         {
@@ -156,19 +121,7 @@ namespace API.Controllers
             return NoContent();
         }
 
-        private bool ProfileExists(int id)
-        {
-            // G� igennem alle profiler i databasen og tjek, om der findes en med det givne id
-            foreach (var profile in _context.Profiles)
-            {
-                if (profile.Id == id)
-                {
-                    return true; // Profilen findes
-                }
-            }
-            return false; // Profilen findes ikke
-        }
-
+        // Edit profile by id when administrator true
         [HttpPut("admin/{id}")]
         //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AdminUpdateProfile(int id, [FromBody] Profile updatedProfile)
@@ -213,22 +166,74 @@ namespace API.Controllers
             }
         }
 
-        [HttpGet("all")]
-        // [Authorize(Roles = "Administrator")] // Temporarily comment this out for testing
-        public async Task<ActionResult<IEnumerable<Profile>>> GetAllProfiles()
+        // Delete profile by id
+        [HttpDelete("deactivate/{id}")]
+        public async Task<IActionResult> DeleteProfile(int id)
         {
-            try
+            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Id == id);
+
+            if (profile == null)
             {
-                return await _context.Profiles.ToListAsync();
+                return NotFound();
             }
-            catch (Exception ex)
-            {
-                // Log the exception
-                return StatusCode(500, "An error occurred while fetching profiles");
-            }
+
+            _context.Profiles.Remove(profile);
+            await _context.SaveChangesAsync();
+
+
+            return Ok();
         }
 
+        // Checks If the profile exist by id 
+        private bool ProfileExists(int id)
+        {
+            foreach (var profile in _context.Profiles)
+            {
+                if (profile.Id == id)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
 
+        // Login with profile 
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginDto loginDto)
+        {
+            var profile = await _context.Profiles.FirstOrDefaultAsync(p => p.Email == loginDto.Email);
 
+            if (profile == null || !BCrypt.Net.BCrypt.Verify(loginDto.Password, profile.Password))
+            {
+                return Unauthorized("Invalid email or password");
+            }
+
+            var token = GenerateJwtToken(profile);
+
+            return Ok(new { Token = token, UserId = profile.Id, IsAdmin = profile.Administrator });
+        }
+
+        // Generate JWT Token, when logging in. 
+        private string GenerateJwtToken(Profile profile)
+        {
+            var claims = new[]
+            {
+                new Claim(ClaimTypes.NameIdentifier, profile.Id.ToString()),
+                new Claim(ClaimTypes.Email, profile.Email),
+                new Claim(ClaimTypes.Role, profile.Administrator ? "Administrator" : "User")
+            };
+
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]!));
+            var creds = new SigningCredentials(key, SecurityAlgorithms.HmacSha256);
+
+            var token = new JwtSecurityToken(
+                issuer: _configuration["Jwt:Issuer"],
+                audience: _configuration["Jwt:Audience"],
+                claims: claims,
+                expires: DateTime.Now.AddDays(1),
+                signingCredentials: creds);
+
+            return new JwtSecurityTokenHandler().WriteToken(token);
+        }
     }
 }
