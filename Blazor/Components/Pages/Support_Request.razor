@@ -3,38 +3,40 @@
 @using Microsoft.AspNetCore.Authorization
 @using DomainModels
 
+<!-- Contact Support Form -->
 <div class="login-box">
-	<p>Contact Support</p>
-	<form>
-		<div class="user-box">
-			<input required="" name="" type="text" @bind-value="supportRequest.Name"/>
-			<label>Name</label>
-		</div>
-		<div class="user-box">
-			<input required="" name="" type="text" @bind-value="supportRequest.Email"/>
-			<label>Email</label>
-		</div>
-		<div class="user-box">
-			<input required="" name="" type="text" @bind-value="supportRequest.Subject"/>
-			<label>Subject</label>
-		</div>
-		<div class="user-box">
-			<input required="" name="" type="text" @bind-value="supportRequest.Message" />
-			<label>Message</label>
-		</div>
-		<a @onclick="HandleValidSubmit">
-			<span></span>
-			<span></span>
-			<span></span>
-			<span></span>
-			Submit
-		</a>
-	</form>
+    <p>Contact Support</p>
+    <form>
+        <div class="user-box">
+            <input required="" name="" type="text" @bind-value="supportRequest.Name"/>
+            <label>Name</label>
+        </div>
+        <div class="user-box">
+            <input required="" name="" type="text" @bind-value="supportRequest.Email"/>
+            <label>Email</label>
+        </div>
+        <div class="user-box">
+            <input required="" name="" type="text" @bind-value="supportRequest.Subject"/>
+            <label>Subject</label>
+        </div>
+        <div class="user-box">
+            <input required="" name="" type="text" @bind-value="supportRequest.Message" />
+            <label>Message</label>
+        </div>
+        <a @onclick="HandleValidSubmit">
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            Submit
+        </a>
+    </form>
 </div>
 
+<!-- Code-behind -->
 @code {
-	private SupportRequest supportRequest = new SupportRequest();
-	private string errorMessage = string.Empty;
+    private SupportRequest supportRequest = new SupportRequest();
+    private string errorMessage = string.Empty;
 
 	// Add support request to database
 	private async Task HandleValidSubmit()
