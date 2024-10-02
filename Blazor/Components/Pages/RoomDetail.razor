@@ -112,10 +112,10 @@
                     <!-- Booking dates section -->
                     <div class="right-info">
                         <MudContainer>
-                            <MudDatePicker style="color:white" Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_start" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate"/>
+                            <MudDatePicker style="color:white" Label="Start Date" DisplayMonths="1" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_start" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate" Color="Color.Primary"/>
                         </MudContainer>
                         <MudContainer>
-                            <MudDatePicker Style="color:white" Label="Display two months" DisplayMonths="2" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_end" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate"/>
+                            <MudDatePicker Style="color:white" Label="End Date" DisplayMonths="1" TitleDateFormat="dddd, dd MMMM" @bind-Date="date_end" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate" Color="Color.Primary"/>
                         </MudContainer>
                     </div>
                 </div>
@@ -133,9 +133,11 @@
 </div>
 
 <style>
+    :root {--mud-palette-primary: rgba(255, 161, 30, 1);}
     .special-day {
         color: red !important;
         pointer-events: none;
+        opacity: 0.8;
     }
    .mud-picker-inline-paper {
        margin: auto;
@@ -145,6 +147,31 @@
        right: 30%;
        transition: 1s ease-in;
     } 
+
+    .mud-shrink~label.mud-input-label.mud-input-label-inputcontrol {
+    color: rgba(255, 161, 30, 1);
+}
+
+.mud-icon-root.mud-svg-icon {
+    fill: rgba(255, 161, 30, 1);
+}
+
+.mud-picker-calendar-header-switch {
+    display: flex;
+    margin-top: 4px;
+    align-items: center;
+    margin-bottom: 8px;
+    justify-content: space-between;
+    color: black;
+}
+.mud-picker-calendar-content {
+    display: grid;
+    --selected-day: 0;
+    grid-column-gap: 10px;
+    grid-template-columns: auto;
+    color: black;
+}
+
 </style>
 
 @code {
