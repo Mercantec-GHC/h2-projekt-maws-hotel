@@ -4,17 +4,16 @@
 @inject IJSRuntime JSRuntime
 @using DomainModels
 
-<!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-<!-- Hero Section -->
+
+<PageTitle>Welcome to Sunset Resort</PageTitle>
 <div class="home-background">
     <img src="/Maws-hoteller-photos/background-pic.png" alt="Alternate Text" />
     <h1 class="home-title">Sunset Resort</h1>
     <p class="home-subtitle">Welcome to the Sunset Resort!</p>
 </div>
 
-<!-- Main Content -->
 <div class="container">
     <div class="jumbotron text-center mt-4">
     </div>
@@ -23,8 +22,6 @@
         </div>
     </div>
     <br>
-
-    <!-- Feature Categories -->
     <div class="row d-flex justify-content-center">
         <div class="jumbotron col-md-3 text-center category">
             <i class="bi bi-star-fill"></i>
@@ -43,7 +40,7 @@
         </div>
     </div>
 
-    <!-- Available Rooms Section -->
+
     <div class="container">
         <h1 class="text-center mt-4 card-section-title">Available Rooms</h1>
         <hr class="hr"/>
@@ -79,6 +76,7 @@
                     <div class="card-body">
                         <h5 class="card-title">@allRooms.FirstOrDefault(r => r.Type == 2)?.Name.ToString()</h5>
                         <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 2)?.Description.ToString()</p>
+                        <!-- Vis prisen for komfortværelset -->
                         <div class="price-book-container">
                             <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 2)?.Price.ToString("C")</p>
                             <button class="card-btn" @onclick="() => FindAndNavigateToRoom(2)">
@@ -90,13 +88,13 @@
                 </div>
             </div>
 
-            <!-- Card 2 (Suite) -->
             <div class="card-container">
                 <div class="card">
                     <img class="card-img-top" src="@allRooms.FirstOrDefault(r => r.Type == 5)?.Photos.ToString()" alt="Standard Room" />
                     <div class="card-body">
                         <h5 class="card-title">@allRooms.FirstOrDefault(r => r.Type == 5)?.Name.ToString()</h5>
                         <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 5)?.Description.ToString()</p>
+                        <!-- Vis prisen for suiteværelset -->
                         <div class="price-container">
                             <div class="price-book-container">
                                 <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 5)?.Price.ToString("C")</p>
@@ -139,6 +137,7 @@
                         <div class="card-body">
                             <h5 class="card-title">@allRooms.FirstOrDefault(r => r.Type == 4)?.Name.ToString()</h5>
                             <p class="card-text">@allRooms.FirstOrDefault(r => r.Type == 4)?.Description.ToString()</p>
+                            <!-- Vis prisen for komfortværelset -->
                             <div class="price-book-container">
                                 <p class="card-text price">@allRooms.FirstOrDefault(r => r.Type == 4)?.Price.ToString("C")</p>
                                 <button class="card-btn" @onclick="() => FindAndNavigateToRoom(4)">
@@ -149,25 +148,25 @@
                     }
                 </div>
             </div>
+           
+
         </div>
         <br/>
     </div>
 </div>
 
+
+
+
+
 @code {
-    // Variables for sorting
     public string current;
     public bool ascending = true;
-
-    // Lists to store room and booking data
     public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
     public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
-
-    // Counters for room statistics
     public int booked_count = 0;
     public int total_rooms = 0;
 
-    // Initialize data on component initialization
     protected override async Task OnInitializedAsync()
     {
         allRooms = await dbService.GetRooms();
@@ -175,7 +174,6 @@
         total_rooms = allRooms.Count;
     }
 
-    // Method to find and navigate to a room
     public async Task FindAndNavigateToRoom(int roomType)
     {
         if (AppState.LoggedIn)
@@ -190,7 +188,7 @@
             }
             else
             {
-                // Show alert if no rooms are available
+                // Optionally, show a message or alert if no rooms are available
                 await JSRuntime.InvokeVoidAsync("alert", "No available rooms of this type at the moment.");
             }
         }
@@ -200,9 +198,9 @@
         }
     }
 
-    // Method to navigate to booking page
     public void gotoBooking(int id)
     {
+        
         if (!AppState.LoggedIn)
         {
             navManager.NavigateTo("/login");
@@ -212,8 +210,6 @@
             navManager.NavigateTo($"/room-details/{id}");
         }
     }
-
-    // Method to set sorting column
     private void SetSortColumn(string colunm)
     {
         if (current == colunm)
@@ -229,38 +225,39 @@
         SortRooms(current);
     }
 
-    // Method to sort rooms
     private void SortRooms(string colunm)
     {
         switch (colunm)
         {
             case "Id":
-                allRooms = ascending ? allRooms.OrderBy(r => r.Id).ToList() : allRooms.OrderByDescending(r => r.Id).ToList();
-                break;
+            allRooms = ascending ? allRooms.OrderBy(r => r.Id).ToList() : allRooms.OrderByDescending(r => r.Id).ToList();
+            break;
             case "Price":
-                allRooms = ascending ? allRooms.OrderBy(r => r.Price).ToList() : allRooms.OrderByDescending(r => r.Price).ToList();
-                break;
+            allRooms = ascending ? allRooms.OrderBy(r => r.Price).ToList() : allRooms.OrderByDescending(r => r.Price).ToList();
+            break;
             case "Type":
-                allRooms = ascending ? allRooms.OrderBy(r => r.Type).ToList() : allRooms.OrderByDescending(r => r.Type).ToList();
-                break;
+            allRooms = ascending ? allRooms.OrderBy(r => r.Type).ToList() : allRooms.OrderByDescending(r => r.Type).ToList();
+            break;
             case "CurrentlyBooked":
-                allRooms = ascending ? allRooms.OrderBy(r => r.CurrentlyBooked).ToList() : allRooms.OrderByDescending(r => r.CurrentlyBooked).ToList();
-                break;
+            allRooms = ascending ? allRooms.OrderBy(r => r.CurrentlyBooked).ToList() : allRooms.OrderByDescending(r => r.CurrentlyBooked).ToList();
+            break;
         }
     }
 
-    // Variables for card visibility
+
     private bool isCard1Visible = true;
     private bool isCard3Visible = true;
 
-    // Methods to toggle card visibility
     public void ToggleCardVisibility()
     {
         isCard1Visible = !isCard1Visible;
+        
     }
-
     public void ToggleCardVisibility3()
     {
+        
         isCard3Visible = !isCard3Visible;
     }
+
+
 }

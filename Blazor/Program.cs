@@ -3,6 +3,7 @@ using Blazor.Services;
 using DomainModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
+using MudBlazor.Services;
 
 public class Program
 {
@@ -19,6 +20,7 @@ public class Program
             options.UseNpgsql(connectionString));
 
         builder.Services.AddScoped<HttpClient>();
+        builder.Services.AddMudServices();
 
         // Register DatabaseService with both connectionString and HttpClient
         builder.Services.AddScoped<DatabaseService>(sp =>
