@@ -3,6 +3,7 @@ using Blazor.Services;
 using DomainModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.JSInterop;
+using System.Net.Mail;
 
 public class Program
 {
@@ -40,6 +41,8 @@ public class Program
         // Add services to the container.
         builder.Services.AddRazorComponents()
             .AddInteractiveServerComponents();
+
+        builder.Services.AddScoped<EmailService>();
 
         builder.Services.AddHttpClient("API", client =>
         {
