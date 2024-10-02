@@ -265,6 +265,14 @@
         color: red !important;
         pointer-events: none;
     }
+   .mud-picker-inline-paper {
+       margin: auto;
+       position: fixed;
+       transform: scale(0.80);
+       bottom: 225px;
+       right: 30%;
+       transition: 1s ease-in;
+    } 
 </style>
 
 @code {
@@ -315,7 +323,7 @@
 
             allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
 
-            // For the callender 
+            // For the calender 
             exBookings = await dbService.CheckExistingBookings(RoomId, (DateTime)date_start, (DateTime)date_end);
         }
         catch (Exception ex)
@@ -380,7 +388,7 @@
                     UseDefaultCredentials = false,
                 };
 
-            string imagePath = "wwwroot/Maws-hoteller-photos/sunset resort.png"; // Adjust the path as needed
+            string imagePath = "wwwroot/Maws-hoteller-photos/sunset resort.png"; 
             byte[] imageArray = File.ReadAllBytes(imagePath);
             string base64ImageRepresentation = Convert.ToBase64String(imageArray);
 
