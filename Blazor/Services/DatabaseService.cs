@@ -1,4 +1,5 @@
-﻿using Blazor.Components.Pages;
+﻿#region Usings
+using Blazor.Components.Pages;
 using DomainModels;
 using Npgsql;
 using System;
@@ -11,7 +12,7 @@ using static Blazor.Services.DatabaseService;
 using Microsoft.AspNetCore.Http.HttpResults;
 using static System.Net.WebRequestMethods;
 using Microsoft.AspNetCore.Mvc;
-
+#endregion
 
 namespace Blazor.Services
 {
@@ -26,70 +27,91 @@ namespace Blazor.Services
             this.connectionString = connectionString;
             _httpClient = httpClient;
         }
-        //Henter alle rum
-        public async Task<List<Room>> GetRooms()
+        #region Booking
+        //---CONNECTIONS TO BOOKING API---//
+
+        // Create a new booking
+        public async Task PostBooking(Booking request)
         {
-            return await _httpClient.GetFromJsonAsync<List<Room>>(_baseURL + "Room");
+            await _httpClient.PostAsJsonAsync(_baseURL + "Booking/CreateBooking", request);
         }
-        //Henter alle bookings
+
+        //Get all bookings
         public async Task<List<Booking>> GetBookings()
         {
             return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + "Booking");
         }
-        //Henter alle bookings for i dag
+
+        //Get all bookings for today 
         public async Task<List<Booking>> GetBookingsForToday()
         {
             return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + "Booking/BookingsToday");
         }
-        //Henter bookings for en specifik bruger ved brug af UserID 
+
+        //Get all bookings from a specific user by UserID
         public async Task<List<Booking>> GetBookingsFromUserID(int UserID)
         {
             return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + $"Booking/userid/{UserID}");
         }
 
-        //Henter bookings for en specifik bruger ved brug af UserID 
+        //Get all bookings from a specific user by RoomID
         public async Task<List<Booking>> GetBookingsFromRoomId(int RoomId)
         {
             return await _httpClient.GetFromJsonAsync<List<Booking>>(_baseURL + $"Booking/roomid/{RoomId}");
         }
 
-        public async Task<Room> GetRoomById(int id)
+        // Get booking by BookingId
+        public async Task<Booking> GetBookingById(int id)
         {
-            return await _httpClient.GetFromJsonAsync<Room>(_baseURL + $"Room/RoomId/{id}");
+            return await _httpClient.GetFromJsonAsync<Booking>(_baseURL + $"Booking/BookingID/{id}");
         }
 
-        // Tjekker for eksisterende bookinger for et specifikt værelsesnummer
+        // Check existings bookings for a specific room by roomId & dates 
         public async Task<List<Booking>> CheckExistingBookings(int roomId, DateTime dateStart, DateTime dateEnd)
         {
             var url = $"{_baseURL}Booking/CheckExistingBookings/{roomId}?dateStart={dateStart:yyyy-MM-dd}&dateEnd={dateEnd:yyyy-MM-dd}";
             return await _httpClient.GetFromJsonAsync<List<Booking>>(url);
         }
 
-        // Opretter en ny booking
-        public async Task PostBooking(Booking request)
+        // Edit an existing booking 
+        public async Task<HttpResponseMessage> EditBooking(int id, Booking bookingRequest)
         {
-            await _httpClient.PostAsJsonAsync(_baseURL + "Booking/CreateBooking", request);
+            return await _httpClient.PutAsJsonAsync(_baseURL + $"Booking/EditBooking/{id}", bookingRequest);
         }
 
-        // Henter booking via ID 
-        public async Task<Booking> GetBookingById(int id)
+        //Delete a booking 
+        public async Task DeleteBooking(int id)
         {
-           return await _httpClient.GetFromJsonAsync<Booking>(_baseURL + $"Booking/BookingID/{id}");
+            await _httpClient.DeleteFromJsonAsync<Booking>(_baseURL + $"Booking/DeleteBooking/{id}");
+        }
+        #endregion
+
+        #region Room
+        //---CONNECTIONS TO ROOM API---//
+
+        //Get all rooms
+        public async Task<List<Room>> GetRooms()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Room>>(_baseURL + "Room");
         }
 
-         // Ændre en eksisterende booking
-    public async Task<HttpResponseMessage> EditBooking(int id, Booking bookingRequest)
-    {
-        return await _httpClient.PutAsJsonAsync(_baseURL + $"Booking/EditBooking/{id}", bookingRequest);
-    }
+        //Get room by RoomId
+        public async Task<Room> GetRoomById(int id)
+        {
+            return await _httpClient.GetFromJsonAsync<Room>(_baseURL + $"Room/RoomId/{id}");
+        }
+        #endregion
+
+        #region Support
+        //---CONNECTIONS TO SUPPORT API---//
 
         //Create Support Request 
         public async Task PostSupportRequest(SupportRequest request)
         {
-             await _httpClient.PostAsJsonAsync(_baseURL + "Support", request);
+            await _httpClient.PostAsJsonAsync(_baseURL + "Support", request);
         }
 
-         // Get all support requests
+        // Get all support requests
         public async Task<List<SupportRequest>> GetAllSupportRequests()
         {
             return await _httpClient.GetFromJsonAsync<List<SupportRequest>>(_baseURL + "Support");
@@ -106,17 +128,21 @@ namespace Blazor.Services
         {
             return await _httpClient.PutAsJsonAsync(_baseURL + $"Support/{id}", request);
         }
-        
-        //Sletter en booking 
-        public async Task DeleteBooking(int id)
-        {
-            await _httpClient.DeleteFromJsonAsync<Booking>(_baseURL + $"Booking/DeleteBooking/{id}");
-        }
 
-        // Opretter en ny profile
+        // Delete support request by ID
+        public async Task<HttpResponseMessage> DeleteSupportRequest(int id)
+        {
+            return await _httpClient.DeleteAsync(_baseURL + $"Support/{id}");
+        }
+        #endregion
+
+        #region Profile
+        //---CONNECTIONS TO PROFILE API---//
+
+        // Create a new profile 
         public async Task<string> PostProfile(RegisterDto request)
         {
-            var response = await _httpClient.PostAsJsonAsync(_baseURL + "Profile/register", request); 
+            var response = await _httpClient.PostAsJsonAsync(_baseURL + "Profile/register", request);
 
             if (response.IsSuccessStatusCode)
             {
@@ -128,28 +154,13 @@ namespace Blazor.Services
             }
         }
 
-        public async Task<HttpResponseMessage> EditProfile(int id, Profile profile){
-            return await _httpClient.PutAsJsonAsync(_baseURL + $"profile/{id}", profile);
-        }
-
-        // Login to profile
-        public async Task<HttpResponseMessage> LoginProfile(LoginDto loginDto)
-        {
-             return await _httpClient.PostAsJsonAsync(_baseURL + "profile/login", loginDto);
-        }
-
+        //Get profile by userID
         public async Task<Profile> GetProfileByUserID(int userID)
         {
             return await _httpClient.GetFromJsonAsync<Profile>(_baseURL + $"profile/{userID}");
         }
 
-        // Delete support request by ID
-        public async Task<HttpResponseMessage> DeleteSupportRequest(int id)
-        {
-            return await _httpClient.DeleteAsync(_baseURL + $"Support/{id}");
-        }
-
-        // Add this new method
+        // Get user-email by userId
         public async Task<string> GetUserEmailById(int userId)
         {
             try
@@ -164,8 +175,17 @@ namespace Blazor.Services
             }
         }
 
+        //Edit profile by id
+        public async Task<HttpResponseMessage> EditProfile(int id, Profile profile)
+        {
+            return await _httpClient.PutAsJsonAsync(_baseURL + $"profile/{id}", profile);
+        }
 
-
-
+        // Login to profile
+        public async Task<HttpResponseMessage> LoginProfile(LoginDto loginDto)
+        {
+            return await _httpClient.PostAsJsonAsync(_baseURL + "profile/login", loginDto);
+        }
     }
 }
+#endregion

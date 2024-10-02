@@ -18,7 +18,7 @@ namespace API.Controllers
             _connectionString = _configuration.GetConnectionString("DefaultConnection");
         }
 
-        //GetRooms
+        //Get all rooms 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Room>>> GetRooms()
         {
