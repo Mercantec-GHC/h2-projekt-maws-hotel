@@ -136,6 +136,14 @@
         color: red !important;
         pointer-events: none;
     }
+   .mud-picker-inline-paper {
+       margin: auto;
+       position: fixed;
+       transform: scale(0.80);
+       bottom: 225px;
+       right: 30%;
+       transition: 1s ease-in;
+    } 
 </style>
 
 @code {
@@ -183,7 +191,7 @@
             date_end = DateTime.Now.AddDays(1);
             allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
 
-            // For the callender 
+            // For the calender 
             exBookings = await dbService.CheckExistingBookings(RoomId, (DateTime)date_start, (DateTime)date_end);
         }
         catch (Exception ex)
