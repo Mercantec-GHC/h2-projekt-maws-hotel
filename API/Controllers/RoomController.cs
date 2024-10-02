@@ -71,7 +71,6 @@ namespace API.Controllers
                                 Photos = reader["photos"].ToString(),
                                 Description = reader["description"].ToString(),
                                 Name = Convert.ToString(reader["name"])
-
                             };
                         }
                     }

@@ -182,7 +182,6 @@
                     <div class="left-info">
                         <span class="product-title">
                             @room.Name
-
                             <div class="star-rating">
                                 <span class="star">
                                     <svg xmlns="http://www.w3.org/2000/svg"
@@ -277,24 +276,20 @@
     public List<Booking> allBookings = new List<Booking>();
 
 
-    private List<Booking> exBookings = new List<Booking>();
+    private List<Booking> exBookingsOnRoomId = new List<Booking>();
     private List<DateTime> specialDates = new List<DateTime>();
 
 
     private string CheckDate(DateTime date)
     {
-
-        foreach (var booking in exBookings)
+        specialDates.Clear();
+        foreach (var booking in exBookingsOnRoomId)
         {
             specialDates.AddRange(Enumerable.Range(0, (booking.DateEnd - booking.DateStart).Days + 1).Select(DateTimeOffset => booking.DateStart.AddDays(DateTimeOffset)));
         }
         // compare only the date portion to find a match
         return this.specialDates.Contains(date.Date) ? "special-day" : string.Empty;
     }
-
-
-
-
 
     protected override async Task OnInitializedAsync()
     {
@@ -304,7 +299,7 @@
             if (room == null)
             {
                 Console.WriteLine($"Error: Unable to fetch room with ID: {RoomId}");
-                await JSRuntime.InvokeVoidAsync("alert", "Noget gik galt under visning. Prøv igen.");
+                await JSRuntime.InvokeVoidAsync("alert", "Something went wrong. Try again.");
                 navManager.NavigateTo("/error");
                 return;
             }
@@ -314,13 +309,13 @@
 
             allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
 
-            // For the callender 
-            exBookings = await dbService.CheckExistingBookings(RoomId, (DateTime)date_start, (DateTime)date_end);
+            // For the calender 
+            exBookingsOnRoomId = await dbService.GetBookingsFromRoomId(RoomId);
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Database error: {ex.Message}");
-            await JSRuntime.InvokeVoidAsync("alert", $"En fejl opstod: {ex.Message}");
+            await JSRuntime.InvokeVoidAsync("alert", $"An error occorred: {ex.Message}");
             navManager.NavigateTo("/error");
         }
     }
@@ -330,19 +325,19 @@
     {
         if (date_start == default || date_end == default)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Vælg venligst gyldige datoer for start og slut.");
+            await JSRuntime.InvokeVoidAsync("alert", "Please pick a valid start and end date.");
             return;
         }
 
         if (date_start >= date_end)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Startdatoen skal være før slutdatoen.");
+            await JSRuntime.InvokeVoidAsync("alert", "The start date needs to be before the end date.");
             return;
         }
 
         if (date_start < DateTime.Now.Date)
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Du kan ikke booke et værelse i fortiden.");
+            await JSRuntime.InvokeVoidAsync("alert", "You Can't book a room in the past.");
             return;
         }
 
@@ -351,7 +346,7 @@
 
         if (existingBookings.Any())
         {
-            await JSRuntime.InvokeVoidAsync("alert", "Værelset er allerede booket i denne periode.");
+            await JSRuntime.InvokeVoidAsync("alert", "The room is already booked in this time frame. Please pick a new date.");
             return;
         }
 

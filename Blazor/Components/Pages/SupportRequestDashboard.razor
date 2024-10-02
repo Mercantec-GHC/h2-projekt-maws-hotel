@@ -109,7 +109,7 @@
 	}
 
 	// Go to a specific support request
-	private async Task GoToEditSupportRequest(int id)
+	private void GoToEditSupportRequest(int id)
 	{
 		navManager.NavigateTo($"/HandleSupportRequest/{id}");
 		StateHasChanged();

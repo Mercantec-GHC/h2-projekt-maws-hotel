@@ -21,11 +21,11 @@
 			<div class="card-block">
 				<div class="form-group">
 					<label for="Name">Name:</label>
-					<input type="text" @bind="supportRequest.Name" class="form-control" />
+					<p>@supportRequest.Name</p>
 				</div>
 				<div class="form-group">
 					<label for="email">Email:</label>
-					<input type="text" @bind="supportRequest.Email" class="form-control" />
+					<p>@supportRequest.Email</p>
 				</div>
 				<div class="form-group">
 					<label for="subject">Subject:</label>
@@ -65,7 +65,7 @@
 @code {
 	[Parameter]
 	public int supportRequestId { get; set; }
-	private SupportRequest? supportRequest = new SupportRequest();
+	private SupportRequest supportRequest = new SupportRequest();
 
 	protected override async Task OnInitializedAsync()
 	{

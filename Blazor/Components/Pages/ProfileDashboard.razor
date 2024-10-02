@@ -90,7 +90,7 @@
                                                 <thead>
                                                     <tr>
                                                         <th>Booking ID</th>
-                                                        <th>Room</th>
+                                                        <th>Room Type</th>
                                                         <th>Start Date</th>
                                                         <th>End Date</th>
                                                         <th>Total price</th>
@@ -102,7 +102,7 @@
                                                     {
                                                         <tr>
                                                             <td>@booking.Id</td>
-                                                            <td>@booking.RoomId</td>
+                                                            <td>@allRooms.FirstOrDefault(r => r.Id == booking.RoomId).Name</td>
                                                             <td>@booking.DateStart.ToString("dd/MM/yyyy")</td>
                                                             <td>@booking.DateEnd.ToString("dd/MM/yyyy")</td>
                                                             <td>@CalculateTotalPrice(booking).ToString("C2", new System.Globalization.CultureInfo("da-DK"))</td>
@@ -133,8 +133,8 @@
 
 @code {
     private Profile? profile;
-    public List<DomainModels.Booking> upcomingBookings = new List<DomainModels.Booking>();
-    public List<DomainModels.Room> allRooms = new List<DomainModels.Room>();
+    public List<Booking> upcomingBookings = new List<Booking>();
+    public List<Room> allRooms = new List<Room>();
 
     protected override async Task OnInitializedAsync()
     {
