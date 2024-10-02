@@ -57,6 +57,7 @@ namespace API.Controllers
             }
         }
 
+        //Get all support requests 
         [HttpGet]
         public async Task<IActionResult> GetAllSupportRequests()
         {
