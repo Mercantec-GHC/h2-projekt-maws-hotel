@@ -5,6 +5,9 @@
 @inject AppState AppState
 @using Microsoft.JSInterop
 
+<script src="_content/MudBlazor/MudBlazor.min.js"></script>
+
+
 <PageTitle>Booking Details</PageTitle>
 
 <HeadContent>
@@ -49,27 +52,39 @@
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Booking Dates</h6>
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">Start Date</p>
-                                            <input type="date" id="dateStart" class="date-input" disabled="@isDisabled" @bind="booking.DateStart" />
+                                            <!--<p class="m-b-10 f-w-600">Start Date</p>
+                                            <input type="date" id="dateStart" class="date-input" disabled="@isDisabled" @bind="booking.DateStart" />   -->
+                                            <MudContainer>
+                                                <MudDatePicker style="color:black" Label="Start Date" DisplayMonths="1" 
+                                                                           TitleDateFormat="dddd, dd MMMM" 
+                                                                           @bind-Date="@date_start" 
+                                                                           DateFormat="dd.MM.yyyy" 
+                                                                           AdditionalDateClassesFunc="CheckDate" 
+                                                                           Color="Color.Primary" HelperText="@booking.DateStart.ToString("dd.MM.yyyy")"/>
+                                            </MudContainer>                                        
                                         </div>
                                         <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">End Date</p>
-                                            <input type="date" id="dateEnd" class="date-input" disabled="@isDisabled" @bind="booking.DateEnd" />
+                                            <!-- <p class="m-b-10 f-w-600">End Date</p>
+                                            <input type="date" id="dateEnd" class="date-input" disabled="@isDisabled" @bind="booking.DateEnd" />  -->
+                                            <MudContainer>
+                                                <MudDatePicker style="color:black" Label="Start Date" DisplayMonths="1" 
+                                                                        TitleDateFormat="dddd, dd MMMM" 
+                                                                        @bind-Date="@date_end" 
+                                                                        DateFormat="dd.MM.yyyy" 
+                                                                        AdditionalDateClassesFunc="CheckDate" 
+                                                                        Color="Color.Primary" HelperText="@booking.DateEnd.ToString("dd.MM.yyyy")"/>
+                                        </MudContainer>                                        
                                         </div>
                                     </div>
-                                    <div class="row mt-4">
-                                        <div class="col-sm-6 text-center">
-                                            <button class="edit-button" @onclick="ToggleEdit">@(isDisabled ? "Edit" : "Save")</button>
-                                        </div>
+                                    <div class="container-buttons">
+                                        <button class="button-edit" @onclick="ToggleEdit">@(isDisabled ? "Edit" : "Save")</button>
                                         @if (!isDisabled)
                                         {
-                                            <div class="col-sm-6 text-center">
-                                                <button class="cancel-button" @onclick="Cancel">Cancel</button>
-                                            </div>
-                                        } else {
-                                            <div class="col-sm-6 text-center">
-                                                <button class="cancel-button" @onclick="showModal"><i class="bi bi-trash"></i> Delete Booking</button>
-                                            </div>
+                                            <button class="button-delete" @onclick="showModal"><i class="bi bi-trash"></i> Delete Booking</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="button-cancel" @onclick="Cancel">Cancel</button>
                                         }
                                     </div>
                                 </div>
@@ -111,6 +126,7 @@
 }
 
 
+
 @code {
     [Parameter]
     public int bookingId { get; set; }
@@ -118,6 +134,10 @@
     private Booking booking = new Booking();
     private bool isDisabled = true;
     private bool showDeleteConfirmation = false;
+    private DateTime? date_start;
+    private DateTime? date_end; 
+    private List<Booking> exBookingsOnRoomId = new List<Booking>();
+    private List<DateTime> specialDates = new List<DateTime>();
 
     protected override async Task OnInitializedAsync()
     {
@@ -126,12 +146,28 @@
 
         // Fetch profile details
         profile = await dbService.GetProfileByUserID(booking.ProfileId);
+
+        exBookingsOnRoomId = await dbService.GetBookingsFromRoomId(booking.RoomId);
+
+    }
+
+    private string CheckDate(DateTime date)
+    {
+        specialDates.Clear();
+        foreach (var booking in exBookingsOnRoomId)
+        {
+            specialDates.AddRange(Enumerable.Range(0, (booking.DateEnd - booking.DateStart).Days + 1).Select(DateTimeOffset => booking.DateStart.AddDays(DateTimeOffset)));
+        }
+        // compare only the date portion to find a match
+        return this.specialDates.Contains(date.Date) ? "special-day" : string.Empty;
     }
 
     private async Task ToggleEdit()
     {
         if (!isDisabled)
         {
+            booking.DateStart = date_start ?? booking.DateStart;
+            booking.DateEnd = date_end ?? booking.DateEnd;
             // Validate dates
             if (booking.DateStart == default || booking.DateEnd == default)
             {
@@ -164,7 +200,7 @@
             var response = await dbService.EditBooking(bookingId, booking);
             if (response.IsSuccessStatusCode)
             {
-                navManager.NavigateTo("/ProfileDashboard");
+                navManager.NavigateTo("/booking-details/" + bookingId);
             }
         }
 
@@ -196,3 +232,57 @@
         
     }
 }
+
+
+<style>
+    /* Custom styles for the calendar */
+    :root {
+        --mud-palette-primary: rgba(255, 161, 30, 1);
+    }
+    .mud-theme-primary {
+        color: var(--mud-palette-primary-text) !important;
+        background-color: rgba(255, 161, 30, 1) !important;
+    }
+
+    .special-day {
+        color: red !important;
+        pointer-events: none;
+        opacity: 0.8;
+    }
+
+    .mud-picker-inline-paper {
+        margin: auto;
+        position: fixed;
+        transform: scale(0.80);
+        bottom: 225px;
+        right: 30%;
+        transition: 1s ease-in;
+    }
+
+    .mud-shrink ~ label.mud-input-label.mud-input-label-inputcontrol {
+        color: rgba(255, 161, 30, 1);
+    }
+
+    .mud-icon-root.mud-svg-icon {
+        fill: rgba(255, 161, 30, 1);
+    }
+
+    .mud-picker-calendar-header-switch {
+        display: flex;
+        margin-top: 4px;
+        align-items: center;
+        margin-bottom: 8px;
+        justify-content: space-between;
+        color: black;
+    }
+
+    .mud-picker-calendar-content {
+        display: grid;
+        --selected-day: 0;
+        grid-column-gap: 10px;
+        grid-template-columns: auto;
+        color: black;
+    }
+
+    /* End of custom styles for the calendar */
+</style>

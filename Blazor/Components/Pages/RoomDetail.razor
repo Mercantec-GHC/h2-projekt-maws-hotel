@@ -132,47 +132,6 @@
     </div>
 </div>
 
-<style>
-    :root {--mud-palette-primary: rgba(255, 161, 30, 1);}
-    .special-day {
-        color: red !important;
-        pointer-events: none;
-        opacity: 0.8;
-    }
-   .mud-picker-inline-paper {
-       margin: auto;
-       position: fixed;
-       transform: scale(0.80);
-       bottom: 225px;
-       right: 30%;
-       transition: 1s ease-in;
-    } 
-
-    .mud-shrink~label.mud-input-label.mud-input-label-inputcontrol {
-    color: rgba(255, 161, 30, 1);
-}
-
-.mud-icon-root.mud-svg-icon {
-    fill: rgba(255, 161, 30, 1);
-}
-
-.mud-picker-calendar-header-switch {
-    display: flex;
-    margin-top: 4px;
-    align-items: center;
-    margin-bottom: 8px;
-    justify-content: space-between;
-    color: black;
-}
-.mud-picker-calendar-content {
-    display: grid;
-    --selected-day: 0;
-    grid-column-gap: 10px;
-    grid-template-columns: auto;
-    color: black;
-}
-
-</style>
 
 @code {
     [Parameter]
@@ -263,7 +222,6 @@
         await dbService.PostBooking(newBooking);
         navManager.NavigateTo("/BookSuccess");
         
-        // Send confirmation email
         try
         {
             var userEmail = await dbService.GetUserEmailById(AppState.UserId);
@@ -272,7 +230,7 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error sending confirmation email: {ex.Message}");
-            await JSRuntime.InvokeVoidAsync("alert", "Booking successful, but there was an error sending the confirmation email. Please refer to the profile page for the booking confirmation.");
+            await JSRuntime.InvokeVoidAsync("alert", "Booking successful, but there was an error sending the confirmation email.");
         }
     }
 }
