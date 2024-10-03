@@ -196,8 +196,8 @@ h6 {
     margin: 1rem;
     color: black;
     background-color: transparent;
-    top: 0;
-    left: 0;
+    top: -5px;
+    left: 10px;
     fill: black;
     font-size: 1.5rem;
     border: none;
