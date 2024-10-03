@@ -42,8 +42,8 @@
                             </button>
 
                             <!-- Go to Profile Button -->
-                            <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/EditProfile/{booking.ProfileId}"))">
-                                <i class="bi bi-person-fill profile-icon"></i> Profile
+                            <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/booking-details/{booking.Id}"))">
+                                <i class="bi bi-calendar-check"></i> Booking
                             </button>
                         </td>
                     </tr>

@@ -20,14 +20,26 @@
     min-height: 600px; /* Adjust this value as needed */
 }
 
-.admin-edit-profile:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 50px rgba(0, 0, 0, 0.15);
-}
+
 
 .admin-edit-profile .row {
     display: flex;
     min-height: 100%;
+}
+
+.delete-profile-button{
+    background-color: transparent;
+    color: black;
+    transform: translate(15px, 15px);
+    font-size: 25px;
+    border: none;
+    padding: 0;
+    position: absolute;
+    border-radius: 5px;
+}
+.delete-profile-button:hover {
+    transition: 0.3s;
+    color:white;
 }
 
 .profile-header {
@@ -172,28 +184,92 @@ label {
     transition: background-color 0.3s, transform 0.2s, box-shadow 0.3s;
 }
 
-.btn-primary {
-    background-color: rgba(190,47,48,1);
-    color: #fff;
-}
+/* Save changes button */
 
-.btn-primary:hover {
-    background-color: rgba(255,161,30,1);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(255,161,30,0.2);
-}
+.button-save {
+    width: fit-content;
+    display: flex;
+    padding: 1.2em 1rem;
+    cursor: pointer;
+    gap: 0.4rem;
+    font-weight: bold;
+    border-radius: 30px;
+    background: linear-gradient(15deg, rgba(190,47,48,0.8),rgba(190,47,48,0.8), rgba(190,47,48,1),rgba(190,47,48,1),rgba(190,47,48,1), rgba(255,161,30,1),rgba(255,161,30,1),rgba(255,161,30,1), rgba(255,161,30,0.8), rgba(255,161,30,0.8)) no-repeat;
+    background-size: 300%;
+    color: white;
+    border: none;
+    background-position: left center;
+    box-shadow: 0 30px 10px -20px rgba(0,0,0,.2);
+    transition: background .3s ease;
+  }
+  
+  .button-save:hover {
+    background-size: 320%;
+    background-position: right center;
+    color:black;
+  }
 
-.btn-secondary {
-    background-color: #6c757d;
-    color: #fff;
-    margin-left: 10px;
-}
+/* end of save changes button */
 
-.btn-secondary:hover {
-    background-color: #5a6268;
-    transform: translateY(-2px);
-    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.2);
-}
+/* Cancel button */
+.button-cancel {
+    --color: rgba(255,161,30,1);
+    --color2: rgba(190,47,48,1);
+    padding: 0.8em 1.75em;
+    box-shadow: 0 30px 10px -20px rgba(0,0,0,.2);
+    background-color: #282c30;
+    border-radius: 50px;
+    border: 2px solid var(--color);
+    transition: .5s;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    z-index: 1;
+    font-weight: bold;
+    font-size: 17px;
+    font-family: 'Roboto', 'Segoe UI', sans-serif;
+    text-transform: uppercase;
+    color: var(--color);
+   }
+   
+   .button-cancel::after, .button-cancel::before {
+    content: '';
+    display: block;
+    height: 100%;
+    width: 100%;
+    transform: skew(90deg) translate(-50%, -50%);
+    position: absolute;
+    inset: 50%;
+    left: 25%;
+    z-index: -1;
+    transition: .5s ease-out;
+    background-color: var(--color);
+   }
+   
+   .button-cancel::before {
+    top: -50%;
+    left: -25%;
+    transform: skew(90deg) rotate(180deg) translate(-50%, -50%);
+   }
+   
+   .button-cancel:hover::before {
+    transform: skew(45deg) rotate(180deg) translate(-50%, -50%);
+   }
+   
+   .button-cancel:hover::after {
+    transform: skew(45deg) translate(-50%, -50%);
+   }
+   
+   .button-cancel:hover {
+    color: var(--color2);
+   }
+   
+   .button-cancel:active {
+    filter: brightness(.7);
+    transform: scale(.98);
+   }
+
+/* end of cancel button */
 
 .validation-message {
     color: #dc3545;
@@ -234,4 +310,16 @@ label {
     .card-block {
         width: 100%;
     }
+}
+
+.text-center {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.button, .btn-secondary {
+    flex: 1;
+    max-width: 200px;
 }
