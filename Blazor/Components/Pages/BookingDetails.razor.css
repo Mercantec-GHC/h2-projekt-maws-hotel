@@ -1,4 +1,5 @@
-﻿.container {
+﻿
+.container {
     padding: 3rem;
 }
 
@@ -552,3 +553,4 @@ h2 {
     flex: 0 1 auto;
     box-sizing: border-box;
 }
+
