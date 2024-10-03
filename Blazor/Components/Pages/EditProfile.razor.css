@@ -201,7 +201,7 @@ label {
     background-position: left center;
     box-shadow: 0 30px 10px -20px rgba(0,0,0,.2);
     transition: background .3s ease;
-  }
+}
   
   .button-save:hover {
     background-size: 320%;
