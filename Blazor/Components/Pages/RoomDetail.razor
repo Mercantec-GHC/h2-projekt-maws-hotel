@@ -263,6 +263,7 @@
         await dbService.PostBooking(newBooking);
         navManager.NavigateTo("/BookSuccess");
         
+        // Send confirmation email
         try
         {
             var userEmail = await dbService.GetUserEmailById(AppState.UserId);
