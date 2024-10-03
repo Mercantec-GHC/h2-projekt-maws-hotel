@@ -49,27 +49,26 @@
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Booking Dates</h6>
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">Start Date</p>
-                                            <input type="date" id="dateStart" class="date-input" disabled="@isDisabled" @bind="booking.DateStart" />
-                                        </div>
+                                            <!--<p class="m-b-10 f-w-600">Start Date</p>
+                                            <input type="date" id="dateStart" class="date-input" disabled="@isDisabled" @bind="booking.DateStart" />   -->
+                                            <MudContainer>
+                                                <MudDatePicker style="color:white" Label="Start Date" DisplayMonths="1" TitleDateFormat="dddd, dd MMMM" @bind-Date="booking.Date" DateFormat="dd.MM.yyyy" AdditionalDateClassesFunc="CheckDate" Color="Color.Primary"/>
+                                            </MudContainer>                                        </div>
                                         <div class="col-sm-6">
-                                            <p class="m-b-10 f-w-600">End Date</p>
-                                            <input type="date" id="dateEnd" class="date-input" disabled="@isDisabled" @bind="booking.DateEnd" />
+                                            <!-- <p class="m-b-10 f-w-600">End Date</p>
+                                            <input type="date" id="dateEnd" class="date-input" disabled="@isDisabled" @bind="booking.DateEnd" />  -->
+                                            <MudDatePicker @bind-Value="booking.DateEnd" @bind-Value:event="onDateSelected" />
                                         </div>
                                     </div>
-                                    <div class="row mt-4">
-                                        <div class="col-sm-6 text-center">
-                                            <button class="edit-button" @onclick="ToggleEdit">@(isDisabled ? "Edit" : "Save")</button>
-                                        </div>
+                                    <div class="container-buttons">
+                                        <button class="button-edit" @onclick="ToggleEdit">@(isDisabled ? "Edit" : "Save")</button>
                                         @if (!isDisabled)
                                         {
-                                            <div class="col-sm-6 text-center">
-                                                <button class="cancel-button" @onclick="Cancel">Cancel</button>
-                                            </div>
-                                        } else {
-                                            <div class="col-sm-6 text-center">
-                                                <button class="cancel-button" @onclick="showModal"><i class="bi bi-trash"></i> Delete Booking</button>
-                                            </div>
+                                            <button class="button-delete" @onclick="showModal"><i class="bi bi-trash"></i> Delete Booking</button>
+                                        }
+                                        else
+                                        {
+                                            <button class="button-cancel" @onclick="Cancel">Cancel</button>
                                         }
                                     </div>
                                 </div>
@@ -164,7 +163,7 @@
             var response = await dbService.EditBooking(bookingId, booking);
             if (response.IsSuccessStatusCode)
             {
-                navManager.NavigateTo("/ProfileDashboard");
+                navManager.NavigateTo("/booking-details/" + bookingId);
             }
         }
 
