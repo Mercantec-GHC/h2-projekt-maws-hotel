@@ -271,7 +271,7 @@
         catch (Exception ex)
         {
             Console.WriteLine($"Error sending confirmation email: {ex.Message}");
-            await JSRuntime.InvokeVoidAsync("alert", "Booking successful, but there was an error sending the confirmation email.");
+            await JSRuntime.InvokeVoidAsync("alert", "Booking successful, but there was an error sending the confirmation email. Please refer to the profile page for the booking confirmation.");
         }
     }
 }
