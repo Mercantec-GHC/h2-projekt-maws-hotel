@@ -12,6 +12,7 @@
     {
         <div class="admin-edit-profile">
             <!-- Profile Header -->
+            <button @onclick="DeleteProfile" class="delete-profile-button"><i class="bi bi-trash"></i></button>
             <div class="profile-header">
                 <div class="profile-icon">
                     <i class="bi bi-person-circle"></i>
@@ -61,8 +62,8 @@
                     }
                     <!-- Form Buttons -->
                     <div class="text-center mt-4">
-                        <button type="submit" class="btn btn-primary" @onclick="HandleValidSubmit">Save Changes</button>
-                        <button type="button" @onclick="Cancel" class="btn btn-secondary">Cancel</button>
+                        <button type="submit" class="button-save" @onclick="HandleValidSubmit">Save Changes</button>
+                        <button type="button" @onclick="Cancel" class="button-cancel">Cancel</button>
                     </div>
                 </EditForm>
             </div>

@@ -22,6 +22,20 @@
     filter: drop-shadow(0 0 0.1rem rgba(0, 0, 0, 0.2));
 }
 
+.bi::before, [class^="bi-"]::before, [class*=" bi-"]::before {
+    display: inline-block;
+    font-family: bootstrap-icons !important;
+    font-style: normal;
+    font-weight: normal !important;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    vertical-align: -.125em;
+    -webkit-font-smoothing: antialiased;
+    margin: 0 0.5rem 0 0;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 td {
     color: #2c3e50;
     align-content: center;
