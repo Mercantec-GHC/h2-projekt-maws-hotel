@@ -215,7 +215,7 @@
             date_end = DateTime.Now.AddDays(1);
             allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
 
-            // For the calender 
+            // For the calendar 
             exBookingsOnRoomId = await dbService.GetBookingsFromRoomId(RoomId);
         }
         catch (Exception ex)

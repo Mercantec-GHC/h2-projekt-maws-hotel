@@ -78,6 +78,8 @@
     [Parameter]
     public int id { get; set; }
     private Profile? profile;
+
+    // When page is loaded
     protected override async Task OnInitializedAsync()
     {
         profile = await Http.GetFromJsonAsync<Profile>($"api/profile/{id}");
@@ -86,6 +88,8 @@
             navManager.NavigateTo("/");
         }
     }
+
+    // Handle submit to edit profile
     private async Task HandleValidSubmit()
     {
         if (profile.Birthday.HasValue)
@@ -105,10 +109,11 @@
         }
         else
         {
-            // Handle error
             Console.WriteLine("Error updating profile");
         }
     }
+
+    // Deletes profile 
     private async Task DeleteProfile()
     {
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Er du sikker på, at du vil slette din profil?"))
@@ -125,6 +130,8 @@
             }
         }
     }
+
+    // Return to profile dashboard
     private void Cancel()
     {
         navManager.NavigateTo("/ProfileDashboard");
