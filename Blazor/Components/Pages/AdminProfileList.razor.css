@@ -397,23 +397,27 @@
 /* Search Bar */
 .input {
     background-color: #212121;
-width:100%;    
-height: 40px;
+    width: 100%;
+    height: 40px;
     padding: 10px;
-    /* text-align: center; */
-    border: 2px solid white;
-    border-radius: 5px;
-    /* box-shadow: 3px 3px 2px rgb(249, 255, 85); */
-  }
-  
-  .input:focus {
-    color: rgba(190,47,48,1);
+    border: 2px solid transparent; /* Set initial border to transparent */
+    border-radius: 20px;
+    /* Add gradient border */
+    filter: drop-shadow(0 0 5px #111111);
+    color:white;
+    
+}
+
+.input:focus {
+    color: white;
     background-color: #212121;
     outline-color: rgba(190,47,48,1);
-    box-shadow: -3px -3px 15px rgba(190,47,48,1);
+    box-shadow: -3px 0px 15px rgba(190,47,48,1);
     transition: .1s;
     transition-property: box-shadow;
-  }
-  
+}
+
+
 
 /* ---- END SEARCH BAR ---- */
+
