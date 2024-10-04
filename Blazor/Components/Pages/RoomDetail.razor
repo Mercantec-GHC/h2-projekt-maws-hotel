@@ -237,3 +237,49 @@
         }
     }
 }
+
+
+<style>
+/* Custom styles for the calendar */
+:root {--mud-palette-primary: rgba(255, 161, 30, 1);}
+    .special-day {
+        color: red !important;
+        pointer-events: none;
+        opacity: 0.8;
+    }
+   .mud-picker-inline-paper {
+       margin: auto;
+       position: fixed;
+       transform: scale(0.80);
+       bottom: 225px;
+       right: 30%;
+       transition: 1s ease-in;
+    } 
+
+    .mud-shrink~label.mud-input-label.mud-input-label-inputcontrol {
+    color: rgba(255, 161, 30, 1);
+}
+
+.mud-icon-root.mud-svg-icon {
+    fill: rgba(255, 161, 30, 1);
+}
+
+.mud-picker-calendar-header-switch {
+    display: flex;
+    margin-top: 4px;
+    align-items: center;
+    margin-bottom: 8px;
+    justify-content: space-between;
+    color: black;
+}
+.mud-picker-calendar-content {
+    display: grid;
+    --selected-day: 0;
+    grid-column-gap: 10px;
+    grid-template-columns: auto;
+    color: black;
+}
+
+/* End of custom styles for the calendar */
+
+</style>
