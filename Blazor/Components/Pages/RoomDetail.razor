@@ -146,7 +146,7 @@
     private List<Booking> exBookingsOnRoomId = new List<Booking>();
     private List<DateTime> specialDates = new List<DateTime>();
 
-
+    // Changes the CSS for the calendar depending on the date booked for the room.
     private string CheckDate(DateTime date)
     {
         specialDates.Clear();
@@ -158,6 +158,7 @@
         return this.specialDates.Contains(date.Date) ? "special-day" : string.Empty;
     }
 
+    // When the page first loads
     protected override async Task OnInitializedAsync()
     {
         try
@@ -185,6 +186,7 @@
         }
     }
 
+    // Booking a room
     private async Task BookRoom()
     {
         if (date_start == default || date_end == default)
@@ -212,16 +214,17 @@
             return;
         }
         var newBooking = new Booking
-            {
-                DateStart = (DateTime)date_start,
-                DateEnd = (DateTime)date_end,
-                RoomId = RoomId,
-                ProfileId = AppState.UserId
-            };
+        {
+            DateStart = (DateTime)date_start,
+            DateEnd = (DateTime)date_end,
+            RoomId = RoomId,
+            ProfileId = AppState.UserId
+        };
 
         await dbService.PostBooking(newBooking);
         navManager.NavigateTo("/BookSuccess");
         
+        // Send confirmation e-mail
         try
         {
             var userEmail = await dbService.GetUserEmailById(AppState.UserId);

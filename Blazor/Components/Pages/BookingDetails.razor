@@ -151,6 +151,7 @@
 
     }
 
+    // Changes the CSS for the calendar depending on the date booked for the room.
     private string CheckDate(DateTime date)
     {
         specialDates.Clear();
@@ -162,6 +163,7 @@
         return this.specialDates.Contains(date.Date) ? "special-day" : string.Empty;
     }
 
+    // Handling editing a booking
     private async Task ToggleEdit()
     {
         if (!isDisabled)
@@ -207,6 +209,7 @@
         isDisabled = !isDisabled;
     }
 
+    // Functins for showing a hidding a modal.
     private void showModal() {
         showDeleteConfirmation = true;
     }
@@ -214,11 +217,13 @@
         showDeleteConfirmation = false;
     }
 
+    // cancel button
     private void Cancel()
     {
         navManager.NavigateTo("/ProfileDashboard");
     }
 
+    // Delete button
     private async Task DeleteBooking(int bookingId)
     {
         try {

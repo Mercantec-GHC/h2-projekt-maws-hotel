@@ -67,6 +67,7 @@
 	public int supportRequestId { get; set; }
 	private SupportRequest supportRequest = new SupportRequest();
 
+	// When the page i loaded
 	protected override async Task OnInitializedAsync()
 	{
 		supportRequest = await dbService.GetSupportRequestById(supportRequestId);
@@ -76,6 +77,7 @@
 		}
 	}
 
+	// Handling editing af support request.
 	private async Task HandleValidSubmit()
 	{
 		var response = await dbService.UpdateSupportRequest(supportRequestId, supportRequest);
