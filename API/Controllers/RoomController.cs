@@ -78,5 +78,35 @@ namespace API.Controllers
             }
             return room;
         }
+        // Delete Room by id
+        [HttpDelete("DeleteRoom/{id}")]
+        public IActionResult DeleteRoom(int id)
+        {
+            try
+            {
+                using (var connection = new NpgsqlConnection(_connectionString))
+                {
+                    connection.Open();
+                    using (var command = new NpgsqlCommand("DELETE FROM room WHERE id = @id", connection))
+                    {
+                        command.Parameters.AddWithValue("@id", id);
+                        int rowsAffected = command.ExecuteNonQuery();
+
+                        if (rowsAffected > 0)
+                        {
+                            return Ok(new { message = "Room deleted successfully." });
+                        }
+                        else
+                        {
+                            return NotFound(new { message = "Room not found." });
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError, new { message = "Error deleting room.", error = ex.Message });
+            }
+        }
     }
 }
