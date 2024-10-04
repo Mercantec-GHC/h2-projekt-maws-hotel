@@ -394,3 +394,26 @@
 
 /* ---- END LOADING ANIMATION ---- */
 
+/* Search Bar */
+.input {
+    background-color: #212121;
+width:100%;    
+height: 40px;
+    padding: 10px;
+    /* text-align: center; */
+    border: 2px solid white;
+    border-radius: 5px;
+    /* box-shadow: 3px 3px 2px rgb(249, 255, 85); */
+  }
+  
+  .input:focus {
+    color: rgba(190,47,48,1);
+    background-color: #212121;
+    outline-color: rgba(190,47,48,1);
+    box-shadow: -3px -3px 15px rgba(190,47,48,1);
+    transition: .1s;
+    transition-property: box-shadow;
+  }
+  
+
+/* ---- END SEARCH BAR ---- */
