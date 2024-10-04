@@ -100,6 +100,12 @@ namespace Blazor.Services
         {
             return await _httpClient.GetFromJsonAsync<Room>(_baseURL + $"Room/RoomId/{id}");
         }
+
+        //Delete a room
+        public async Task DeleteRoom(int id)
+        {
+            await _httpClient.DeleteFromJsonAsync<Room>(_baseURL + $"Room/DeleteRoom/{id}");
+        }
         #endregion
 
         #region Support
