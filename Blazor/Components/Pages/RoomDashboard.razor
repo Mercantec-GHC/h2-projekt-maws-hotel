@@ -78,14 +78,21 @@
 
 	private async Task DeleteRoomById(int id)
 	{
-		await dbService.DeleteRoom(id);
-
-		var roomToDelete = allRooms.FirstOrDefault(r => r.Id == id);
-		if (roomToDelete != null)
+		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete your profile?"))
 		{
-			allRooms.Remove(roomToDelete);
-		}
+			await dbService.DeleteRoom(id);
 
-		StateHasChanged();
+			var roomToDelete = allRooms.FirstOrDefault(r => r.Id == id);
+			if (roomToDelete != null)
+			{
+				allRooms.Remove(roomToDelete);
+			}
+
+			StateHasChanged();
+		}
+		else
+		{
+			Console.WriteLine($"Error with deleting roomId {id}.");
+		}
 	}
 }

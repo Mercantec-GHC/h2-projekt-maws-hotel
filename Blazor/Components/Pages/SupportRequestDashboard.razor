@@ -88,14 +88,21 @@
 	// Delete support request
 	private async Task DeleteSupportRequestFromId(int id)
 	{
-		await dbService.DeleteSupportRequest(id);
-
-		var requestToDelete = allSupportRequests.First(b => b.Id == id);
-		if (requestToDelete != null)
+		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete your profile?"))
 		{
-			allSupportRequests.Remove(requestToDelete);
+			await dbService.DeleteSupportRequest(id);
+
+			var requestToDelete = allSupportRequests.First(b => b.Id == id);
+			if (requestToDelete != null)
+			{
+				allSupportRequests.Remove(requestToDelete);
+			}
+			StateHasChanged();
 		}
-		StateHasChanged();
+		else
+		{
+			Console.WriteLine($"Error with deleting requestId {id}");
+		}
 	}
 
 	// Get row class based on supportRequest status

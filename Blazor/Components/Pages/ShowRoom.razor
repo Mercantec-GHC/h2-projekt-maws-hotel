@@ -10,6 +10,7 @@
 	@if (room != null)
 	{
 		<div class="edit-room">
+			<button @onclick="DeleteRoom" class="delete-room-button"><i class="bi bi-trash"></i></button>
 			<div class="room-header">
 				<div class="icon-edit">
 					<i class="bi bi-house-gear"></i>
@@ -72,6 +73,10 @@
 					<label for="Description">Description:</label>
 					<input type="text" class="form-control" @bind="room.Description" />
 				</div>
+				<div class="text-center mt-4">
+					<button type="submit" class="button-save" @onclick="HandleValidSubmit">Save Changes</button>
+					<button type="button" class="button-cancel" @onclick="Cancel">Cancel</button> 
+				</div>
 			</div>
 		</div>
 	}
@@ -80,5 +85,39 @@
 <h3>ShowRoom</h3>
 
 @code {
+	[Parameter]
+	public int roomId { get; set; }
 	private Room room = new Room();
+
+	protected override async Task OnInitializedAsync()
+	{
+		room = await dbService.GetRoomById(roomId);
+		if (room == null)
+		{
+			navManager.NavigateTo("/Room_Dashboard");
+		}
+	}
+
+	private async Task DeleteRoom()
+	{
+		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete this room?"))
+		{
+			await dbService.DeleteRoom(roomId);
+			navManager.NavigateTo("/Room_Dashboard");
+		}
+		else
+		{
+			Console.WriteLine($"Error with deleting roomId {roomId}.");
+		}
+	}
+
+	private async Task HandleValidSubmit()
+	{
+
+	}
+
+	private void Cancel()
+	{
+		navManager.NavigateTo("/Room_Dashboard");
+	}
 }

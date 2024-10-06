@@ -1,7 +1,4 @@
-﻿body {
-}
-
-.container {
+﻿.container {
     padding: 3rem;
 }
 
@@ -42,6 +39,10 @@
     transition: transform 0.3s ease-in-out;
 }
 
+    .icon-edit:hover {
+        transform: scale(1.1);
+    }
+
 .card-block {
     padding: 2rem;
     width: 100%;
@@ -78,6 +79,22 @@ label {
         border-color: rgba(255,161,30,1);
         box-shadow: 0 0 10px rgba(255,161,30,0.2);
         transform: scale(1.02);
+    }
+
+.delete-request-button {
+    background-color: transparent;
+    color: black;
+    transform: translate(15px, 15px);
+    font-size: 25px;
+    border: none;
+    padding: 0;
+    position: absolute;
+    border-radius: 5px;
+}
+
+    .delete-request-button:hover {
+        transition: 0.3s;
+        color: white;
     }
 
 .button-save {
@@ -183,12 +200,12 @@ label {
         padding: 1rem;
     }
 
-    .admin-edit-profile {
+    .edit-support-request {
         flex-direction: column;
         min-height: auto;
     }
 
-    .profile-header {
+    .request-header {
         width: 100%;
         border-radius: 20px 20px 0 0;
         padding-bottom: 1rem;

@@ -117,7 +117,7 @@
     // Deletes profile 
     private async Task DeleteProfile()
     {
-        if (await JSRuntime.InvokeAsync<bool>("confirm", "Er du sikker på, at du vil slette din profil?"))
+        if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete your profile?"))
         {
             var response = await Http.DeleteAsync($"api/profile/deactivate/{AppState.UserId}");
             if (response.IsSuccessStatusCode)
@@ -127,7 +127,7 @@
             }
             else
             {
-                Console.WriteLine("Fejl ved sletning af profil");
+                Console.WriteLine("Error with deleting your profile");
             }
         }
     }
