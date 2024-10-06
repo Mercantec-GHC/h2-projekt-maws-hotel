@@ -1,2 +1,290 @@
-﻿body {
+﻿td {
+    color: #2c3e50;
+    align-content: center;
+    padding: 1rem;
 }
+
+.td-desciption {
+    max-width: 15rem;
+}
+
+table {
+    width: 100%;
+    margin: 1rem auto;
+    border-collapse: separate;
+    border-spacing: 0 10px;
+}
+
+.container {
+    margin: 2rem auto;
+    border-radius: 12px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+    background-color: #ffffff;
+    padding: 2rem;
+}
+
+/* Delete button */
+.btn-danger {
+    border-radius: 20px;
+    margin: 0 1rem 0 0;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    background-color: #e74c3c;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+    .btn-danger:hover {
+        background-color: #c0392b;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(231, 76, 60, 0.3);
+    }
+
+    .btn-danger i {
+        margin: 0 0;
+    }
+
+.btn-goto-room {
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+    color: white;
+    background-color: #2c2c2c;
+    border: none;
+    transition: all 0.3s ease;
+}
+
+    .btn-goto-room:hover {
+        background-color: #1a1a1a;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 8px rgba(44, 44, 44, 0.3);
+    }
+
+    .btn-goto-room i {
+        margin: 0rem 0;
+    }
+
+/* LOADING ANIMATION */
+.pl {
+    width: 8em;
+    height: 8em;
+}
+
+    .pl circle {
+        transform-box: fill-box;
+        transform-origin: 50% 50%;
+    }
+
+.pl__ring1 {
+    animation: ring1_ 4s 0s ease-in-out infinite;
+}
+
+.pl__ring2 {
+    animation: ring2_ 4s 0.04s ease-in-out infinite;
+}
+
+.pl__ring3 {
+    animation: ring3_ 4s 0.08s ease-in-out infinite;
+}
+
+.pl__ring4 {
+    animation: ring4_ 4s 0.12s ease-in-out infinite;
+}
+
+.pl__ring5 {
+    animation: ring5_ 4s 0.16s ease-in-out infinite;
+}
+
+.pl__ring6 {
+    animation: ring6_ 4s 0.2s ease-in-out infinite;
+}
+
+/* Animations */
+@keyframes ring1_ {
+    from {
+        stroke-dashoffset: -376.237129776;
+        transform: rotate(-0.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    23% {
+        stroke-dashoffset: -94.247778;
+        transform: rotate(1turn);
+        animation-timing-function: ease-out;
+    }
+
+    46%, 50% {
+        stroke-dashoffset: -376.237129776;
+        transform: rotate(2.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    73% {
+        stroke-dashoffset: -94.247778;
+        transform: rotate(3.5turn);
+        animation-timing-function: ease-out;
+    }
+
+    96%, to {
+        stroke-dashoffset: -376.237129776;
+        transform: rotate(4.75turn);
+    }
+}
+
+@keyframes ring2_ {
+    from {
+        stroke-dashoffset: -329.207488554;
+        transform: rotate(-0.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    23% {
+        stroke-dashoffset: -82.46680575;
+        transform: rotate(1turn);
+        animation-timing-function: ease-out;
+    }
+
+    46%, 50% {
+        stroke-dashoffset: -329.207488554;
+        transform: rotate(2.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    73% {
+        stroke-dashoffset: -82.46680575;
+        transform: rotate(3.5turn);
+        animation-timing-function: ease-out;
+    }
+
+    96%, to {
+        stroke-dashoffset: -329.207488554;
+        transform: rotate(4.75turn);
+    }
+}
+
+@keyframes ring3_ {
+    from {
+        stroke-dashoffset: -288.4484661616;
+        transform: rotate(-0.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    23% {
+        stroke-dashoffset: -72.2566298;
+        transform: rotate(1turn);
+        animation-timing-function: ease-out;
+    }
+
+    46%, 50% {
+        stroke-dashoffset: -288.4484661616;
+        transform: rotate(2.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    73% {
+        stroke-dashoffset: -72.2566298;
+        transform: rotate(3.5turn);
+        animation-timing-function: ease-out;
+    }
+
+    96%, to {
+        stroke-dashoffset: -288.4484661616;
+        transform: rotate(4.75turn);
+    }
+}
+
+@keyframes ring4_ {
+    from {
+        stroke-dashoffset: -253.9600625988;
+        transform: rotate(-0.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    23% {
+        stroke-dashoffset: -63.61725015;
+        transform: rotate(1turn);
+        animation-timing-function: ease-out;
+    }
+
+    46%, 50% {
+        stroke-dashoffset: -253.9600625988;
+        transform: rotate(2.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    73% {
+        stroke-dashoffset: -63.61725015;
+        transform: rotate(3.5turn);
+        animation-timing-function: ease-out;
+    }
+
+    96%, to {
+        stroke-dashoffset: -253.9600625988;
+        transform: rotate(4.75turn);
+    }
+}
+
+@keyframes ring5_ {
+    from {
+        stroke-dashoffset: -225.7422778656;
+        transform: rotate(-0.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    23% {
+        stroke-dashoffset: -56.5486668;
+        transform: rotate(1turn);
+        animation-timing-function: ease-out;
+    }
+
+    46%, 50% {
+        stroke-dashoffset: -225.7422778656;
+        transform: rotate(2.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    73% {
+        stroke-dashoffset: -56.5486668;
+        transform: rotate(3.5turn);
+        animation-timing-function: ease-out;
+    }
+
+    96%, to {
+        stroke-dashoffset: -225.7422778656;
+        transform: rotate(4.75turn);
+    }
+}
+
+@keyframes ring6_ {
+    from {
+        stroke-dashoffset: -203.795111962;
+        transform: rotate(-0.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    23% {
+        stroke-dashoffset: -51.05087975;
+        transform: rotate(1turn);
+        animation-timing-function: ease-out;
+    }
+
+    46%, 50% {
+        stroke-dashoffset: -203.795111962;
+        transform: rotate(2.25turn);
+        animation-timing-function: ease-in;
+    }
+
+    73% {
+        stroke-dashoffset: -51.05087975;
+        transform: rotate(3.5turn);
+        animation-timing-function: ease-out;
+    }
+
+    96%, to {
+        stroke-dashoffset: -203.795111962;
+        transform: rotate(4.75turn);
+    }
+}
+
+/* ---- END LOADING ANIMATION ---- */

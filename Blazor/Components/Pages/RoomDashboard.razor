@@ -15,8 +15,10 @@
 				<tr>
 					<th>Id</th>
 					<th>Type</th>
+					<th>Price</th>
 					<th>Photo</th>
 					<th>Description</th>
+					<th>Action</th>
 				</tr>
 			</thead>
 			<tbody>
@@ -25,10 +27,11 @@
 					<tr>
 						<td>@room.Id</td>
 						<td>@room.Name</td>
-						<td>@room.Photo</td>
-						<td>@room.Description</td>
+						<td>@room.Price</td>
+						<td>@room.Photos</td>
+						<td class="td-desciption">@room.Description</td>
 						<td>
-							<button class="btn btn-danger delete-room-btn" @onclick="() => DeleteBookingById(room.Id)">
+							<button class="btn btn-danger delete-room-btn" @onclick="() => DeleteRoomById(room.Id)">
 								<i class="bi bi-trash delete-profile-btn" style="color:white;"></i> Delete room
 							</button>
 							<button class="btn-goto-room" @onclick="@(() => navManager.NavigateTo($"/room_details/{room.Id}"))">
@@ -60,8 +63,29 @@
 	}
 </div>
 
-<h3>RoomDashboard</h3>
-
 @code {
+	private List<Room> allRooms = new List<Room>();
 
+	protected override async Task OnInitializedAsync()
+	{
+		if (!AppState.LoggedIn || !AppState.IsAdmin)
+		{
+			navManager.NavigateTo("/");
+		}
+
+		allRooms = await dbService.GetRooms();
+	}
+
+	private async Task DeleteRoomById(int id)
+	{
+		await dbService.DeleteRoom(id);
+
+		var roomToDelete = allRooms.FirstOrDefault(r => r.Id == id);
+		if (roomToDelete != null)
+		{
+			allRooms.Remove(roomToDelete);
+		}
+
+		StateHasChanged();
+	}
 }

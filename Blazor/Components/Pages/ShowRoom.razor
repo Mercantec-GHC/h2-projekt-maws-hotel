@@ -1,0 +1,84 @@
+﻿@page "/Room_Details/{roomId:int}"
+@using DomainModels
+
+<PageTitle>Room Details</PageTitle>
+<HeadContent>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</HeadContent>
+
+<div class="container">
+	@if (room != null)
+	{
+		<div class="edit-room">
+			<div class="room-header">
+				<div class="icon-edit">
+					<i class="bi bi-house-gear"></i>
+				</div>
+				<h3>Edit Room</h3>
+			</div>
+			<div class="card-block">
+				<div class="form-group">
+					<label for="Id">Id:</label>
+					<p>@room.Id</p>
+				</div>
+				<div class="form-group">
+					<label for="Type">Type:</label>
+					<select class="form-select" aria-label="Default select example" @bind="room.Name">
+						<option selected>@room.Name</option>
+						@switch (room.Name)
+						{
+							case "Standard Single":
+								<option value="Standard Double">Standard Double</option>
+								<option value="Premium Single">Premium Single</option>
+								<option value="Premium Double">Premium Double</option>
+								<option value="Penthouse">Penthouse</option>
+								break;
+							case "Standard Double":
+								<option value="Standard Single">Standard Single</option>
+								<option value="Premium Single">Premium Single</option>
+								<option value="Premium Double">Premium Double</option>
+								<option value="Penthouse">Penthouse</option>
+								break;
+							case "Premium Single":
+								<option value="Standard Single">Standard Single</option>
+								<option value="Standard Double">Standard Double</option>
+								<option value="Premium Double">Premium Double</option>
+								<option value="Penthouse">Penthouse</option>
+								break;
+							case "Premium Double":
+								<option value="Standard Single">Standard Single</option>
+								<option value="Standard Double">Standard Double</option>
+								<option value="Premium Single">Premium Single</option>
+								<option value="Penthouse">Penthouse</option>
+								break;
+							case "Penthouse":
+								<option value="Standard Single">Standard Single</option>
+								<option value="Standard Double">Standard Double</option>
+								<option value="Premium Single">Premium Single</option>
+								<option value="Premium Double">Premium Double</option>
+								break;
+						}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="Price">Price:</label>
+					<input type="number" @bind="room.Price" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="Photos">Photo:</label>
+					<input type="text" @bind="room.Photos" class="form-control" placeholder="./FolderName/PhotoName" />
+				</div>
+				<div class="form-group">
+					<label for="Description">Description:</label>
+					<input type="text" class="form-control" @bind="room.Description" />
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+<h3>ShowRoom</h3>
+
+@code {
+	private Room room = new Room();
+}
