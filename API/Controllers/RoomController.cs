@@ -20,7 +20,7 @@ namespace API.Controllers
 
         // Create a new room
         [HttpPost("CreateRoom")]
-        public IActionResult CreateRoom(Room roomRequest)
+        public async Task<IActionResult> CreateRoom(Room roomRequest)
         {
             try
             {
@@ -113,7 +113,7 @@ namespace API.Controllers
 
         // Edit an existing room by id
         [HttpPut("EditRoom/{id}")]
-        public IActionResult EditRoom(int id, Room roomRequest)
+        public async Task<IActionResult> EditRoom(int id, Room roomRequest)
         {
             try
             {

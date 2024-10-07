@@ -48,7 +48,44 @@
 
 	private async Task HandleValidSubmit()
 	{
+		room.DigitalKey = room.Id;
+		if (room.Name == "Standard Single")
+		{
+			room.Type = 1;
+			room.Photos = "./Maws-hoteller-photos/Standard-Single-Room.jpg";
+		}
+		else if (room.Name == "Standard Double")
+		{
+			room.Type = 2;
+			room.Photos = "./Maws-hoteller-photos/Standard-Double-Room.jpg";
+		}
+		else if (room.Name == "Premium Single")
+		{
+			room.Type = 3;
+			room.Photos = "./Maws-hoteller-photos/Premium-Standard-Room.jpg";
+		}
+		else if (room.Name == "Premium Double")
+		{
+			room.Type = 4;
+			room.Photos = "./Maws-hoteller-photos/Premium-Double-Room.jpg";
+		}
+		else if (room.Name == "Penthouse")
+		{
+			room.Type = 5;
+			room.Photos = "./Maws-hoteller-photos/Penthouse-Room.jpg";
+		}
+		
+		var response = await dbService.CreateRoom(room);
 
+		if (response.IsSuccessStatusCode)
+		{
+			await JSRuntime.InvokeVoidAsync("alert", "Update successful");
+			navManager.NavigateTo("/Room_Dashboard");
+		}
+		else
+		{
+			await JSRuntime.InvokeVoidAsync("alert", $"{response}");
+		}
 	}
 
 	private void Cancel()
