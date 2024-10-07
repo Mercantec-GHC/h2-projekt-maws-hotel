@@ -207,7 +207,7 @@ namespace Blazor.Services
         }
 
         public async Task<HttpResponseMessage> DeleteProfile(int id){
-            return await _httpClient.DeleteAsync($"api/profile/deactivate/{id}");
+            return await _httpClient.DeleteAsync($"api/profile/delete/{id}");
 
         }
 
