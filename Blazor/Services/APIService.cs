@@ -175,7 +175,7 @@ namespace Blazor.Services
         // Get all profiles
         public async Task<List<Profile>> GetAllProfiles()
         {
-            return await _httpClient.GetFromJsonAsync<List<Profile>>(_baseURL + "api/profile/all");
+            return await _httpClient.GetFromJsonAsync<List<Profile>>(_baseURL + "profile/all");
 
         }
 
