@@ -52,7 +52,7 @@ namespace API.Controllers
 
         // Get all profiles 
         [HttpGet("all")]
-        [Authorize(Roles = "Administrator")] // Temporarily comment this out for testing
+        //[Authorize(Roles = "Administrator")] // Temporarily comment this out for testing
         public async Task<ActionResult<IEnumerable<Profile>>> GetAllProfiles()
         {
             try
@@ -123,7 +123,7 @@ namespace API.Controllers
 
         // Edit profile by id when administrator true
         [HttpPut("admin/{id}")]
-        [Authorize(Roles = "Administrator")]
+        //[Authorize(Roles = "Administrator")]
         public async Task<IActionResult> AdminUpdateProfile(int id, [FromBody] Profile updatedProfile)
         {
             try
