@@ -187,6 +187,11 @@ namespace Blazor.Services
             return await _httpClient.PutAsJsonAsync(_baseURL + $"profile/{id}", profile);
         }
 
+        public async Task<HttpResponseMessage> DeleteProfile(int id){
+            return await _httpClient.DeleteAsync($"api/profile/deactivate/{id}");
+
+        }
+
         // Login to profile
         public async Task<HttpResponseMessage> LoginProfile(LoginDto loginDto)
         {

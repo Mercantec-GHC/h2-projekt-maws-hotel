@@ -119,7 +119,7 @@
     {
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Er du sikker på, at du vil slette din profil?"))
         {
-            var response = await Http.DeleteAsync($"api/profile/deactivate/{AppState.UserId}");
+            var response = await dbService.DeleteProfile(profile.Id); 
             if (response.IsSuccessStatusCode)
             {
                 AppState.Logout();
