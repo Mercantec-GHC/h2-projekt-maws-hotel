@@ -1,4 +1,4 @@
-@page "/create-profile"
+@page "/create_profile"
 @using DomainModels
 
 <!-- Sign Up Form Container -->
@@ -98,7 +98,7 @@
             if (registerDto.Password == secondPassword)
             {   
                 // Attempt to register the user
-                var response = await dbService.PostProfile(registerDto);
+                var response = await APIService.PostProfile(registerDto);
 
                 if (response == "Registration successful!")
                 {

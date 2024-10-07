@@ -1,4 +1,4 @@
-﻿@page "/ProfileDashboard"
+﻿@page "/show_profile"
 @using DomainModels
 @inject AppState AppState
 
@@ -12,7 +12,7 @@
                     <div class="card user-card-full shadow-lg rounded">
                         <div class="row m-l-0 m-r-0">
                             <div class="col-sm-4 bg-c-lite-green user-profile position-relative">
-                                <button class="edit-profile-btn position-absolute" @onclick="EditProfile">
+                                <button class="edit-profile-btn position-absolute" @onclick="edit_profile">
                                     <i class="bi bi-pencil-square"></i>
                                 </button>
                                 <div class="card-block text-center text-white">
@@ -140,9 +140,9 @@
     {
         if (AppState.LoggedIn)
         {
-            profile = await dbService.GetProfileByUserID(AppState.UserId);
-            upcomingBookings = await dbService.GetBookingsFromUserID(AppState.UserId);
-            allRooms = await dbService.GetRooms();
+            profile = await APIService.GetProfileByUserID(AppState.UserId);
+            upcomingBookings = await APIService.GetBookingsFromUserID(AppState.UserId);
+            allRooms = await APIService.GetRooms();
         }
     }
 
@@ -160,15 +160,15 @@
         return days * (decimal)room.Price;
     }
 
-    private void EditProfile()
+    private void edit_profile()
     {
-        navManager.NavigateTo($"/EditProfile/{profile?.Id}");
+        navManager.NavigateTo($"/edit_profile/{profile?.Id}");
     }
 
     private void GotoBooking(Booking booking)
     {
         Console.WriteLine($"Navigating to booking with ID: {booking.Id}");
-        navManager.NavigateTo($"/booking-details/{booking.Id}");
+        navManager.NavigateTo($"/show_booking/{booking.Id}");
     }
 
     private string FormatPhoneNumber(string phoneNumber)

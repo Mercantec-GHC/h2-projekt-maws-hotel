@@ -1,4 +1,4 @@
-﻿@page "/ContactSupport"
+﻿@page "/create_support_request"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
 @using DomainModels
@@ -43,7 +43,7 @@
 	{
 		try
 		{
-			await dbService.PostSupportRequest(supportRequest);
+			await APIService.PostSupportRequest(supportRequest);
 			// Eventuelt feedback til brugeren om, at deres anmodning blev sendt.
 			supportRequest = new SupportRequest(); // Reset formularen
 		}

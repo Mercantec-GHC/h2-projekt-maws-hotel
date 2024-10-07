@@ -1,17 +1,17 @@
-﻿@page "/Room_Dashboard"
+﻿@page "/manage_rooms"
 @using DomainModels
 
 <!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-<PageTitle>Room_Dashboard</PageTitle>
+<PageTitle>manage_rooms</PageTitle>
 
 <div class="container">
 	@if (allRooms != null)
 	{
 		<!-- Room Table -->
 		<table class="table">
-			<button class="add-room-button" @onclick="@(() => GotoAddRoom())"><i class="bi bi-house-add"> Add Room</i> </button>
+			<button class="add-room-button" @onclick="@(() => Gotocreate_room())"><i class="bi bi-house-add"> Add Room</i> </button>
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -35,7 +35,7 @@
 							<button class="btn btn-danger delete-room-btn" @onclick="() => DeleteRoomById(room.Id)">
 								<i class="bi bi-trash delete-profile-btn" style="color:white;"></i> Delete room
 							</button>
-							<button class="btn-goto-room" @onclick="@(() => navManager.NavigateTo($"/room_details/{room.Id}"))">
+							<button class="btn-goto-room" @onclick="@(() => navManager.NavigateTo($"/edit_room/{room.Id}"))">
 								<i class="bi bi-house-gear"></i> Room
 							</button>
 						</td>
@@ -74,14 +74,14 @@
 			navManager.NavigateTo("/");
 		}
 
-		allRooms = await dbService.GetRooms();
+		allRooms = await APIService.GetRooms();
 	}
 
 	private async Task DeleteRoomById(int id)
 	{
 		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete your profile?"))
 		{
-			await dbService.DeleteRoom(id);
+			await APIService.DeleteRoom(id);
 
 			var roomToDelete = allRooms.FirstOrDefault(r => r.Id == id);
 			if (roomToDelete != null)
@@ -97,8 +97,8 @@
 		}
 	}
 
-	private void GotoAddRoom()
+	private void Gotocreate_room()
 	{
-		navManager.NavigateTo("/AddRoom");
+		navManager.NavigateTo("/create_room");
 	}
 }

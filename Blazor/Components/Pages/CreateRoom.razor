@@ -1,4 +1,4 @@
-﻿@page "/AddRoom"
+﻿@page "/create_room"
 @using DomainModels
 
 <PageTitle>Room Details</PageTitle>
@@ -76,12 +76,12 @@
 			room.Photos = "./Maws-hoteller-photos/Penthouse-Room.jpg";
 		}
 		
-		var response = await dbService.CreateRoom(room);
+		var response = await APIService.CreateRoom(room);
 
 		if (response.IsSuccessStatusCode)
 		{
 			await JSRuntime.InvokeVoidAsync("alert", "Update successful");
-			navManager.NavigateTo("/Room_Dashboard");
+			navManager.NavigateTo("/manage_rooms");
 		}
 		else
 		{
@@ -91,6 +91,6 @@
 
 	private void Cancel()
 	{
-		navManager.NavigateTo("/Room_Dashboard");
+		navManager.NavigateTo("/manage_rooms");
 	}
 }

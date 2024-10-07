@@ -1,11 +1,11 @@
-﻿@page "/booking_dashboard"
+﻿@page "/manage_bookings"
 @using Microsoft.JSInterop
 @using DomainModels
 
 <!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-<PageTitle>booking_dashboard</PageTitle>
+<PageTitle>manage_bookings</PageTitle>
 
 <div class="container">
     @if (allBookings != null && allBookings.Count > 0)
@@ -42,7 +42,7 @@
                             </button>
 
                             <!-- Go to Profile Button -->
-                            <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/booking-details/{booking.Id}"))">
+                            <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/show_booking/{booking.Id}"))">
                                 <i class="bi bi-calendar-check"></i> Booking
                             </button>
                         </td>
@@ -87,14 +87,14 @@
             navManager.NavigateTo("/");
         }
 
-        allBookings = await dbService.GetBookings();
+        allBookings = await APIService.GetBookings();
         total_bookings = allBookings.Count;
     }
 
     // Delete booking
-    public void delete_booking_from_id(int id)
+    public async Task delete_booking_from_id(int id)
     {
-        dbService.DeleteBooking(id);
+        await APIService.DeleteBooking(id);
 
         var bookingToDelete = allBookings.FirstOrDefault(b => b.Id == id);
         if (bookingToDelete != null)

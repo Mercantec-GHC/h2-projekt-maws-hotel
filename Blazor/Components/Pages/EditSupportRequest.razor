@@ -1,4 +1,4 @@
-﻿@page "/HandleSupportRequest/{supportRequestId:int}"
+﻿@page "/edit_support_request/{supportRequestId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
 @using DomainModels
@@ -71,22 +71,22 @@
 	// When the page i loaded
 	protected override async Task OnInitializedAsync()
 	{
-		supportRequest = await dbService.GetSupportRequestById(supportRequestId);
+		supportRequest = await APIService.GetSupportRequestById(supportRequestId);
 		if (supportRequest == null)
 		{
-			navManager.NavigateTo("/SupportRequestDashboard");
+			navManager.NavigateTo("/manage_support_request");
 		}
 	}
 
 	// Handling editing af support request.
 	private async Task HandleValidSubmit()
 	{
-		var response = await dbService.UpdateSupportRequest(supportRequestId, supportRequest);
+		var response = await APIService.UpdateSupportRequest(supportRequestId, supportRequest);
 
 		if (response.IsSuccessStatusCode)
 		{
 			await JSRuntime.InvokeVoidAsync("alert", "Update successful");
-			navManager.NavigateTo("/SupportRequestDashboard");
+			navManager.NavigateTo("/manage_support_request");
 		}
 		else
 		{
@@ -96,15 +96,15 @@
 
 	private void Cancel()
 	{
-		navManager.NavigateTo("/SupportRequestDashboard");
+		navManager.NavigateTo("/manage_support_request");
 	}
 
 	private async Task DeleteRequest()
 	{
 		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete this request?"))
 		{
-			await dbService.DeleteSupportRequest(supportRequestId);
-			navManager.NavigateTo("/SupportRequestDashboard");
+			await APIService.DeleteSupportRequest(supportRequestId);
+			navManager.NavigateTo("/manage_support_request");
 		}
 		else
 		{

@@ -1,6 +1,6 @@
-﻿@page "/BookSuccess"
+﻿@page "/booking_success"
 @using DomainModels
-@inject Blazor.Services.DatabaseService db
+@inject Blazor.Services.APIService db
 @inject NavigationManager NavigationManager
 
 <div class="container" style="transform: scale(1.5); transform-origin: top left;">
@@ -26,7 +26,7 @@
         //Make it 1,75 seconds delayed so it redirects after the animation
         await Task.Delay(1750);
 
-        NavigationManager.NavigateTo("/ProfileDashboard");
+        NavigationManager.NavigateTo("/show_profile");
 
 
         await InvokeJS("initAnimation()");

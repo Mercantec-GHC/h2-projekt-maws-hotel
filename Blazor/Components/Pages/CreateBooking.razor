@@ -1,4 +1,4 @@
-﻿@page "/room-details/{roomId:int}"
+﻿@page "/create_booking/{roomId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
 @using Microsoft.JSInterop
@@ -163,7 +163,7 @@
     {
         try
         {
-            room = await dbService.GetRoomById(RoomId);
+            room = await APIService.GetRoomById(RoomId);
             if (room == null)
             {
                 Console.WriteLine($"Error: Unable to fetch room with ID: {RoomId}");
@@ -176,7 +176,7 @@
             allRooms = allRooms.OrderBy(r => r.CurrentlyBooked).ToList();
 
             // For the calendar 
-            exBookingsOnRoomId = await dbService.GetBookingsFromRoomId(RoomId);
+            exBookingsOnRoomId = await APIService.GetBookingsFromRoomId(RoomId);
         }
         catch (Exception ex)
         {
@@ -206,7 +206,7 @@
         }
 
         // check for exiting bookings.
-        var existingBookings = await dbService.CheckExistingBookings(RoomId, (DateTime)date_start, (DateTime)date_end);
+        var existingBookings = await APIService.CheckExistingBookings(RoomId, (DateTime)date_start, (DateTime)date_end);
 
         if (existingBookings.Any())
         {
@@ -221,13 +221,13 @@
             ProfileId = AppState.UserId
         };
 
-        await dbService.PostBooking(newBooking);
-        navManager.NavigateTo("/BookSuccess");
+        await APIService.PostBooking(newBooking);
+        navManager.NavigateTo("/booking_success");
         
         // Send confirmation e-mail
         try
         {
-            var userEmail = await dbService.GetUserEmailById(AppState.UserId);
+            var userEmail = await APIService.GetUserEmailById(AppState.UserId);
             await EmailService.SendBookingConfirmationEmail(room, newBooking, userEmail);
         }
         catch (Exception ex)

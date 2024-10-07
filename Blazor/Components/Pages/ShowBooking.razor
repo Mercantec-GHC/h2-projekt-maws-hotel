@@ -1,9 +1,10 @@
-﻿@page "/booking-details/{bookingId:int}"
+﻿@page "/show_booking/{bookingId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
 @using DomainModels
 @inject AppState AppState
 @using Microsoft.JSInterop
+
 
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 
@@ -142,12 +143,12 @@
     protected override async Task OnInitializedAsync()
     {
         // Fetch booking details
-        booking = await dbService.GetBookingById(bookingId);
+        booking = await APIService.GetBookingById(bookingId);
 
         // Fetch profile details
-        profile = await dbService.GetProfileByUserID(booking.ProfileId);
+        profile = await APIService.GetProfileByUserID(booking.ProfileId);
 
-        exBookingsOnRoomId = await dbService.GetBookingsFromRoomId(booking.RoomId);
+        exBookingsOnRoomId = await APIService.GetBookingsFromRoomId(booking.RoomId);
 
     }
 
@@ -190,7 +191,7 @@
             }
 
             // Check for existing bookings
-            var existingBookings = await dbService.CheckExistingBookings(booking.RoomId, booking.DateStart, booking.DateEnd);
+            var existingBookings = await APIService.CheckExistingBookings(booking.RoomId, booking.DateStart, booking.DateEnd);
 
             if (existingBookings.Any(b => b.Id != bookingId))
             {
@@ -199,10 +200,10 @@
             }
 
             // Save changes
-            var response = await dbService.EditBooking(bookingId, booking);
+            var response = await APIService.EditBooking(bookingId, booking);
             if (response.IsSuccessStatusCode)
             {
-                navManager.NavigateTo("/booking-details/" + bookingId);
+                navManager.NavigateTo("/show_booking/" + bookingId);
             }
         }
 
@@ -220,15 +221,15 @@
     // cancel button
     private void Cancel()
     {
-        navManager.NavigateTo("/ProfileDashboard");
+        navManager.NavigateTo("/show_profile");
     }
 
     // Delete button
     private async Task DeleteBooking(int bookingId)
     {
         try {
-            await dbService.DeleteBooking(bookingId);
-            navManager.NavigateTo("/ProfileDashboard");
+            await APIService.DeleteBooking(bookingId);
+            navManager.NavigateTo("/show_profile");
         }
         catch (Exception ex)
         {
