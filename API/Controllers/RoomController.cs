@@ -27,10 +27,11 @@ namespace API.Controllers
                 using (var connection = new NpgsqlConnection(_connectionString))
                 {
                     connection.Open();
-                    var sql = "INSERT INTO room (price, digital_key, type, photos, description, name) " +
-                              "VALUES (@Price, @DigitalKey, @Type, @Photos, @Description, @Name) RETURNING id";
+                    var sql = "INSERT INTO room (currently_booked, price, digital_key, type, photos, description, name) " +
+							  "VALUES (@CurrentlyBooked, @Price, @DigitalKey, @Type, @Photos, @Description, @Name)";
                     using (var command = new NpgsqlCommand(sql, connection))
                     {
+                        command.Parameters.AddWithValue("@CurrentlyBooked", roomRequest.CurrentlyBooked);
                         command.Parameters.AddWithValue("@Price", roomRequest.Price);
                         command.Parameters.AddWithValue("@DigitalKey", roomRequest.DigitalKey);
                         command.Parameters.AddWithValue("@Type", roomRequest.Type);
@@ -42,7 +43,7 @@ namespace API.Controllers
 
                         return CreatedAtAction(nameof(GetRoomById), new { RoomId = newRoomId }, new { message = "Room created successfully.", id = newRoomId });
                     }
-                }
+				}
             }
             catch (Exception ex)
             {
@@ -120,12 +121,13 @@ namespace API.Controllers
                 using (var connection = new NpgsqlConnection(_connectionString))
                 {
                     connection.Open();
-                    var sql = "UPDATE room SET price = @Price, digital_key = @DigitalKey, " +
+                    var sql = "UPDATE room SET currently_booked = @CurrentlyBooked, price = @Price, digital_key = @DigitalKey, " +
                               "type = @Type, photos = @Photos, description = @Description, " +
                               "name = @Name WHERE id = @Id";
                     using (var command = new NpgsqlCommand(sql, connection))
                     {
                         command.Parameters.AddWithValue("@Id", id);
+                        command.Parameters.AddWithValue("@CurrentlyBooked", roomRequest.CurrentlyBooked);
                         command.Parameters.AddWithValue("@Price", roomRequest.Price);
                         command.Parameters.AddWithValue("@DigitalKey", roomRequest.DigitalKey);
                         command.Parameters.AddWithValue("@Type", roomRequest.Type);
