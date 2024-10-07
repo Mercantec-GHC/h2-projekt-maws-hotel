@@ -46,7 +46,7 @@ table {
     }
 
 .btn-goto-room {
-    border-radius: 20px;
+    border-radius: 20px; 
     padding: 0.5rem 1rem;
     font-size: 0.8rem;
     color: white;
@@ -62,8 +62,24 @@ table {
     }
 
     .btn-goto-room i {
-        margin: 0rem 0;
+        margin: 0rem 0.4rem 0 0rem;
     }
+
+.add-room-button {
+    position: absolute;
+    top: 8.5rem;
+    left: 1;
+    font-size: 1.5rem;
+}
+.add-room-button i {
+    font-style: normal;
+}
+
+.add-room-button:hover {
+    color: rgba(255, 161, 31, 1);
+    filter: drop-shadow(0 0 0.75rem rgba(255, 161, 31, 1));
+}
+
 
 /* LOADING ANIMATION */
 .pl {

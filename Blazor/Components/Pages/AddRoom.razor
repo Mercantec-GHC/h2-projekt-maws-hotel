@@ -48,6 +48,7 @@
 
 	private async Task HandleValidSubmit()
 	{
+		room.CurrentlyBooked = false;
 		room.DigitalKey = room.Id;
 		if (room.Name == "Standard Single")
 		{

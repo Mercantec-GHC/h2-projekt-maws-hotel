@@ -92,7 +92,7 @@ namespace Blazor.Services
         // Create room
         public async Task<HttpResponseMessage> CreateRoom(Room room)
         {
-            return await _httpClient.PostAsJsonAsync<Room>(_baseURL + "CreateRoom", room);
+            return await _httpClient.PostAsJsonAsync<Room>(_baseURL + "Room/CreateRoom", room);
         }
 
         //Get all rooms
@@ -110,7 +110,7 @@ namespace Blazor.Services
         // Update room by roomId
         public async Task<HttpResponseMessage> UpdateRoom(int id, Room room)
         {
-            return await _httpClient.PutAsJsonAsync(_baseURL + $"EditRoom/{id}", room);
+            return await _httpClient.PutAsJsonAsync(_baseURL + $"Room/EditRoom/{id}", room);
         }
 
         //Delete a room

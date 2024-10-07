@@ -11,7 +11,7 @@
 	{
 		<!-- Room Table -->
 		<table class="table">
-			<button class="add-room-button" @onclick="@(() => navManager.NavigateTo("/AddRoom"))"><i class="bi bi-house-add"></i></button>
+			<button class="add-room-button" @onclick="@(() => GotoAddRoom())"><i class="bi bi-house-add"> Add Room</i> </button>
 			<thead>
 				<tr>
 					<th>Id</th>
@@ -95,5 +95,10 @@
 		{
 			Console.WriteLine($"Error with deleting roomId {id}.");
 		}
+	}
+
+	private void GotoAddRoom()
+	{
+		navManager.NavigateTo("/AddRoom");
 	}
 }
