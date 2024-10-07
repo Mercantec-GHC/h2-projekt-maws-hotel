@@ -1,0 +1,95 @@
+﻿@page "/AddRoom"
+@using DomainModels
+
+<PageTitle>Room Details</PageTitle>
+<HeadContent>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</HeadContent>
+
+<div class="container">
+	@if (room != null)
+	{
+		<div class="edit-room">
+			<div class="room-header">
+				<div class="icon-edit">
+					<i class="bi bi-house-add"></i>
+				</div>
+				<h3>Add Room</h3>
+			</div>
+			<div class="card-block">
+					<div class="form-group">
+					<label for="Type">Type:</label>
+					<select class="form-select" aria-label="Default select example" @bind="room.Name">
+						<option selected value="Standard Single">Standard Single</option>
+						<option value="Standard Double">Standard Double</option>
+						<option value="Premium Single">Premium Single</option>
+						<option value="Premium Double">Premium Double</option>
+						<option value="Penthouse">Penthouse</option>
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="Price">Price:</label>
+					<input type="number" @bind="room.Price" class="form-control" />
+				</div>
+				<div class="form-group">
+					<label for="Description">Description:</label>
+					<input type="text" class="form-control" @bind="room.Description" />
+				</div>
+				<div class="text-center mt-4">
+					<button type="submit" class="button-save" @onclick="HandleValidSubmit">Save Changes</button>
+					<button type="button" class="button-cancel" @onclick="Cancel">Cancel</button>
+				</div>
+			</div>
+		</div>
+	}
+</div>
+@code {
+	private Room room = new Room();
+
+	private async Task HandleValidSubmit()
+	{
+		room.DigitalKey = room.Id;
+		if (room.Name == "Standard Single")
+		{
+			room.Type = 1;
+			room.Photos = "./Maws-hoteller-photos/Standard-Single-Room.jpg";
+		}
+		else if (room.Name == "Standard Double")
+		{
+			room.Type = 2;
+			room.Photos = "./Maws-hoteller-photos/Standard-Double-Room.jpg";
+		}
+		else if (room.Name == "Premium Single")
+		{
+			room.Type = 3;
+			room.Photos = "./Maws-hoteller-photos/Premium-Standard-Room.jpg";
+		}
+		else if (room.Name == "Premium Double")
+		{
+			room.Type = 4;
+			room.Photos = "./Maws-hoteller-photos/Premium-Double-Room.jpg";
+		}
+		else if (room.Name == "Penthouse")
+		{
+			room.Type = 5;
+			room.Photos = "./Maws-hoteller-photos/Penthouse-Room.jpg";
+		}
+		
+		var response = await dbService.CreateRoom(room);
+
+		if (response.IsSuccessStatusCode)
+		{
+			await JSRuntime.InvokeVoidAsync("alert", "Update successful");
+			navManager.NavigateTo("/Room_Dashboard");
+		}
+		else
+		{
+			await JSRuntime.InvokeVoidAsync("alert", $"{response}");
+		}
+	}
+
+	private void Cancel()
+	{
+		navManager.NavigateTo("/Room_Dashboard");
+	}
+}

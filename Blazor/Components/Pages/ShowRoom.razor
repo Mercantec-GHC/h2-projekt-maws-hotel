@@ -1,0 +1,131 @@
+﻿@page "/Room_Details/{roomId:int}"
+@using DomainModels
+
+<PageTitle>Room Details</PageTitle>
+<HeadContent>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+</HeadContent>
+
+<div class="container">
+	@if (room != null)
+	{
+		<div class="edit-room">
+			<button @onclick="DeleteRoom" class="delete-room-button"><i class="bi bi-trash"></i></button>
+			<div class="room-header">
+				<div class="icon-edit">
+					<i class="bi bi-house-gear"></i>
+				</div>
+				<h3>Edit Room</h3>
+			</div>
+			<div class="card-block">
+				<div class="form-group">
+					<label for="Id">Id:</label>
+					<p>@room.Id</p>
+				</div>
+				<div class="form-group">
+					<label for="Type">Type:</label>
+					<select class="form-select" aria-label="Default select example" @bind="room.Name">
+						<option selected>@room.Name</option>
+						@switch (room.Name)
+						{
+							case "Standard Single":
+								<option value="Standard Double">Standard Double</option>
+								<option value="Premium Single">Premium Single</option>
+								<option value="Premium Double">Premium Double</option>
+								<option value="Penthouse">Penthouse</option>
+								break;
+							case "Standard Double":
+								<option value="Standard Single">Standard Single</option>
+								<option value="Premium Single">Premium Single</option>
+								<option value="Premium Double">Premium Double</option>
+								<option value="Penthouse">Penthouse</option>
+								break;
+							case "Premium Single":
+								<option value="Standard Single">Standard Single</option>
+								<option value="Standard Double">Standard Double</option>
+								<option value="Premium Double">Premium Double</option>
+								<option value="Penthouse">Penthouse</option>
+								break;
+							case "Premium Double":
+								<option value="Standard Single">Standard Single</option>
+								<option value="Standard Double">Standard Double</option>
+								<option value="Premium Single">Premium Single</option>
+								<option value="Penthouse">Penthouse</option>
+								break;
+							case "Penthouse":
+								<option value="Standard Single">Standard Single</option>
+								<option value="Standard Double">Standard Double</option>
+								<option value="Premium Single">Premium Single</option>
+								<option value="Premium Double">Premium Double</option>
+								break;
+						}
+					</select>
+				</div>
+				<div class="form-group">
+					<label for="Price">Price:</label>
+					<input type="number" @bind="room.Price" class="form-control"/>
+				</div>
+				<div class="form-group">
+					<label for="Photos">Photo:</label>
+					<input type="text" @bind="room.Photos" class="form-control" placeholder="./FolderName/PhotoName" />
+				</div>
+				<div class="form-group">
+					<label for="Description">Description:</label>
+					<input type="text" class="form-control" @bind="room.Description" />
+				</div>
+				<div class="text-center mt-4">
+					<button type="submit" class="button-save" @onclick="HandleValidSubmit">Save Changes</button>
+					<button type="button" class="button-cancel" @onclick="Cancel">Cancel</button> 
+				</div>
+			</div>
+		</div>
+	}
+</div>
+
+@code {
+	[Parameter]
+	public int roomId { get; set; }
+	private Room room = new Room();
+
+	protected override async Task OnInitializedAsync()
+	{
+		room = await dbService.GetRoomById(roomId);
+		if (room == null)
+		{
+			navManager.NavigateTo("/Room_Dashboard");
+		}
+	}
+
+	private async Task DeleteRoom()
+	{
+		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete this room?"))
+		{
+			await dbService.DeleteRoom(roomId);
+			navManager.NavigateTo("/Room_Dashboard");
+		}
+		else
+		{
+			Console.WriteLine($"Error with deleting roomId {roomId}.");
+		}
+	}
+
+	private async Task HandleValidSubmit()
+	{
+		var response = await dbService.UpdateRoom(roomId, room);
+
+		if (response.IsSuccessStatusCode)
+		{
+			await JSRuntime.InvokeVoidAsync("alert", "Update successful");
+			navManager.NavigateTo("/Room_Dashboard");
+		}
+		else
+		{
+			await JSRuntime.InvokeVoidAsync("alert", $"{response}");
+		}
+	}
+
+	private void Cancel()
+	{
+		navManager.NavigateTo("/Room_Dashboard");
+	}
+}

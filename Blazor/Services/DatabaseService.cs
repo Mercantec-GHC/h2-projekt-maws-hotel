@@ -89,6 +89,12 @@ namespace Blazor.Services
         #region Room
         //---CONNECTIONS TO ROOM API---//
 
+        // Create room
+        public async Task<HttpResponseMessage> CreateRoom(Room room)
+        {
+            return await _httpClient.PostAsJsonAsync<Room>(_baseURL + "CreateRoom", room);
+        }
+
         //Get all rooms
         public async Task<List<Room>> GetRooms()
         {
@@ -99,6 +105,12 @@ namespace Blazor.Services
         public async Task<Room> GetRoomById(int id)
         {
             return await _httpClient.GetFromJsonAsync<Room>(_baseURL + $"Room/RoomId/{id}");
+        }
+
+        // Update room by roomId
+        public async Task<HttpResponseMessage> UpdateRoom(int id, Room room)
+        {
+            return await _httpClient.PutAsJsonAsync(_baseURL + $"EditRoom/{id}", room);
         }
 
         //Delete a room

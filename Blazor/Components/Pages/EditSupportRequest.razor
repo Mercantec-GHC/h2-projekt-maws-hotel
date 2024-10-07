@@ -12,6 +12,7 @@
 	@if (supportRequest != null)
 	{
 		<div class="edit-support-request">
+			<button class="delete-request-button" @onclick="DeleteRequest"><i class="bi bi-trash"></i></button>
 			<div class="request-header">
 				<div class="icon-edit">
 					<i class="bi bi-headset"></i>
@@ -96,5 +97,18 @@
 	private void Cancel()
 	{
 		navManager.NavigateTo("/SupportRequestDashboard");
+	}
+
+	private async Task DeleteRequest()
+	{
+		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete this request?"))
+		{
+			await dbService.DeleteSupportRequest(supportRequestId);
+			navManager.NavigateTo("/SupportRequestDashboard");
+		}
+		else
+		{
+			Console.WriteLine($"Error with deleting requestId {supportRequestId}.");
+		}
 	}
 }
