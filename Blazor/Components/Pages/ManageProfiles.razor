@@ -1,7 +1,6 @@
-﻿@page "/admin-profile-list"
+﻿@page "/manage_profiles"
 @using DomainModels
 
-@inject ILogger<AdminProfileList> Logger
 
 <div class="container">
     @if (!AppState.LoggedIn || !AppState.IsAdmin)
@@ -47,7 +46,7 @@
                             <td>@profile.Name</td>
                             <td>@profile.Email</td>
                             <td>
-                                <button class="edit-profile-btn" @onclick="() => EditProfile(profile.Id)"><i class="bi bi-pencil-square"> Edit Profile</i></button>
+                                <button class="edit-profile-btn" @onclick="() => edit_profile(profile.Id)"><i class="bi bi-pencil-square"> Edit Profile</i></button>
                             </td>
                         </tr>
                     }
@@ -74,12 +73,13 @@
                 return;
             }
 
-            profiles = await Http.GetFromJsonAsync<List<Profile>>("api/profile/all");
+            profiles = await APIService.GetAllProfiles();
+
             filteredProfiles = profiles;
         }
         catch (Exception ex)
         {
-            Logger.LogError(ex, "Error in AdminProfileList OnInitializedAsync");
+            Console.WriteLine(ex);
         }
     }
 
@@ -93,11 +93,11 @@
     }
 
     // Navigate to edit profile page
-    private void EditProfile(int profileId)
+    private void edit_profile(int profileId)
     {
         if (AppState.LoggedIn && AppState.IsAdmin)
         {
-            navManager.NavigateTo($"/EditProfile/{profileId}");
+            navManager.NavigateTo($"/edit_profile/{profileId}");
         }
         else
         {

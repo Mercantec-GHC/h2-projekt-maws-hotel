@@ -26,28 +26,28 @@
                 @if (AppState.LoggedIn)
                 {
                     <li class="nav-item">
-                        <NavLink class="nav-link" href="ProfileDashboard">
+                        <NavLink class="nav-link" href="show_profile">
                             <i class="bi bi-person"></i> Profile
                         </NavLink>
                     </li>
                     @if (AppState.IsAdmin)
                     {
                         <li class="nav-item">
-                            <NavLink class="nav-link" href="booking_dashboard">
+                            <NavLink class="nav-link" href="manage_bookings">
                                 <i class="bi bi-calendar-check"></i> Manage Booking
                             </NavLink>
                         </li>
                         <li class="nav-item">
-                            <NavLink class="nav-link" href="admin-profile-list">
+                            <NavLink class="nav-link" href="manage_profiles">
                                 <i class="bi bi-people"></i> Manage Profiles
                             </NavLink>
                         </li>
                         <li class="nav-item">
-                            <NavLink class="nav-link" href="SupportRequestDashboard">
+                            <NavLink class="nav-link" href="manage_support_request">
                                 <i class="bi bi-card-list"></i> Manage Request
                             </NavLink>
                         </li> <li class="nav-item">
-                            <NavLink class="nav-link" href="Room_Dashboard">
+                            <NavLink class="nav-link" href="manage_rooms">
                                 <i class="bi bi-house-gear"></i>Mange Rooms
                             </NavLink>
                         </li>
@@ -65,7 +65,7 @@
                     </li>
 
                     <li class="nav-item">
-                        <NavLink class="nav-link" href="create-profile">
+                        <NavLink class="nav-link" href="create_profile">
                             <i class="bi bi-person-plus"></i> Signup
                         </NavLink>
                     </li>
@@ -75,7 +75,7 @@
                     @if (!AppState.IsAdmin)
                     {
                         <li class="nav-item">
-                            <NavLink class="nav-link" href="ContactSupport">
+                            <NavLink class="nav-link" href="create_support_request">
                                 <i class="bi bi-headset"></i> Support
                             </NavLink>
                         </li>

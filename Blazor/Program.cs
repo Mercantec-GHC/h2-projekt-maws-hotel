@@ -22,11 +22,11 @@ public class Program
         builder.Services.AddScoped<HttpClient>();
         builder.Services.AddMudServices();
 
-        // Register DatabaseService with both connectionString and HttpClient
-        builder.Services.AddScoped<DatabaseService>(sp =>
+        // Register APIService with both connectionString and HttpClient
+        builder.Services.AddScoped<APIService>(sp =>
         {
             var httpClient = sp.GetRequiredService<HttpClient>();
-            return new DatabaseService(connectionString, httpClient);
+            return new APIService(connectionString, httpClient);
         });
 
         // AuthenticationService Registration

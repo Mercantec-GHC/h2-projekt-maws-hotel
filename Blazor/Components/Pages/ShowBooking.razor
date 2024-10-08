@@ -1,9 +1,10 @@
-﻿@page "/booking-details/{bookingId:int}"
+﻿@page "/show_booking/{bookingId:int}"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
 @using DomainModels
 @inject AppState AppState
 @using Microsoft.JSInterop
+
 
 <script src="_content/MudBlazor/MudBlazor.min.js"></script>
 
@@ -52,28 +53,35 @@
                                     <h6 class="m-b-20 m-t-40 p-b-5 b-b-default f-w-600 title">Booking Dates</h6>
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <!--<p class="m-b-10 f-w-600">Start Date</p>
-                                            <input type="date" id="dateStart" class="date-input" disabled="@isDisabled" @bind="booking.DateStart" />   -->
                                             <MudContainer>
-                                                <MudDatePicker style="color:black" Label="Start Date" DisplayMonths="1" 
-                                                                           TitleDateFormat="dddd, dd MMMM" 
-                                                                           @bind-Date="@date_start" 
-                                                                           DateFormat="dd.MM.yyyy" 
-                                                                           AdditionalDateClassesFunc="CheckDate" 
-                                                                           Color="Color.Primary" HelperText="@booking.DateStart.ToString("dd.MM.yyyy")"/>
+                                                <MudDatePicker Label="Start Date" 
+                                                               DisplayMonths="1" 
+                                                               TitleDateFormat="dddd, dd MMMM" 
+                                                               @bind-Date="@date_start" 
+                                                               DateFormat="dd.MM.yyyy" 
+                                                               AdditionalDateClassesFunc="CheckDate" 
+                                                               Color="Color.Primary" 
+                                                               HelperText="@booking.DateStart.ToString("dd.MM.yyyy")"
+                                                               InputIcon="@Icons.Material.Filled.CalendarToday"
+                                                               Disabled="@isDisabled"
+                                                               Class="@(isDisabled ? "" : "editable-datepicker")" />
                                             </MudContainer>                                        
                                         </div>
                                         <div class="col-sm-6">
-                                            <!-- <p class="m-b-10 f-w-600">End Date</p>
-                                            <input type="date" id="dateEnd" class="date-input" disabled="@isDisabled" @bind="booking.DateEnd" />  -->
                                             <MudContainer>
-                                                <MudDatePicker style="color:black" Label="Start Date" DisplayMonths="1" 
-                                                                        TitleDateFormat="dddd, dd MMMM" 
-                                                                        @bind-Date="@date_end" 
-                                                                        DateFormat="dd.MM.yyyy" 
-                                                                        AdditionalDateClassesFunc="CheckDate" 
-                                                                        Color="Color.Primary" HelperText="@booking.DateEnd.ToString("dd.MM.yyyy")"/>
+                                                <MudDatePicker Label="End Date" 
+                                                               DisplayMonths="1" 
+                                                               TitleDateFormat="dddd, dd MMMM" 
+                                                               @bind-Date="@date_end" 
+                                                               DateFormat="dd.MM.yyyy" 
+                                                               AdditionalDateClassesFunc="CheckDate" 
+                                                               Color="Color.Primary" 
+                                                               HelperText="@booking.DateEnd.ToString("dd.MM.yyyy")"
+                                                               InputIcon="@Icons.Material.Filled.CalendarToday"
+                                                               Disabled="@isDisabled"
+                                                               Class="@(isDisabled ? "" : "editable-datepicker")" />
                                             </MudContainer>                                        
+
                                         </div>
                                     </div>
                                     <div class="container-buttons">
@@ -142,12 +150,12 @@
     protected override async Task OnInitializedAsync()
     {
         // Fetch booking details
-        booking = await dbService.GetBookingById(bookingId);
+        booking = await APIService.GetBookingById(bookingId);
 
         // Fetch profile details
-        profile = await dbService.GetProfileByUserID(booking.ProfileId);
+        profile = await APIService.GetProfileByUserID(booking.ProfileId);
 
-        exBookingsOnRoomId = await dbService.GetBookingsFromRoomId(booking.RoomId);
+        exBookingsOnRoomId = await APIService.GetBookingsFromRoomId(booking.RoomId);
 
     }
 
@@ -190,7 +198,7 @@
             }
 
             // Check for existing bookings
-            var existingBookings = await dbService.CheckExistingBookings(booking.RoomId, booking.DateStart, booking.DateEnd);
+            var existingBookings = await APIService.CheckExistingBookings(booking.RoomId, booking.DateStart, booking.DateEnd);
 
             if (existingBookings.Any(b => b.Id != bookingId))
             {
@@ -199,10 +207,10 @@
             }
 
             // Save changes
-            var response = await dbService.EditBooking(bookingId, booking);
+            var response = await APIService.EditBooking(bookingId, booking);
             if (response.IsSuccessStatusCode)
             {
-                navManager.NavigateTo("/booking-details/" + bookingId);
+                navManager.NavigateTo("/show_booking/" + bookingId);
             }
         }
 
@@ -220,15 +228,15 @@
     // cancel button
     private void Cancel()
     {
-        navManager.NavigateTo("/ProfileDashboard");
+        navManager.NavigateTo("/show_profile");
     }
 
     // Delete button
     private async Task DeleteBooking(int bookingId)
     {
         try {
-            await dbService.DeleteBooking(bookingId);
-            navManager.NavigateTo("/ProfileDashboard");
+            await APIService.DeleteBooking(bookingId);
+            navManager.NavigateTo("/show_profile");
         }
         catch (Exception ex)
         {
@@ -268,10 +276,6 @@
         color: rgba(255, 161, 30, 1);
     }
 
-    .mud-icon-root.mud-svg-icon {
-        fill: rgba(255, 161, 30, 1);
-    }
-
     .mud-picker-calendar-header-switch {
         display: flex;
         margin-top: 4px;
@@ -287,6 +291,35 @@
         grid-column-gap: 10px;
         grid-template-columns: auto;
         color: black;
+    }
+
+    .editable-datepicker {
+        color: rgba(255,161,31,1) !important;
+    }
+
+    .editable-datepicker .mud-input-label {
+        color: rgba(255,161,31,1) !important;
+    }
+
+    .editable-datepicker .mud-input-adornment {
+        color: rgba(255,161,31,1) !important;
+    }
+
+    .editable-datepicker:hover .mud-input-label,
+    .editable-datepicker:hover .mud-input-adornment {
+        color: rgba(255,161,31,1) !important;
+    }
+
+    .editable-datepicker .mud-input {
+        color: rgba(255,161,31,1) !important;
+    }
+
+    .editable-datepicker .mud-input::before {
+        border-bottom-color: rgba(255,161,31,1) !important;
+    }
+
+    .editable-datepicker .mud-input:hover::before {
+        border-bottom-color: rgba(255,161,31,1) !important;
     }
 
     /* End of custom styles for the calendar */

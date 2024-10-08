@@ -1,5 +1,5 @@
 ﻿@page "/"
-@inject Blazor.Services.DatabaseService db
+@inject Blazor.Services.APIService db
 @using Microsoft.JSInterop
 @inject IJSRuntime JSRuntime
 @using DomainModels
@@ -174,8 +174,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        allRooms = await dbService.GetRooms();
-        allBookings = await dbService.GetBookingsForToday();
+        allRooms = await APIService.GetRooms();
+        allBookings = await APIService.GetBookingsForToday();
         total_rooms = allRooms.Count;
     }
 
@@ -189,7 +189,7 @@
             if (freeRoom != null)
             {
                 // Navigate to room details if a free room is found
-                navManager.NavigateTo($"/room-details/{freeRoom.Id}");
+                navManager.NavigateTo($"/create_booking/{freeRoom.Id}");
             }
             else
             {
@@ -212,7 +212,7 @@
         }
         else
         {
-            navManager.NavigateTo($"/room-details/{id}");
+            navManager.NavigateTo($"/create_booking/{id}");
         }
     }
     private void SetSortColumn(string colunm)

@@ -1,4 +1,4 @@
-﻿@page "/AddRoom"
+﻿@page "/create_room"
 @using DomainModels
 
 <PageTitle>Room Details</PageTitle>
@@ -20,7 +20,8 @@
 					<div class="form-group">
 					<label for="Type">Type:</label>
 					<select class="form-select" aria-label="Default select example" @bind="room.Name">
-						<option selected value="Standard Single">Standard Single</option>
+						<option selected>Pick room type</option>
+						<option value="Standard Single">Standard Single</option>
 						<option value="Standard Double">Standard Double</option>
 						<option value="Premium Single">Premium Single</option>
 						<option value="Premium Double">Premium Double</option>
@@ -49,7 +50,7 @@
 	private async Task HandleValidSubmit()
 	{
 		room.CurrentlyBooked = false;
-		room.DigitalKey = room.Id;
+		
 		if (room.Name == "Standard Single")
 		{
 			room.Type = 1;
@@ -76,12 +77,12 @@
 			room.Photos = "./Maws-hoteller-photos/Penthouse-Room.jpg";
 		}
 		
-		var response = await dbService.CreateRoom(room);
+		var response = await APIService.CreateRoom(room);
 
 		if (response.IsSuccessStatusCode)
 		{
 			await JSRuntime.InvokeVoidAsync("alert", "Update successful");
-			navManager.NavigateTo("/Room_Dashboard");
+			navManager.NavigateTo("/manage_rooms");
 		}
 		else
 		{
@@ -91,6 +92,6 @@
 
 	private void Cancel()
 	{
-		navManager.NavigateTo("/Room_Dashboard");
+		navManager.NavigateTo("/manage_rooms");
 	}
 }

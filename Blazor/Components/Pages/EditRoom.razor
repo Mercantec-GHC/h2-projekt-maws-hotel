@@ -1,4 +1,4 @@
-﻿@page "/Room_Details/{roomId:int}"
+﻿@page "/edit_room/{roomId:int}"
 @using DomainModels
 
 <PageTitle>Room Details</PageTitle>
@@ -89,10 +89,10 @@
 
 	protected override async Task OnInitializedAsync()
 	{
-		room = await dbService.GetRoomById(roomId);
+		room = await APIService.GetRoomById(roomId);
 		if (room == null)
 		{
-			navManager.NavigateTo("/Room_Dashboard");
+			navManager.NavigateTo("/manage_rooms");
 		}
 	}
 
@@ -100,8 +100,8 @@
 	{
 		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete this room?"))
 		{
-			await dbService.DeleteRoom(roomId);
-			navManager.NavigateTo("/Room_Dashboard");
+			await APIService.DeleteRoom(roomId);
+			navManager.NavigateTo("/manage_rooms");
 		}
 		else
 		{
@@ -111,12 +111,12 @@
 
 	private async Task HandleValidSubmit()
 	{
-		var response = await dbService.UpdateRoom(roomId, room);
+		var response = await APIService.UpdateRoom(roomId, room);
 
 		if (response.IsSuccessStatusCode)
 		{
 			await JSRuntime.InvokeVoidAsync("alert", "Update successful");
-			navManager.NavigateTo("/Room_Dashboard");
+			navManager.NavigateTo("/manage_rooms");
 		}
 		else
 		{
@@ -126,6 +126,6 @@
 
 	private void Cancel()
 	{
-		navManager.NavigateTo("/Room_Dashboard");
+		navManager.NavigateTo("/manage_rooms");
 	}
 }

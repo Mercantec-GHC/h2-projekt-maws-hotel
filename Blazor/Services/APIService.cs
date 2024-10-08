@@ -8,7 +8,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using static Blazor.Services.DatabaseService;
+using static Blazor.Services.APIService;
 using Microsoft.AspNetCore.Http.HttpResults;
 using static System.Net.WebRequestMethods;
 using Microsoft.AspNetCore.Mvc;
@@ -16,13 +16,13 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Blazor.Services
 {
-    public class DatabaseService
+    public class APIService
     {
         private readonly string connectionString;
         private readonly HttpClient _httpClient;
         private readonly string _baseURL = "https://localhost:7207/api/";
 
-        public DatabaseService(string connectionString, HttpClient httpClient)
+        public APIService(string connectionString, HttpClient httpClient)
         {
             this.connectionString = connectionString;
             _httpClient = httpClient;
@@ -92,7 +92,7 @@ namespace Blazor.Services
         // Create room
         public async Task<HttpResponseMessage> CreateRoom(Room room)
         {
-            return await _httpClient.PostAsJsonAsync<Room>(_baseURL + "Room/CreateRoom", room);
+            return await _httpClient.PostAsJsonAsync(_baseURL + "Room/CreateRoom", room);
         }
 
         //Get all rooms
@@ -172,6 +172,13 @@ namespace Blazor.Services
             }
         }
 
+        // Get all profiles
+        public async Task<List<Profile>> GetAllProfiles()
+        {
+            return await _httpClient.GetFromJsonAsync<List<Profile>>(_baseURL + "api/profile/all");
+
+        }
+
         //Get profile by userID
         public async Task<Profile> GetProfileByUserID(int userID)
         {
@@ -194,13 +201,13 @@ namespace Blazor.Services
         }
 
         //Edit profile by id
-        public async Task<HttpResponseMessage> EditProfile(int id, Profile profile)
+        public async Task<HttpResponseMessage> edit_profile(int id, Profile profile)
         {
             return await _httpClient.PutAsJsonAsync(_baseURL + $"profile/{id}", profile);
         }
 
         public async Task<HttpResponseMessage> DeleteProfile(int id){
-            return await _httpClient.DeleteAsync($"api/profile/deactivate/{id}");
+            return await _httpClient.DeleteAsync($"api/profile/delete/{id}");
 
         }
 

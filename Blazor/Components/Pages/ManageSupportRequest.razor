@@ -1,10 +1,10 @@
-﻿@page "/SupportRequestDashboard"
+﻿@page "/manage_support_request"
 @attribute [Authorize]
 @using Microsoft.AspNetCore.Authorization
 @using DomainModels
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
-<PageTitle>SupportRequestDashboard</PageTitle>
+<PageTitle>manage_support_request</PageTitle>
 
 <!-- Support Request Dashboard Container -->
 <div class="container">
@@ -81,7 +81,7 @@
 			navManager.NavigateTo("/");
 		}
 
-		allSupportRequests = await dbService.GetAllSupportRequests();
+		allSupportRequests = await APIService.GetAllSupportRequests();
 		allSupportRequests = allSupportRequests.OrderByDescending(x => x.Status).ToList();
 	}
 
@@ -90,7 +90,7 @@
 	{
 		if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete your profile?"))
 		{
-			await dbService.DeleteSupportRequest(id);
+			await APIService.DeleteSupportRequest(id);
 
 			var requestToDelete = allSupportRequests.First(b => b.Id == id);
 			if (requestToDelete != null)
@@ -121,7 +121,7 @@
 	// Go to a specific support request
 	private void GoToEditSupportRequest(int id)
 	{
-		navManager.NavigateTo($"/HandleSupportRequest/{id}");
+		navManager.NavigateTo($"/edit_support_request/{id}");
 		StateHasChanged();
 	}
 }

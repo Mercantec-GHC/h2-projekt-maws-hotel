@@ -1,4 +1,4 @@
-﻿@page "/EditProfile/{id:int}"
+﻿@page "/edit_profile/{id:int}"
 @using DomainModels
 
 <PageTitle>Edit Profile</PageTitle>
@@ -83,7 +83,7 @@
     // When page is loaded
     protected override async Task OnInitializedAsync()
     {
-        profile = await Http.GetFromJsonAsync<Profile>($"api/profile/{id}");
+        profile = await APIService.GetProfileByUserID(id);
         if (profile == null)
         {
             navManager.NavigateTo("/");
@@ -97,7 +97,7 @@
         {
             profile.Birthday = DateTime.SpecifyKind(profile.Birthday.Value, DateTimeKind.Utc);
         }
-        var response = await dbService.EditProfile(profile.Id, profile);
+        var response = await APIService.edit_profile(profile.Id, profile);
         if (response.IsSuccessStatusCode)
         {
             if(AppState.IsAdmin && profile.Administrator == false && profile.Id == AppState.UserId){
@@ -105,7 +105,7 @@
                 navManager.NavigateTo("/login");
             }
             else{
-                navManager.NavigateTo("/ProfileDashboard");
+                navManager.NavigateTo("/show_profile");
             }
         }
         else
@@ -119,7 +119,7 @@
     {
         if (await JSRuntime.InvokeAsync<bool>("confirm", "Are you sure, you want to delete your profile?"))
         {
-            var response = await dbService.DeleteProfile(profile.Id); 
+            var response = await APIService.DeleteProfile(profile.Id); 
             if (response.IsSuccessStatusCode)
             {
                 AppState.Logout();
@@ -135,6 +135,6 @@
     // Return to profile dashboard
     private void Cancel()
     {
-        navManager.NavigateTo("/ProfileDashboard");
+        navManager.NavigateTo("/show_profile");
     }
 }

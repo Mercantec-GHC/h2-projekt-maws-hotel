@@ -1,11 +1,11 @@
-﻿@page "/booking_dashboard"
+﻿@page "/manage_bookings"
 @using Microsoft.JSInterop
 @using DomainModels
 
 <!-- Bootstrap Icons CSS -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
 
-<PageTitle>booking_dashboard</PageTitle>
+<PageTitle>manage_bookings</PageTitle>
 
 <div class="container">
     @if (allBookings != null && allBookings.Count > 0)
@@ -37,12 +37,12 @@
                         <td>@booking.RoomId</td>
                         <td>
                             <!-- Delete Booking Button -->
-                            <button class="btn btn-danger delete-profile-btn" @onclick="() => delete_booking_from_id(booking.Id)">
+                            <button class="btn btn-danger delete-profile-btn" @onclick="() => ShowDeleteConfirmation(booking.Id)">
                                 <i class="bi bi-trash delete-profile-btn" style="color:white;"></i> Delete booking
                             </button>
 
                             <!-- Go to Profile Button -->
-                            <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/booking-details/{booking.Id}"))">
+                            <button class="btn-goto-profile" @onclick="@(() => navManager.NavigateTo($"/show_booking/{booking.Id}"))">
                                 <i class="bi bi-calendar-check"></i> Booking
                             </button>
                         </td>
@@ -71,6 +71,45 @@
     }
 </div>
 
+
+@if (showDeleteConfirmation)
+{
+    <div class="modal-backdrop show"></div>
+    <div class="modal show d-block" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content login-box">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirm Deletion</h5>
+                    <button type="button" class="close" @onclick="CancelDelete">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Are you sure you want to delete this booking?</p>
+                </div>
+                <div class="modal-footer">
+                    <a @onclick="ConfirmDelete">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        Delete Booking
+                    </a>
+                    <a @onclick="CancelDelete">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                        Cancel
+                    </a>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+
 @code {
     // Properties
     public bool ascending = true;
@@ -78,6 +117,8 @@
     public List<DomainModels.Booking> allBookings = new List<DomainModels.Booking>();
     public int total_bookings = 0;
     private Profile? profile;
+    private bool showDeleteConfirmation = false;
+    private int bookingIdToDelete;
 
     // Initialization
     protected override async Task OnInitializedAsync()
@@ -87,14 +128,14 @@
             navManager.NavigateTo("/");
         }
 
-        allBookings = await dbService.GetBookings();
+        allBookings = await APIService.GetBookings();
         total_bookings = allBookings.Count;
     }
 
     // Delete booking
-    public void delete_booking_from_id(int id)
+    public async Task delete_booking_from_id(int id)
     {
-        dbService.DeleteBooking(id);
+        await APIService.DeleteBooking(id);
 
         var bookingToDelete = allBookings.FirstOrDefault(b => b.Id == id);
         if (bookingToDelete != null)
@@ -154,4 +195,27 @@
                 break;
         }
     }
+
+
+    // Delete modal
+    // Show delete confirmation modal
+    private void ShowDeleteConfirmation(int id)
+    {
+        bookingIdToDelete = id;
+        showDeleteConfirmation = true;
+    }
+
+    // Cancel delete
+    private void CancelDelete()
+    {
+        showDeleteConfirmation = false;
+    }
+
+    // Confirm delete
+    private async Task ConfirmDelete()
+    {
+        await delete_booking_from_id(bookingIdToDelete);
+        showDeleteConfirmation = false;
+    }
+
 }
